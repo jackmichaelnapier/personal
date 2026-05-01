@@ -3,75 +3,419 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Jack Napier</title>
-<meta name="description" content="Jack Napier — personal site, Jávea, Spain.">
+<title>Jack Napier — Jávea</title>
+<meta name="description" content="Jack Napier — operator, builder, and founder living on the Costa Blanca. Welzyn S.L., FitnessNord, Build & Bike Jávea, and a stack of small things in between.">
+<meta property="og:title" content="Jack Napier">
+<meta property="og:description" content="Operator, builder, and founder. Living on the Costa Blanca, building things from a kitchen table in Jávea.">
+<meta property="og:url" content="https://www.napier.me">
+<meta name="theme-color" content="#fdf8ef">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --sea:#1f3a5f; --haze:#dfe7ef; --sky:#eaf1f6;
-    --ink:#1c1c1c; --muted:#6b6457; --hairline:#cfd6dc;
-    --terracotta:#c1440e;
+    --paper:#fdf8ef;
+    --paper-warm:#f7eed3;
+    --ink:#1a1410;
+    --ink-soft:#3a3128;
+    --muted:#6b6457;
+    --sea:#0a3d5c;
+    --sea-deep:#062536;
+    --sea-mist:#cfdde7;
+    --tile-blue:#1c6e8c;
+    --olive:#6a7e3c;
+    --sun:#f9c74f;
+    --sun-warm:#f3722c;
+    --terracotta:#c5491f;
+    --pink:#e8aeb7;
+    --hairline:#d8cfb8;
   }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{
-    min-height:100vh;
-    background:
-      radial-gradient(1200px 600px at 50% 110%, #cfdde7 0%, transparent 60%),
-      linear-gradient(180deg, #f6f9fb 0%, #eaf1f6 60%, #dfe7ef 100%);
+    background:var(--paper);
     color:var(--ink);
-    font-family:'Inter',sans-serif;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:48px 24px;
-    text-align:center;
+    font-family:'Space Grotesk', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
+  ::selection{background:var(--sun);color:var(--sea-deep);}
+
+  /* ====== HERO ====== */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:48px 6vw 64px;
+    overflow:hidden;
+    background:
+      radial-gradient(1400px 700px at 80% -10%, rgba(249,199,79,0.55) 0%, transparent 55%),
+      radial-gradient(1100px 800px at -10% 110%, rgba(28,110,140,0.30) 0%, transparent 55%),
+      linear-gradient(180deg, #fdf8ef 0%, #f7eed3 70%, #efe4c5 100%);
+  }
+  .hero::before{
+    /* faint horizon line */
+    content:'';position:absolute;left:0;right:0;top:42%;
+    height:1px;background:linear-gradient(90deg,transparent,rgba(10,61,92,0.25),transparent);
+  }
+  .nav{
+    position:absolute;top:32px;left:6vw;right:6vw;
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .nav .mark{color:var(--sea-deep);font-weight:500;}
+  .nav a{color:var(--muted);text-decoration:none;margin-left:24px;}
+  .nav a:hover{color:var(--terracotta);}
+  @media (max-width:640px){ .nav .links a:nth-child(n+3){display:none;} }
+
   .preface{
     font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
-    color:var(--muted);margin-bottom:24px;
+    font-size:12px;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--terracotta);
+    display:flex;align-items:center;gap:14px;margin-bottom:28px;
   }
+  .preface::before{content:'';width:32px;height:1px;background:var(--terracotta);}
+
   h1{
-    font-family:'Fraunces',serif;font-weight:600;font-style:italic;
-    font-size:clamp(48px,9vw,108px);line-height:1.05;
-    margin:0 0 16px;color:var(--sea);
-    letter-spacing:-0.01em;
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(64px,13vw,180px);
+    line-height:0.92;
+    letter-spacing:-0.025em;
+    color:var(--sea-deep);
+    margin-bottom:28px;
   }
+  h1 .italic{font-style:italic;font-weight:400;color:var(--terracotta);}
+
+  .hero-lede{
+    font-family:'Fraunces',serif;
+    font-weight:400;
+    font-size:clamp(20px,2.4vw,28px);
+    line-height:1.4;
+    color:var(--ink-soft);
+    max-width:720px;
+    margin-bottom:40px;
+  }
+  .hero-meta{
+    display:flex;flex-wrap:wrap;gap:32px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .hero-meta span strong{color:var(--sea-deep);font-weight:500;}
+
+  .scroll-hint{
+    position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    animation:bob 2.4s ease-in-out infinite;
+  }
+  .scroll-hint::after{content:'↓';font-size:14px;}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+
+  /* ====== SECTIONS ====== */
+  section{padding:96px 6vw;max-width:1100px;margin:0 auto;}
+  .section-num{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:16px;
+  }
+  h2{
+    font-family:'Fraunces',serif;font-weight:600;
+    font-size:clamp(36px,5vw,56px);
+    line-height:1.05;letter-spacing:-0.015em;
+    color:var(--sea-deep);
+    margin-bottom:32px;
+    max-width:760px;
+  }
+  h2 .italic{font-style:italic;font-weight:400;color:var(--terracotta);}
   .lede{
     font-family:'Fraunces',serif;font-weight:400;
-    font-size:clamp(16px,2vw,20px);
-    color:var(--ink);max-width:520px;margin:0 auto;
-    line-height:1.55;
+    font-size:clamp(18px,1.8vw,22px);
+    line-height:1.55;color:var(--ink-soft);
+    max-width:680px;margin-bottom:24px;
   }
-  .rule{
-    width:48px;height:1px;background:var(--sea);
-    margin:32px auto;opacity:0.6;
+  .body{
+    font-size:16px;line-height:1.7;color:var(--ink-soft);
+    max-width:640px;margin-bottom:18px;
   }
-  .meta{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
-    color:var(--muted);
+  .body strong{color:var(--sea-deep);font-weight:500;}
+
+  /* ====== CURRENTLY GRID ====== */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:24px;margin-top:40px;
   }
-  .meta a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--hairline);}
-  .meta a:hover{color:var(--sea);border-bottom-color:var(--sea);}
-  footer{
-    position:fixed;bottom:24px;left:0;right:0;
+  .card{
+    background:var(--paper-warm);
+    border:1px solid var(--hairline);
+    padding:28px 26px;
+    position:relative;
+    transition:transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card::before{
+    content:'';position:absolute;top:0;left:0;width:36px;height:3px;background:var(--terracotta);
+  }
+  .card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--sea-deep);}
+  .card .tag{
     font-family:'JetBrains Mono',monospace;font-size:10px;
-    letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
-    text-align:center;
+    letter-spacing:0.22em;text-transform:uppercase;color:var(--terracotta);
+    margin-bottom:12px;
   }
+  .card h3{
+    font-family:'Fraunces',serif;font-weight:600;font-size:24px;
+    line-height:1.15;color:var(--sea-deep);margin-bottom:10px;
+  }
+  .card p{
+    font-size:14px;line-height:1.6;color:var(--ink-soft);margin-bottom:14px;
+  }
+  .card .link{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--sea);text-decoration:none;
+    border-bottom:1px solid var(--hairline);padding-bottom:2px;
+  }
+  .card .link:hover{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+  .card .link::after{content:' →';}
+
+  /* ====== ALMANAC (things I love) ====== */
+  .almanac{
+    background:var(--sea-deep);
+    color:var(--paper);
+    padding:96px 6vw;
+    margin-top:64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .almanac::before{
+    content:'';position:absolute;right:-100px;top:-100px;
+    width:380px;height:380px;border-radius:50%;
+    background:radial-gradient(circle, var(--sun) 0%, transparent 70%);
+    opacity:0.35;
+  }
+  .almanac-inner{max-width:1100px;margin:0 auto;position:relative;}
+  .almanac h2{color:var(--paper);}
+  .almanac h2 .italic{color:var(--sun);}
+  .almanac .section-num{color:var(--sun);}
+  .almanac-list{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px 28px;margin-top:40px;
+    list-style:none;
+  }
+  .almanac-list li{
+    font-family:'Fraunces',serif;font-weight:400;font-style:italic;
+    font-size:20px;color:var(--paper);
+    padding:14px 0;border-top:1px solid rgba(247,238,211,0.18);
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .almanac-list li::before{
+    content:counter(item, decimal-leading-zero);
+    counter-increment:item;
+    font-family:'JetBrains Mono',monospace;font-style:normal;
+    font-size:11px;letter-spacing:0.16em;
+    color:var(--sun);min-width:32px;
+  }
+  .almanac-list{counter-reset:item;}
+
+  /* ====== STORY ====== */
+  .story{padding-top:96px;padding-bottom:96px;}
+  .story .body{max-width:680px;}
+  .story .pullquote{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+    font-size:clamp(24px,3vw,32px);
+    line-height:1.35;color:var(--terracotta);
+    margin:40px 0;padding-left:24px;
+    border-left:3px solid var(--terracotta);
+    max-width:640px;
+  }
+
+  /* ====== FOOTER / CONTACT ====== */
+  footer{
+    background:var(--paper-warm);
+    padding:80px 6vw 56px;
+    border-top:1px solid var(--hairline);
+  }
+  .footer-inner{
+    max-width:1100px;margin:0 auto;
+    display:grid;grid-template-columns:1.4fr 1fr;gap:48px;
+  }
+  @media (max-width:720px){ .footer-inner{grid-template-columns:1fr;} }
+  .footer-inner h3{
+    font-family:'Fraunces',serif;font-weight:600;font-style:italic;
+    font-size:36px;color:var(--sea-deep);margin-bottom:16px;
+  }
+  .footer-inner p{
+    font-size:15px;line-height:1.6;color:var(--ink-soft);max-width:420px;
+  }
+  .links-list{
+    display:flex;flex-direction:column;gap:10px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    letter-spacing:0.12em;
+  }
+  .links-list a{
+    color:var(--sea-deep);text-decoration:none;
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-bottom:1px solid var(--hairline);
+    padding:10px 0;
+    transition:color 0.15s, border-color 0.15s;
+  }
+  .links-list a:hover{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+  .links-list a span:first-child{text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);font-size:10px;}
+  .links-list a span:last-child{font-weight:500;}
+
+  .colophon{
+    margin-top:56px;padding-top:24px;
+    border-top:1px solid var(--hairline);
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  }
+
+  /* ====== UTIL ====== */
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s ease, transform 0.7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
 </style>
 </head>
 <body>
-  <div class="preface">Jávea · Costa Blanca</div>
-  <h1>Jack Napier</h1>
-  <p class="lede">A proper page is on the way. In the meantime, find me at <a class="meta" href="mailto:jack@napier.me" style="border-bottom:1px solid var(--hairline);text-decoration:none;color:var(--sea);">jack@napier.me</a>.</p>
-  <div class="rule"></div>
-  <div class="meta">
-    <a href="https://github.com/jackmichaelnapier">github</a> &nbsp;·&nbsp;
-    <a href="https://go.napier.me">go.napier.me</a>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <nav class="nav">
+    <span class="mark">napier.me</span>
+    <span class="links">
+      <a href="#now">Now</a>
+      <a href="#story">Story</a>
+      <a href="#contact">Contact</a>
+    </span>
+  </nav>
+
+  <div class="preface">38°47′N · 0°10′E · Jávea</div>
+  <h1>Jack <span class="italic">Napier.</span></h1>
+  <p class="hero-lede">
+    Operator, builder, and quiet co-conspirator. I run a small group of companies from a kitchen table on the Costa Blanca, and I make most of my decisions outside in the sun.
+  </p>
+  <div class="hero-meta">
+    <span><strong>Director</strong> · Welzyn S.L.</span>
+    <span><strong>Running</strong> · FitnessNord</span>
+    <span><strong>Building</strong> · Build &amp; Bike '26</span>
   </div>
-  <footer>napier.me · est. 2026</footer>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- ==================== NOW ==================== -->
+<section id="now">
+  <div class="section-num">01 · Now</div>
+  <h2>What I'm building, <span class="italic">currently.</span></h2>
+  <p class="lede">
+    A handful of overlapping projects — a sports nutrition business, a holding company, a Mediterranean engineering retreat, and a stack of internal tools that quietly hold it all together.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="tag">Operator</div>
+      <h3>FitnessNord</h3>
+      <p>Sports nutrition for the Nordics. Runs across Sweden and Switzerland, mostly direct-to-consumer, ruthlessly product-led. The day-to-day spine of what I do.</p>
+      <a class="link" href="https://fitnessnord.se" target="_blank" rel="noopener">fitnessnord.se</a>
+    </div>
+
+    <div class="card">
+      <div class="tag">Director</div>
+      <h3>Welzyn S.L.</h3>
+      <p>The Spanish company that holds the rest. A small operation in Jávea that funds, ships, and provides cover for everything else on this list.</p>
+    </div>
+
+    <div class="card">
+      <div class="tag">Hosting</div>
+      <h3>Build &amp; Bike Jávea</h3>
+      <p>A few days each year of friends, founders, and friends-of-founders riding bikes, building things, and arguing about the right thing to ship. Costa Blanca summer ritual.</p>
+      <a class="link" href="https://go.napier.me/build-and-bike/" target="_blank" rel="noopener">go.napier.me/build-and-bike</a>
+    </div>
+
+    <div class="card">
+      <div class="tag">Tinkering</div>
+      <h3>Wildbreeze &amp; tooling</h3>
+      <p>Custom MCP servers, scheduled agents, and weekly reports that keep our operations honest. The plumbing nobody sees and everyone benefits from.</p>
+      <a class="link" href="https://go.napier.me" target="_blank" rel="noopener">go.napier.me</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== STORY ==================== -->
+<section id="story" class="story">
+  <div class="section-num">02 · Story</div>
+  <h2>How I <span class="italic">got here.</span></h2>
+
+  <p class="body">
+    I came up running e-commerce operations across northern Europe — sports nutrition, supplements, the unglamorous machinery behind a thousand small daily transactions. Pricing engines, shipping rules, BigQuery jobs at 4am, the kind of work where the wins are quiet and the losses are loud.
+  </p>
+  <p class="body">
+    Somewhere around the time I crossed thirty, I realised I'd rather make those decisions in flip-flops than under a Stockholm sky. So I packed the operation onto a laptop and moved it to <strong>Jávea, on the Costa Blanca</strong> — a town of fishermen, foreigners, almond trees, and a sea that does most of my therapy for me.
+  </p>
+  <div class="pullquote">
+    The work didn't get smaller. The room around it just got better.
+  </div>
+  <p class="body">
+    These days I split my time between <strong>operating FitnessNord</strong>, <strong>building tooling</strong> that lets a small team punch above its weight, and <strong>hosting Build &amp; Bike</strong> — a yearly excuse to bring people I admire to this corner of Spain to ride, ship, and eat properly.
+  </p>
+  <p class="body">
+    I write less than I'd like, ship more than I should, and keep a running list of side projects that I will absolutely get to next quarter.
+  </p>
+</section>
+
+<!-- ==================== ALMANAC ==================== -->
+<section class="almanac">
+  <div class="almanac-inner">
+    <div class="section-num">03 · Almanac</div>
+    <h2>The things I keep <span class="italic">coming back to.</span></h2>
+    <ul class="almanac-list">
+      <li>The first swim of the day, before email</li>
+      <li>Long road rides up into the Montgó hills</li>
+      <li>Spanish kitchens that haven't changed in fifty years</li>
+      <li>Talking shop until the wine's gone</li>
+      <li>Building things you don't strictly need to build</li>
+      <li>The discipline of a weekly report</li>
+      <li>Friends who ship</li>
+      <li>The Mediterranean at golden hour</li>
+      <li>Quiet companies, loud results</li>
+      <li>Family</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== CONTACT / FOOTER ==================== -->
+<footer id="contact">
+  <div class="footer-inner">
+    <div>
+      <div class="section-num">04 · Find me</div>
+      <h3>Say hello.</h3>
+      <p>If you're working on something interesting, riding through the Costa Blanca, or just want to argue about how to build a better small company — I'd love to hear from you.</p>
+    </div>
+    <div class="links-list">
+      <a href="mailto:jack@napier.me"><span>Email</span><span>jack@napier.me</span></a>
+      <a href="https://github.com/jackmichaelnapier" target="_blank" rel="noopener"><span>GitHub</span><span>jackmichaelnapier</span></a>
+      <a href="https://www.linkedin.com/in/jackmichaelnapier" target="_blank" rel="noopener"><span>LinkedIn</span><span>jackmichaelnapier</span></a>
+      <a href="https://go.napier.me"><span>Reports</span><span>go.napier.me</span></a>
+    </div>
+  </div>
+
+  <div class="colophon">
+    <span>napier.me · written and maintained by hand</span>
+    <span>Jávea · Costa Blanca · 2026</span>
+  </div>
+</footer>
+
+<script>
+  // Subtle reveal-on-scroll for cards and sections
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:0.12});
+  document.querySelectorAll('.card, .lede, .body, .pullquote, .almanac-list li, h2').forEach(el=>{
+    el.classList.add('reveal'); io.observe(el);
+  });
+</script>
+
 </body>
 </html>
