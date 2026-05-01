@@ -277,12 +277,44 @@
   /* ====== UTIL ====== */
   .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s ease, transform 0.7s ease;}
   .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ====== DRAFT MARKERS ====== */
+  body{padding-top:38px;}
+  .draft-banner{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    background:var(--terracotta);color:var(--paper);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.28em;text-transform:uppercase;
+    text-align:center;padding:11px 14px;font-weight:500;
+    border-bottom:2px solid var(--sea-deep);
+  }
+  .draft-banner strong{font-weight:700;letter-spacing:0.32em;}
+  .hero{padding-top:96px;}
+  .nav{top:80px;}
+  .draft-stamp{
+    position:absolute;
+    top:54%;left:50%;
+    transform:translate(-50%,-50%) rotate(-10deg);
+    font-family:'Fraunces',serif;font-weight:700;font-style:italic;
+    font-size:clamp(160px,28vw,360px);
+    line-height:0.85;letter-spacing:-0.02em;
+    color:var(--terracotta);
+    opacity:0.13;
+    pointer-events:none;
+    z-index:1;
+    user-select:none;
+    white-space:nowrap;
+  }
+  .hero > *:not(.draft-stamp){position:relative;z-index:2;}
 </style>
 </head>
 <body>
 
+<div class="draft-banner"><strong>Draft</strong> · Placeholder content under review · Not for sharing yet</div>
+
 <!-- ==================== HERO ==================== -->
 <section class="hero">
+  <div class="draft-stamp">DRAFT</div>
   <nav class="nav">
     <span class="mark">napier.me</span>
     <span class="links">
@@ -295,12 +327,12 @@
   <div class="preface">38°47′N · 0°10′E · Jávea</div>
   <h1>Jack <span class="italic">Napier.</span></h1>
   <p class="hero-lede">
-    Operator, builder, and quiet co-conspirator. I run a small group of companies from a kitchen table on the Costa Blanca, and I make most of my decisions outside in the sun.
+    Operator, builder, and quiet co-conspirator. I run a small set of projects from a kitchen table on the Costa Blanca, and I make most of my decisions outside in the sun.
   </p>
   <div class="hero-meta">
-    <span><strong>Director</strong> · Welzyn S.L.</span>
-    <span><strong>Running</strong> · FitnessNord</span>
+    <span><strong>Operating</strong> · Costa Blanca</span>
     <span><strong>Building</strong> · Build &amp; Bike '26</span>
+    <span><strong>Tinkering</strong> · MCPs &amp; tooling</span>
   </div>
   <div class="scroll-hint">scroll</div>
 </section>
@@ -310,23 +342,10 @@
   <div class="section-num">01 · Now</div>
   <h2>What I'm building, <span class="italic">currently.</span></h2>
   <p class="lede">
-    A handful of overlapping projects — a sports nutrition business, a holding company, a Mediterranean engineering retreat, and a stack of internal tools that quietly hold it all together.
+    A handful of overlapping projects — a Mediterranean engineering retreat, a stack of internal tools, and the quiet day-to-day work that holds them together.
   </p>
 
   <div class="grid">
-    <div class="card">
-      <div class="tag">Operator</div>
-      <h3>FitnessNord</h3>
-      <p>Sports nutrition for the Nordics. Runs across Sweden and Switzerland, mostly direct-to-consumer, ruthlessly product-led. The day-to-day spine of what I do.</p>
-      <a class="link" href="https://fitnessnord.se" target="_blank" rel="noopener">fitnessnord.se</a>
-    </div>
-
-    <div class="card">
-      <div class="tag">Director</div>
-      <h3>Welzyn S.L.</h3>
-      <p>The Spanish company that holds the rest. A small operation in Jávea that funds, ships, and provides cover for everything else on this list.</p>
-    </div>
-
     <div class="card">
       <div class="tag">Hosting</div>
       <h3>Build &amp; Bike Jávea</h3>
@@ -337,7 +356,7 @@
     <div class="card">
       <div class="tag">Tinkering</div>
       <h3>Wildbreeze &amp; tooling</h3>
-      <p>Custom MCP servers, scheduled agents, and weekly reports that keep our operations honest. The plumbing nobody sees and everyone benefits from.</p>
+      <p>Custom MCP servers, scheduled agents, and weekly reports that keep small operations honest. The plumbing nobody sees and everyone benefits from.</p>
       <a class="link" href="https://go.napier.me" target="_blank" rel="noopener">go.napier.me</a>
     </div>
   </div>
@@ -349,16 +368,16 @@
   <h2>How I <span class="italic">got here.</span></h2>
 
   <p class="body">
-    I came up running e-commerce operations across northern Europe — sports nutrition, supplements, the unglamorous machinery behind a thousand small daily transactions. Pricing engines, shipping rules, BigQuery jobs at 4am, the kind of work where the wins are quiet and the losses are loud.
+    I came up running e-commerce operations across northern Europe — the unglamorous machinery behind a thousand small daily transactions. Pricing engines, shipping rules, BigQuery jobs at 4am, the kind of work where the wins are quiet and the losses are loud.
   </p>
   <p class="body">
-    Somewhere around the time I crossed thirty, I realised I'd rather make those decisions in flip-flops than under a Stockholm sky. So I packed the operation onto a laptop and moved it to <strong>Jávea, on the Costa Blanca</strong> — a town of fishermen, foreigners, almond trees, and a sea that does most of my therapy for me.
+    At some point I realised I'd rather make those decisions in flip-flops than under a northern sky. So I packed the operation onto a laptop and moved it to <strong>Jávea, on the Costa Blanca</strong> — a town of fishermen, foreigners, almond trees, and a sea that does most of my therapy for me.
   </p>
   <div class="pullquote">
     The work didn't get smaller. The room around it just got better.
   </div>
   <p class="body">
-    These days I split my time between <strong>operating FitnessNord</strong>, <strong>building tooling</strong> that lets a small team punch above its weight, and <strong>hosting Build &amp; Bike</strong> — a yearly excuse to bring people I admire to this corner of Spain to ride, ship, and eat properly.
+    These days I split my time between <strong>the day job</strong>, <strong>building tooling</strong> that lets a small team punch above its weight, and <strong>hosting Build &amp; Bike</strong> — a yearly excuse to bring people I admire to this corner of Spain to ride, ship, and eat properly.
   </p>
   <p class="body">
     I write less than I'd like, ship more than I should, and keep a running list of side projects that I will absolutely get to next quarter.
