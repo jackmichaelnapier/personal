@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jack Napier</title>
+<meta name="description" content="Jack Napier — personal site, Jávea, Spain.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea:#1f3a5f; --haze:#dfe7ef; --sky:#eaf1f6;
+    --ink:#1c1c1c; --muted:#6b6457; --hairline:#cfd6dc;
+    --terracotta:#c1440e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 600px at 50% 110%, #cfdde7 0%, transparent 60%),
+      linear-gradient(180deg, #f6f9fb 0%, #eaf1f6 60%, #dfe7ef 100%);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:48px 24px;
+    text-align:center;
+  }
+  .preface{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:24px;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;font-style:italic;
+    font-size:clamp(48px,9vw,108px);line-height:1.05;
+    margin:0 0 16px;color:var(--sea);
+    letter-spacing:-0.01em;
+  }
+  .lede{
+    font-family:'Fraunces',serif;font-weight:400;
+    font-size:clamp(16px,2vw,20px);
+    color:var(--ink);max-width:520px;margin:0 auto;
+    line-height:1.55;
+  }
+  .rule{
+    width:48px;height:1px;background:var(--sea);
+    margin:32px auto;opacity:0.6;
+  }
+  .meta{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .meta a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--hairline);}
+  .meta a:hover{color:var(--sea);border-bottom-color:var(--sea);}
+  footer{
+    position:fixed;bottom:24px;left:0;right:0;
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+  <div class="preface">Jávea · Costa Blanca</div>
+  <h1>Jack Napier</h1>
+  <p class="lede">A proper page is on the way. In the meantime, find me at <a class="meta" href="mailto:jack@napier.me" style="border-bottom:1px solid var(--hairline);text-decoration:none;color:var(--sea);">jack@napier.me</a>.</p>
+  <div class="rule"></div>
+  <div class="meta">
+    <a href="https://github.com/jackmichaelnapier">github</a> &nbsp;·&nbsp;
+    <a href="https://go.napier.me">go.napier.me</a>
+  </div>
+  <footer>napier.me · est. 2026</footer>
+</body>
+</html>
