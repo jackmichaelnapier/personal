@@ -36,14 +36,24 @@
 
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    /* Background lives on <html>, not <body>, so negative-z-index fixed
+       elements (.field, #flow, .grid) aren't covered by body paint on
+       iOS Safari. Same reason overflow-x:hidden moves up here. */
+    background: var(--bg-0);
+    overflow-x: hidden;
+  }
   body {
     font-family: var(--sans);
     color: var(--ink);
-    background: var(--bg-0);
+    background: transparent;
     -webkit-font-smoothing: antialiased;
     line-height: 1.55;
-    overflow-x: hidden;
+    /* DO NOT add overflow-x:hidden here — it creates a stacking context
+       that hides the negative-z-index fixed background layers on mobile. */
+    position: relative;
+    z-index: 0;
   }
   a { color: inherit; text-decoration: none; }
   ::selection { background: var(--cyan); color: #001318; }
@@ -715,7 +725,9 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
     }
-    #flow { display: none; }
+    /* Keep the canvas visible on reduced-motion — the JS already short-circuits
+       the animation loop, but a single static frame still paints, and it's
+       better than a blank background. We don't display:none here. */
   }
 </style>
 </head>
@@ -999,7 +1011,6 @@
   const canvas = document.getElementById('flow');
   if (!canvas) return;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
 
   const ctx = canvas.getContext('2d');
   let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
@@ -1068,7 +1079,20 @@
 
   resize();
   window.addEventListener('resize', resize);
-  step();
+  if (reduceMotion) {
+    // Paint a single static frame — scatter dim particles so the bg is not blank.
+    ctx.fillStyle = 'rgba(6, 8, 15, 1)';
+    ctx.fillRect(0, 0, W, H);
+    for (let p of particles) {
+      const color = p.hue === 'cy' ? '94, 242, 255' : '167, 139, 250';
+      ctx.fillStyle = `rgba(${color}, 0.35)`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.4 * DPR, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  } else {
+    step();
+  }
 })();
 
 /* ============================================================
