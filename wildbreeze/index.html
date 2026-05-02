@@ -720,14 +720,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-    }
-    /* Keep the canvas visible on reduced-motion — the JS already short-circuits
-       the animation loop, but a single static frame still paints, and it's
-       better than a blank background. We don't display:none here. */
+    /* Don't kill ambient animations — Reduce Motion is meant to suppress
+       vestibular triggers (parallax, big translates, fast spins), not
+       gentle pulses and slow drifts. We let CSS animations run but
+       neutralize the heaviest JS-driven effects from script. */
   }
 </style>
 </head>
@@ -1026,7 +1022,9 @@
   }
 
   function seed() {
-    const count = Math.min(160, Math.floor((innerWidth * innerHeight) / 14000));
+    // Lower particle count on Reduce Motion (less visual energy, still moving)
+    const cap = reduceMotion ? 70 : 160;
+    const count = Math.min(cap, Math.floor((innerWidth * innerHeight) / 14000));
     particles = new Array(count).fill(0).map(() => ({
       x: Math.random() * W,
       y: Math.random() * H,
@@ -1045,19 +1043,23 @@
     ) * 0.5;
   }
 
+  // Slow + dim everything when Reduce Motion is on, but keep it moving.
+  const SPEED = reduceMotion ? 0.25 : 1.0;
+  const TRAIL = reduceMotion ? 0.06 : 0.10; // lower trail-fade alpha = longer trails
+
   function step() {
-    t += 16;
+    t += 16 * SPEED;
     // motion-trail fade
-    ctx.fillStyle = 'rgba(6, 8, 15, 0.10)';
+    ctx.fillStyle = `rgba(6, 8, 15, ${TRAIL})`;
     ctx.fillRect(0, 0, W, H);
 
     for (let p of particles) {
       const angle = noise(p.x, p.y, t) * Math.PI * 2;
-      p.vx = p.vx * 0.92 + Math.cos(angle) * 0.6;
-      p.vy = p.vy * 0.92 + Math.sin(angle) * 0.6;
+      p.vx = p.vx * 0.92 + Math.cos(angle) * 0.6 * SPEED;
+      p.vy = p.vy * 0.92 + Math.sin(angle) * 0.6 * SPEED;
       p.x += p.vx;
       p.y += p.vy;
-      p.life -= 1;
+      p.life -= SPEED;
 
       if (p.x < -20 || p.x > W + 20 || p.y < -20 || p.y > H + 20 || p.life <= 0) {
         p.x = Math.random() * W;
@@ -1079,20 +1081,7 @@
 
   resize();
   window.addEventListener('resize', resize);
-  if (reduceMotion) {
-    // Paint a single static frame — scatter dim particles so the bg is not blank.
-    ctx.fillStyle = 'rgba(6, 8, 15, 1)';
-    ctx.fillRect(0, 0, W, H);
-    for (let p of particles) {
-      const color = p.hue === 'cy' ? '94, 242, 255' : '167, 139, 250';
-      ctx.fillStyle = `rgba(${color}, 0.35)`;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 1.4 * DPR, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  } else {
-    step();
-  }
+  step();
 })();
 
 /* ============================================================
