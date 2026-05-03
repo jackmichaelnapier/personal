@@ -157,17 +157,18 @@
     letter-spacing: -0.01em; font-size: 17px;
   }
   .logo .mark {
-    width: 22px; height: 22px;
-    border-radius: 6px;
-    background:
-      radial-gradient(circle at 30% 30%, var(--cyan) 0%, transparent 60%),
-      linear-gradient(135deg, var(--violet), #1a2240);
-    box-shadow: 0 0 18px rgba(94, 242, 255, 0.4), inset 0 0 0 1px rgba(255,255,255,0.18);
-    animation: markSpin 12s linear infinite;
+    width: 36px; height: 18px;
+    display: inline-block;
+    overflow: visible;
+    filter: drop-shadow(0 0 6px rgba(94, 242, 255, 0.55))
+            drop-shadow(0 0 14px rgba(167, 139, 250, 0.30));
   }
-  @keyframes markSpin {
-    0%,100% { box-shadow: 0 0 18px rgba(94, 242, 255, 0.45), inset 0 0 0 1px rgba(255,255,255,0.2); }
-    50%     { box-shadow: 0 0 26px rgba(167, 139, 250, 0.55), inset 0 0 0 1px rgba(255,255,255,0.3); }
+  .logo .mark .wave {
+    animation: waveFlow 3.4s linear infinite;
+  }
+  @keyframes waveFlow {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-8px); } /* one full period */
   }
   nav.main {
     display: flex; gap: 28px; align-items: center;
@@ -449,279 +450,6 @@
     content: ""; width: 5px; height: 5px;
     border-radius: 50%; background: var(--cyan);
     box-shadow: 0 0 6px var(--cyan); flex-shrink: 0;
-  }
-  .pillar .pillar-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 18px;
-    padding: 10px 0 0;
-    border-top: 1px dashed var(--line);
-    width: 100%;
-    font-family: var(--mono); font-size: 12px;
-    color: var(--cyan); letter-spacing: 0.05em;
-    text-transform: uppercase;
-    transition: gap 180ms ease, color 180ms ease;
-  }
-  .pillar .pillar-link:hover { gap: 14px; color: var(--ink); }
-  .pillar .pillar-link .arr { transition: transform 200ms ease; }
-  .pillar .pillar-link:hover .arr { transform: translateX(3px); }
-
-  /* ===== Anatomy section ===== */
-  .anatomy-section {
-    position: relative;
-  }
-  .anatomy-section::before {
-    content: ""; position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(700px 380px at 75% 20%, rgba(167, 139, 250, 0.06), transparent 60%),
-      radial-gradient(600px 380px at 15% 85%, rgba(94, 242, 255, 0.05), transparent 60%);
-    pointer-events: none;
-    z-index: -1;
-  }
-  .anatomy-stage {
-    position: relative;
-    border: 1px solid var(--line);
-    border-radius: var(--rad);
-    background:
-      linear-gradient(180deg, rgba(10,14,26,0.5), rgba(10,14,26,0.2)),
-      radial-gradient(800px 380px at 50% 0%, rgba(94, 242, 255, 0.05), transparent 65%);
-    padding: 56px 32px 40px;
-    overflow: hidden;
-    margin-bottom: 28px;
-  }
-  .anatomy-stage::before {
-    content: ""; position: absolute;
-    left: -1px; right: -1px; top: -1px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-    box-shadow: 0 0 10px var(--cyan);
-    animation: topScan 6s ease-in-out infinite;
-  }
-  .anatomy-svg-holder {
-    width: 100%;
-    overflow-x: auto;
-    margin-bottom: 12px;
-  }
-  .anatomy-svg {
-    width: 100%;
-    min-width: 720px;
-    max-width: 1000px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-  }
-  .anatomy-flow-dot {
-    fill: var(--cyan);
-    filter: drop-shadow(0 0 4px var(--cyan));
-  }
-  .anatomy-flow-dot.violet { fill: var(--violet); filter: drop-shadow(0 0 4px var(--violet)); }
-  .anatomy-flow-dot.warn { fill: var(--warn); filter: drop-shadow(0 0 4px var(--warn)); }
-
-  .prim-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 32px;
-  }
-  .prim-card {
-    border: 1px solid var(--line);
-    border-radius: var(--rad);
-    background: rgba(255,255,255,0.018);
-    padding: 22px 22px 20px;
-    transition: border-color 220ms ease, transform 220ms ease, background 220ms ease;
-  }
-  .prim-card:hover {
-    border-color: rgba(94, 242, 255, 0.4);
-    transform: translateY(-2px);
-    background: rgba(94, 242, 255, 0.03);
-  }
-  .prim-card .prim-tag {
-    font-family: var(--mono); font-size: 11px;
-    color: var(--cyan); letter-spacing: 0.12em;
-    text-transform: uppercase; margin-bottom: 12px;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .prim-card .prim-tag::before {
-    content: ""; width: 8px; height: 8px; border-radius: 2px;
-    background: currentColor; box-shadow: 0 0 8px currentColor;
-  }
-  .prim-card.violet .prim-tag { color: var(--violet); }
-  .prim-card.phos .prim-tag { color: var(--phos); }
-  .prim-card h4 {
-    font-family: var(--serif); font-weight: 500;
-    font-size: 22px; letter-spacing: -0.015em; margin: 0 0 8px;
-  }
-  .prim-card p {
-    font-size: 14px; color: var(--ink-2); margin: 0;
-    line-height: 1.55;
-  }
-  .prim-card .prim-meta {
-    margin-top: 14px; padding-top: 12px;
-    border-top: 1px dashed var(--line);
-    font-family: var(--mono); font-size: 11px;
-    color: var(--ink-3); letter-spacing: 0.05em;
-    display: flex; justify-content: space-between;
-  }
-  .prim-card .prim-meta .v { color: var(--cyan); }
-  .prim-card.violet .prim-meta .v { color: var(--violet); }
-  .prim-card.phos .prim-meta .v { color: var(--phos); }
-
-  .fg-cta {
-    position: relative;
-    border: 1px solid var(--line-2);
-    border-radius: 18px;
-    padding: 36px 36px;
-    background:
-      radial-gradient(500px 240px at 90% 0%, rgba(94, 242, 255, 0.14), transparent 60%),
-      radial-gradient(420px 220px at 0% 100%, rgba(167, 139, 250, 0.14), transparent 60%),
-      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.005));
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 32px; flex-wrap: wrap;
-    overflow: hidden;
-  }
-  .fg-cta::after {
-    content: ""; position: absolute; inset: 0;
-    background-image:
-      linear-gradient(to right, var(--line) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
-    background-size: 28px 28px;
-    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent 80%);
-    pointer-events: none;
-    opacity: 0.35;
-  }
-  .fg-cta-text { position: relative; flex: 1 1 380px; min-width: 280px; }
-  .fg-cta-text .fg-eyebrow {
-    font-family: var(--mono); font-size: 11px;
-    color: var(--cyan); letter-spacing: 0.14em;
-    text-transform: uppercase;
-    display: inline-flex; align-items: center; gap: 10px;
-    margin-bottom: 14px;
-  }
-  .fg-cta-text .fg-eyebrow::before {
-    content: ""; width: 18px; height: 1px;
-    background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
-  }
-  .fg-cta-text h3 {
-    font-family: var(--serif); font-weight: 500;
-    font-size: 26px; letter-spacing: -0.018em;
-    line-height: 1.15; margin: 0 0 10px;
-  }
-  .fg-cta-text h3 .it {
-    font-style: italic; color: var(--violet); font-weight: 400;
-  }
-  .fg-cta-text p {
-    font-size: 15px; color: var(--ink-2);
-    margin: 0; max-width: 52ch; line-height: 1.55;
-  }
-  .fg-cta-action { position: relative; flex: 0 0 auto; }
-  @media (max-width: 720px) {
-    .prim-grid { grid-template-columns: 1fr; }
-    .anatomy-stage { padding: 32px 16px 24px; }
-    .fg-cta { padding: 28px 22px; }
-    .fg-cta-text h3 { font-size: 22px; }
-  }
-
-  /* ===== Concept grid (compact field-guide teasers) ===== */
-  .concept-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-  }
-  @media (max-width: 880px) {
-    .concept-grid { grid-template-columns: 1fr; }
-  }
-  .concept-card {
-    position: relative;
-    border: 1px solid var(--line);
-    border-radius: var(--rad);
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
-    padding: 32px 30px 30px;
-    overflow: hidden;
-    transition: border-color 240ms ease, transform 240ms ease;
-    display: flex; flex-direction: column;
-  }
-  .concept-card::before {
-    content: ""; position: absolute;
-    left: -1px; right: -1px; top: -1px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-    box-shadow: 0 0 10px var(--cyan);
-    opacity: 0.5;
-    transition: opacity 280ms ease;
-  }
-  .concept-card.agent::before {
-    background: linear-gradient(90deg, transparent, var(--phos), transparent);
-    box-shadow: 0 0 10px var(--phos);
-  }
-  .concept-card:hover {
-    border-color: var(--line-2);
-    transform: translateY(-2px);
-  }
-  .concept-card:hover::before { opacity: 1; }
-  .concept-card .concept-tag {
-    font-family: var(--mono); font-size: 11px;
-    color: var(--cyan); letter-spacing: 0.14em;
-    text-transform: uppercase;
-    display: inline-flex; align-items: center; gap: 10px;
-    margin-bottom: 18px;
-  }
-  .concept-card.agent .concept-tag { color: var(--phos); }
-  .concept-card .concept-tag::before {
-    content: ""; width: 18px; height: 1px;
-    background: currentColor; box-shadow: 0 0 6px currentColor;
-  }
-  .concept-card .concept-diagram {
-    height: 200px;
-    margin-bottom: 24px;
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background:
-      linear-gradient(180deg, rgba(10,14,26,0.4), rgba(10,14,26,0.1)),
-      radial-gradient(400px 200px at 50% 50%, rgba(94, 242, 255, 0.05), transparent 70%);
-    overflow: hidden;
-    position: relative;
-  }
-  .concept-card.agent .concept-diagram {
-    background:
-      linear-gradient(180deg, rgba(10,14,26,0.4), rgba(10,14,26,0.1)),
-      radial-gradient(400px 200px at 50% 50%, rgba(184, 255, 110, 0.05), transparent 70%);
-  }
-  .concept-card .concept-diagram svg {
-    width: 100%; height: 100%; display: block;
-  }
-  .concept-card h3 {
-    font-family: var(--serif); font-weight: 500;
-    font-size: 26px; letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin: 0 0 12px;
-  }
-  .concept-card h3 .it {
-    font-style: italic; color: var(--violet); font-weight: 400;
-  }
-  .concept-card p {
-    font-size: 15px; color: var(--ink-2);
-    line-height: 1.6; margin: 0 0 22px;
-    flex: 1;
-  }
-  .concept-card .concept-cta {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding-top: 18px;
-    border-top: 1px dashed var(--line);
-    font-family: var(--mono); font-size: 12px;
-    color: var(--cyan); letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: gap 200ms ease, color 200ms ease;
-  }
-  .concept-card.agent .concept-cta { color: var(--phos); }
-  .concept-card .concept-cta:hover { gap: 14px; color: var(--ink); }
-  .concept-card .concept-cta .arr {
-    transition: transform 200ms ease;
-  }
-  .concept-card .concept-cta:hover .arr { transform: translateX(4px); }
-  @media (max-width: 720px) {
-    .concept-card { padding: 26px 22px 22px; }
-    .concept-card .concept-diagram { height: 170px; }
-    .concept-card h3 { font-size: 22px; }
   }
 
   /* ===== Process ===== */
@@ -1024,15 +752,26 @@
 <header class="nav">
   <div class="wrap row">
     <a href="#top" class="logo">
-      <span class="mark"></span>
+      <svg class="mark" viewBox="0 0 36 18" aria-hidden="true">
+        <defs>
+          <linearGradient id="wb-mark-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5EF2FF"/>
+            <stop offset="55%" stop-color="#A78BFA"/>
+            <stop offset="100%" stop-color="#5EF2FF"/>
+          </linearGradient>
+        </defs>
+        <g class="wave">
+          <path d="M-8 9 q 2 -6 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0"
+                fill="none" stroke="url(#wb-mark-grad)" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
       <span>WildBreeze</span>
     </a>
     <nav class="main">
       <a href="#services">Services</a>
-      <a href="#anatomy">Anatomy</a>
       <a href="#process">How it works</a>
       <a href="#why">Why us</a>
-      <a href="https://go.napier.me/mcp/">Field guide</a>
       <a class="cta" href="#contact">Book a call →</a>
     </nav>
   </div>
@@ -1089,7 +828,6 @@
           <li>Internal tools &amp; private APIs</li>
           <li>Trigger events into your workflow</li>
         </ul>
-        <a class="pillar-link" href="https://go.napier.me/mcp/">What is MCP? <span class="arr">→</span></a>
       </article>
 
       <article class="pillar reveal" data-tilt>
@@ -1155,139 +893,11 @@
   </div>
 </section>
 
-<!-- Under the hood — two field-guide teasers -->
-<section class="section anatomy-section" id="anatomy">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="kicker">002 — Under the hood</div>
-      <h2>Two ideas. <span class="it">Both inevitable.</span></h2>
-      <p class="sub">The wire that carries the model and the loop that lets it act on its own. If you're going to build with AI in the next two years, these are the only two diagrams you need in your head.</p>
-    </div>
-
-    <div class="concept-grid">
-
-      <!-- MCP card -->
-      <article class="concept-card reveal">
-        <div class="concept-tag">Field guide · 001</div>
-        <div class="concept-diagram" aria-hidden="true">
-          <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <marker id="hMcpArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#A78BFA"/>
-              </marker>
-              <marker id="hMcpArrW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFB46B"/>
-              </marker>
-              <filter id="hMcpGlow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <path id="hMcpW1" d="M 130 100 L 224 100" />
-              <path id="hMcpW2" d="M 336 100 L 416 100" />
-            </defs>
-            <!-- HOST -->
-            <rect x="22" y="46" width="108" height="108" rx="10" fill="rgba(94, 242, 255, 0.10)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.5"/>
-            <text x="34" y="68" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" letter-spacing="2">HOST</text>
-            <text x="76" y="105" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" font-weight="500">Model</text>
-            <text x="76" y="124" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" font-weight="500">+ Client</text>
-            <!-- wire 1 -->
-            <use href="#hMcpW1" stroke="#A78BFA" stroke-width="1.4" fill="none" filter="url(#hMcpGlow)" marker-end="url(#hMcpArr)"/>
-            <text x="178" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#A78BFA">JSON-RPC</text>
-            <!-- SERVER -->
-            <rect x="224" y="56" width="112" height="88" rx="10" fill="rgba(167, 139, 250, 0.10)" stroke="#A78BFA" stroke-width="1" stroke-opacity="0.55"/>
-            <text x="236" y="76" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" letter-spacing="2">SERVER</text>
-            <text x="280" y="100" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" font-weight="500">MCP</text>
-            <text x="280" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#A78BFA">tools · data</text>
-            <text x="280" y="132" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#A78BFA">prompts</text>
-            <!-- wire 2 -->
-            <use href="#hMcpW2" stroke="#FFB46B" stroke-width="1.4" fill="none" filter="url(#hMcpGlow)" marker-end="url(#hMcpArrW)"/>
-            <text x="376" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#FFB46B">native</text>
-            <!-- UPSTREAM -->
-            <rect x="416" y="46" width="46" height="108" rx="8" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="1" stroke-opacity="0.5"/>
-            <g font-family="JetBrains Mono, monospace" font-size="8.5" fill="#F2F4FA">
-              <rect x="421" y="56" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
-              <text x="439" y="66" text-anchor="middle">BQ</text>
-              <rect x="421" y="74" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
-              <text x="439" y="84" text-anchor="middle">Mail</text>
-              <rect x="421" y="92" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
-              <text x="439" y="102" text-anchor="middle">Drive</text>
-              <rect x="421" y="110" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
-              <text x="439" y="120" text-anchor="middle">Slack</text>
-              <rect x="421" y="128" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.06)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.3"/>
-              <text x="439" y="138" text-anchor="middle" fill="#6F7793">···</text>
-            </g>
-            <!-- animated dots -->
-            <circle r="2.5" fill="#A78BFA" filter="url(#hMcpGlow)">
-              <animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#hMcpW1"/></animateMotion>
-            </circle>
-            <circle r="2.5" fill="#A78BFA" filter="url(#hMcpGlow)">
-              <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite"><mpath href="#hMcpW1"/></animateMotion>
-            </circle>
-            <circle r="2.5" fill="#FFB46B" filter="url(#hMcpGlow)">
-              <animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#hMcpW2"/></animateMotion>
-            </circle>
-          </svg>
-        </div>
-        <h3>MCP — <span class="it">the wire.</span></h3>
-        <p>The protocol that lets an AI assistant call your tools and read your data without a custom integration per app. One spec, every connector.</p>
-        <a class="concept-cta" href="https://go.napier.me/mcp/">Read field guide 001 <span class="arr">→</span></a>
-      </article>
-
-      <!-- AGENTS card -->
-      <article class="concept-card agent reveal">
-        <div class="concept-tag">Field guide · 002</div>
-        <div class="concept-diagram" aria-hidden="true">
-          <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <marker id="hAgArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#B8FF6E"/>
-              </marker>
-              <filter id="hAgGlow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-              <radialGradient id="hAgCenter" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="rgba(184, 255, 110, 0.18)"/>
-                <stop offset="60%" stop-color="rgba(184, 255, 110, 0.04)"/>
-                <stop offset="100%" stop-color="transparent"/>
-              </radialGradient>
-              <path id="hAgLoop" d="M 240 30 A 70 70 0 0 1 310 100 A 70 70 0 0 1 240 170 A 70 70 0 0 1 170 100 A 70 70 0 0 1 240 30 Z" />
-            </defs>
-            <!-- center glow -->
-            <circle cx="240" cy="100" r="70" fill="url(#hAgCenter)"/>
-            <!-- guide loop -->
-            <use href="#hAgLoop" fill="none" stroke="rgba(184, 255, 110, 0.22)" stroke-width="1" stroke-dasharray="2 5"/>
-            <!-- 4 arc arrows clockwise -->
-            <path d="M 287 53 A 70 70 0 0 1 311 87" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
-            <path d="M 311 113 A 70 70 0 0 1 287 147" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
-            <path d="M 193 147 A 70 70 0 0 1 169 113" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
-            <path d="M 169 87 A 70 70 0 0 1 193 53" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
-            <!-- 4 nodes -->
-            <circle cx="240" cy="30" r="22" fill="rgba(94, 242, 255, 0.10)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.6"/>
-            <text x="240" y="34" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Observe</text>
-            <circle cx="310" cy="100" r="22" fill="rgba(167, 139, 250, 0.10)" stroke="#A78BFA" stroke-width="1" stroke-opacity="0.6"/>
-            <text x="310" y="104" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Reason</text>
-            <circle cx="240" cy="170" r="22" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="1" stroke-opacity="0.6"/>
-            <text x="240" y="174" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Act</text>
-            <circle cx="170" cy="100" r="22" fill="rgba(184, 255, 110, 0.10)" stroke="#B8FF6E" stroke-width="1" stroke-opacity="0.6"/>
-            <text x="170" y="104" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Update</text>
-            <!-- center label -->
-            <text x="240" y="96" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#6F7793" letter-spacing="2">THE LOOP</text>
-            <text x="240" y="110" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" fill="#F2F4FA" font-style="italic">until done</text>
-            <!-- traveling dot -->
-            <circle r="3" fill="#B8FF6E" filter="url(#hAgGlow)">
-              <animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"><mpath href="#hAgLoop"/></animateMotion>
-            </circle>
-          </svg>
-        </div>
-        <h3>Agents — <span class="it">the loop.</span></h3>
-        <p>A model running in a cycle with access to tools. It observes, decides, acts, and repeats — until the work is done. The cron job that knows what to do.</p>
-        <a class="concept-cta" href="https://go.napier.me/agents/">Read field guide 002 <span class="arr">→</span></a>
-      </article>
-
-    </div>
-  </div>
-</section>
-
 <!-- Process -->
 <section class="section" id="process">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="kicker">003 — How it works</div>
+      <div class="kicker">002 — How it works</div>
       <h2>Three weeks. Three deliverables.<br/>One quiet system.</h2>
       <p class="sub">No discovery deck. No agency churn. We sit with your operation, plumb the parts that should already be talking, and leave you with something that runs without us.</p>
     </div>
@@ -1319,7 +929,7 @@
 <section class="section" id="why">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="kicker">004 — Why WildBreeze</div>
+      <div class="kicker">003 — Why WildBreeze</div>
       <h2>Built for operators,<br/>not buyers of dashboards.</h2>
       <p class="sub">We picked these constraints on purpose. They're why we can ship in three weeks and why your CFO doesn't have to sign a vendor risk review.</p>
     </div>
@@ -1354,7 +964,7 @@
   <div class="wrap">
     <div class="cta-block reveal">
       <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
-      <div class="kicker" style="margin-bottom: 12px; justify-content: center;">005 — Let's talk</div>
+      <div class="kicker" style="margin-bottom: 12px; justify-content: center;">004 — Let's talk</div>
       <h2>Find out what your operation looks like<br/>when the plumbing just works.</h2>
       <p>30 minutes, no slides, no commitments. Bring the spreadsheet someone is maintaining at 11pm — we'll tell you whether WildBreeze is the right fix or honestly point you elsewhere.</p>
       <div class="hero-cta">
@@ -1371,7 +981,20 @@
     <div class="row">
       <div>
         <a href="#top" class="logo">
-          <span class="mark"></span>
+          <svg class="mark" viewBox="0 0 36 18" aria-hidden="true">
+        <defs>
+          <linearGradient id="wb-mark-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5EF2FF"/>
+            <stop offset="55%" stop-color="#A78BFA"/>
+            <stop offset="100%" stop-color="#5EF2FF"/>
+          </linearGradient>
+        </defs>
+        <g class="wave">
+          <path d="M-8 9 q 2 -6 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0 t 4 0"
+                fill="none" stroke="url(#wb-mark-grad)" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>
           <span>WildBreeze</span>
         </a>
         <p class="blurb">Quiet automation infrastructure for operations run by humans. Built one operator at a time.</p>
@@ -1382,8 +1005,6 @@
           <a href="#services">Custom MCP servers</a>
           <a href="#services">Scheduled agents</a>
           <a href="#services">Weekly reports</a>
-          <a href="https://go.napier.me/mcp/">Field guide · MCP</a>
-          <a href="https://go.napier.me/agents/">Field guide · Agents</a>
         </div>
         <div class="col">
           <h5>Company</h5>
