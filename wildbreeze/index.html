@@ -465,6 +465,161 @@
   .pillar .pillar-link .arr { transition: transform 200ms ease; }
   .pillar .pillar-link:hover .arr { transform: translateX(3px); }
 
+  /* ===== Anatomy section ===== */
+  .anatomy-section {
+    position: relative;
+  }
+  .anatomy-section::before {
+    content: ""; position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(700px 380px at 75% 20%, rgba(167, 139, 250, 0.06), transparent 60%),
+      radial-gradient(600px 380px at 15% 85%, rgba(94, 242, 255, 0.05), transparent 60%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .anatomy-stage {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--rad);
+    background:
+      linear-gradient(180deg, rgba(10,14,26,0.5), rgba(10,14,26,0.2)),
+      radial-gradient(800px 380px at 50% 0%, rgba(94, 242, 255, 0.05), transparent 65%);
+    padding: 56px 32px 40px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+  .anatomy-stage::before {
+    content: ""; position: absolute;
+    left: -1px; right: -1px; top: -1px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    box-shadow: 0 0 10px var(--cyan);
+    animation: topScan 6s ease-in-out infinite;
+  }
+  .anatomy-svg-holder {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 12px;
+  }
+  .anatomy-svg {
+    width: 100%;
+    min-width: 720px;
+    max-width: 1000px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .anatomy-flow-dot {
+    fill: var(--cyan);
+    filter: drop-shadow(0 0 4px var(--cyan));
+  }
+  .anatomy-flow-dot.violet { fill: var(--violet); filter: drop-shadow(0 0 4px var(--violet)); }
+  .anatomy-flow-dot.warn { fill: var(--warn); filter: drop-shadow(0 0 4px var(--warn)); }
+
+  .prim-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .prim-card {
+    border: 1px solid var(--line);
+    border-radius: var(--rad);
+    background: rgba(255,255,255,0.018);
+    padding: 22px 22px 20px;
+    transition: border-color 220ms ease, transform 220ms ease, background 220ms ease;
+  }
+  .prim-card:hover {
+    border-color: rgba(94, 242, 255, 0.4);
+    transform: translateY(-2px);
+    background: rgba(94, 242, 255, 0.03);
+  }
+  .prim-card .prim-tag {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--cyan); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 12px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .prim-card .prim-tag::before {
+    content: ""; width: 8px; height: 8px; border-radius: 2px;
+    background: currentColor; box-shadow: 0 0 8px currentColor;
+  }
+  .prim-card.violet .prim-tag { color: var(--violet); }
+  .prim-card.phos .prim-tag { color: var(--phos); }
+  .prim-card h4 {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 22px; letter-spacing: -0.015em; margin: 0 0 8px;
+  }
+  .prim-card p {
+    font-size: 14px; color: var(--ink-2); margin: 0;
+    line-height: 1.55;
+  }
+  .prim-card .prim-meta {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 11px;
+    color: var(--ink-3); letter-spacing: 0.05em;
+    display: flex; justify-content: space-between;
+  }
+  .prim-card .prim-meta .v { color: var(--cyan); }
+  .prim-card.violet .prim-meta .v { color: var(--violet); }
+  .prim-card.phos .prim-meta .v { color: var(--phos); }
+
+  .fg-cta {
+    position: relative;
+    border: 1px solid var(--line-2);
+    border-radius: 18px;
+    padding: 36px 36px;
+    background:
+      radial-gradient(500px 240px at 90% 0%, rgba(94, 242, 255, 0.14), transparent 60%),
+      radial-gradient(420px 220px at 0% 100%, rgba(167, 139, 250, 0.14), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.005));
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 32px; flex-wrap: wrap;
+    overflow: hidden;
+  }
+  .fg-cta::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, var(--line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent 80%);
+    pointer-events: none;
+    opacity: 0.35;
+  }
+  .fg-cta-text { position: relative; flex: 1 1 380px; min-width: 280px; }
+  .fg-cta-text .fg-eyebrow {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--cyan); letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .fg-cta-text .fg-eyebrow::before {
+    content: ""; width: 18px; height: 1px;
+    background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+  }
+  .fg-cta-text h3 {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 26px; letter-spacing: -0.018em;
+    line-height: 1.15; margin: 0 0 10px;
+  }
+  .fg-cta-text h3 .it {
+    font-style: italic; color: var(--violet); font-weight: 400;
+  }
+  .fg-cta-text p {
+    font-size: 15px; color: var(--ink-2);
+    margin: 0; max-width: 52ch; line-height: 1.55;
+  }
+  .fg-cta-action { position: relative; flex: 0 0 auto; }
+  @media (max-width: 720px) {
+    .prim-grid { grid-template-columns: 1fr; }
+    .anatomy-stage { padding: 32px 16px 24px; }
+    .fg-cta { padding: 28px 22px; }
+    .fg-cta-text h3 { font-size: 22px; }
+  }
+
   /* ===== Process ===== */
   .process-wrap { position: relative; }
   .process-wrap::before {
@@ -770,6 +925,7 @@
     </a>
     <nav class="main">
       <a href="#services">Services</a>
+      <a href="#anatomy">Anatomy</a>
       <a href="#process">How it works</a>
       <a href="#why">Why us</a>
       <a href="https://go.napier.me/mcp/">Field guide</a>
@@ -896,10 +1052,167 @@
 </section>
 
 <!-- Process -->
+<section class="section anatomy-section" id="anatomy">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">002 — Under the hood</div>
+      <h2>The anatomy of <span class="it">an MCP.</span></h2>
+      <p class="sub">Three components on the wire. Three primitives on the surface. Once you see the shape, every connector you've ever used falls into place.</p>
+    </div>
+
+    <div class="anatomy-stage reveal">
+      <div class="anatomy-svg-holder">
+        <svg class="anatomy-svg" viewBox="0 0 960 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="anaHostGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="rgba(94, 242, 255, 0.10)"/>
+              <stop offset="100%" stop-color="rgba(94, 242, 255, 0.02)"/>
+            </linearGradient>
+            <linearGradient id="anaServerGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="rgba(167, 139, 250, 0.12)"/>
+              <stop offset="100%" stop-color="rgba(167, 139, 250, 0.02)"/>
+            </linearGradient>
+            <linearGradient id="anaUpGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255, 180, 107, 0.10)"/>
+              <stop offset="100%" stop-color="rgba(255, 180, 107, 0.02)"/>
+            </linearGradient>
+            <marker id="anaArrowCy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#5EF2FF"/>
+            </marker>
+            <marker id="anaArrowVi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#A78BFA"/>
+            </marker>
+            <marker id="anaArrowWa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFB46B"/>
+            </marker>
+            <filter id="anaGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <path id="wirePath1" d="M 322 130 L 466 130" />
+            <path id="wirePath2" d="M 670 130 L 794 130" />
+          </defs>
+
+          <!-- HOST container -->
+          <rect x="40" y="60" width="282" height="200" rx="14" fill="url(#anaHostGrad)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.45"/>
+          <text x="60" y="86" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#6F7793" letter-spacing="2">HOST</text>
+          <text x="60" y="110" font-family="Space Grotesk, sans-serif" font-size="17" fill="#F2F4FA" font-weight="500">Claude.ai · Desktop · IDEs</text>
+
+          <!-- model + client inside host -->
+          <rect x="60" y="138" width="120" height="48" rx="8" fill="rgba(94, 242, 255, 0.07)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.4"/>
+          <text x="120" y="160" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" text-anchor="middle" font-weight="500">Model</text>
+          <text x="120" y="176" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" text-anchor="middle">decides what to call</text>
+
+          <rect x="192" y="138" width="120" height="48" rx="8" fill="rgba(94, 242, 255, 0.07)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.4"/>
+          <text x="252" y="160" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" text-anchor="middle" font-weight="500">Client</text>
+          <text x="252" y="176" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" text-anchor="middle">routes the call</text>
+
+          <line x1="180" y1="162" x2="192" y2="162" stroke="#5EF2FF" stroke-width="1" opacity="0.6"/>
+
+          <text x="60" y="216" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6F7793" letter-spacing="1">// the app you actually use</text>
+          <text x="60" y="234" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6F7793" letter-spacing="1">// owns one client per server</text>
+
+          <!-- JSON-RPC wire to server -->
+          <use href="#wirePath1" stroke="#A78BFA" stroke-width="1.6" fill="none" filter="url(#anaGlow)" marker-end="url(#anaArrowVi)" marker-start="url(#anaArrowVi)"/>
+          <text x="394" y="118" font-family="JetBrains Mono, monospace" font-size="10" fill="#A78BFA" text-anchor="middle">JSON-RPC 2.0</text>
+          <text x="394" y="148" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" text-anchor="middle">stdio · HTTP+SSE</text>
+
+          <!-- SERVER -->
+          <rect x="466" y="80" width="204" height="160" rx="14" fill="url(#anaServerGrad)" stroke="#A78BFA" stroke-width="1" stroke-opacity="0.55"/>
+          <text x="486" y="106" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#6F7793" letter-spacing="2">SERVER</text>
+          <text x="486" y="130" font-family="Space Grotesk, sans-serif" font-size="17" fill="#F2F4FA" font-weight="500">MCP Server</text>
+          <text x="486" y="158" font-family="JetBrains Mono, monospace" font-size="10" fill="#A78BFA">advertises:</text>
+          <text x="486" y="176" font-family="JetBrains Mono, monospace" font-size="11" fill="#5EF2FF">· tools()</text>
+          <text x="486" y="194" font-family="JetBrains Mono, monospace" font-size="11" fill="#A78BFA">· resources()</text>
+          <text x="486" y="212" font-family="JetBrains Mono, monospace" font-size="11" fill="#B8FF6E">· prompts()</text>
+          <text x="486" y="232" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6F7793">credentials live here</text>
+
+          <!-- Server to upstream wire -->
+          <use href="#wirePath2" stroke="#FFB46B" stroke-width="1.6" fill="none" filter="url(#anaGlow)" marker-end="url(#anaArrowWa)"/>
+          <text x="732" y="118" font-family="JetBrains Mono, monospace" font-size="10" fill="#FFB46B" text-anchor="middle">native API</text>
+
+          <!-- UPSTREAM stack -->
+          <rect x="794" y="60" width="146" height="200" rx="14" fill="url(#anaUpGrad)" stroke="#FFB46B" stroke-width="1" stroke-opacity="0.5"/>
+          <text x="814" y="86" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#6F7793" letter-spacing="2">UPSTREAM</text>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#F2F4FA">
+            <rect x="810" y="102" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
+            <text x="867" y="117" text-anchor="middle">BigQuery</text>
+            <rect x="810" y="130" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
+            <text x="867" y="145" text-anchor="middle">Gmail</text>
+            <rect x="810" y="158" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
+            <text x="867" y="173" text-anchor="middle">Drive</text>
+            <rect x="810" y="186" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
+            <text x="867" y="201" text-anchor="middle">Slack</text>
+            <rect x="810" y="214" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
+            <text x="867" y="229" text-anchor="middle" fill="#6F7793">+ your stack</text>
+          </g>
+
+          <!-- Animated flow dots along the wires -->
+          <circle r="3" class="anatomy-flow-dot violet">
+            <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#wirePath1"/>
+            </animateMotion>
+          </circle>
+          <circle r="3" class="anatomy-flow-dot violet">
+            <animateMotion dur="3.6s" begin="1.2s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#wirePath1"/>
+            </animateMotion>
+          </circle>
+          <circle r="3" class="anatomy-flow-dot violet">
+            <animateMotion dur="3.6s" begin="2.4s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#wirePath1"/>
+            </animateMotion>
+          </circle>
+          <circle r="3" class="anatomy-flow-dot warn">
+            <animateMotion dur="2.6s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#wirePath2"/>
+            </animateMotion>
+          </circle>
+          <circle r="3" class="anatomy-flow-dot warn">
+            <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#wirePath2"/>
+            </animateMotion>
+          </circle>
+        </svg>
+      </div>
+    </div>
+
+    <div class="prim-grid reveal">
+      <article class="prim-card">
+        <div class="prim-tag">01 · Tools</div>
+        <h4>Things the model can do</h4>
+        <p>Functions with a name, a description, and a JSON schema. The model decides when to call them. <em>execute_sql, send_email, create_ticket.</em></p>
+        <div class="prim-meta"><span>controlled by</span><span class="v">the model</span></div>
+      </article>
+      <article class="prim-card violet">
+        <div class="prim-tag">02 · Resources</div>
+        <h4>Data the model can read</h4>
+        <p>Files, query results, documents, anything addressable by URI. The host decides what gets pulled into context.</p>
+        <div class="prim-meta"><span>controlled by</span><span class="v">the application</span></div>
+      </article>
+      <article class="prim-card phos">
+        <div class="prim-tag">03 · Prompts</div>
+        <h4>Templates the user invokes</h4>
+        <p>Reusable workflows packaged as slash-commands or shortcuts. Pre-attached context, parameterised inputs, known shapes.</p>
+        <div class="prim-meta"><span>controlled by</span><span class="v">the user</span></div>
+      </article>
+    </div>
+
+    <div class="fg-cta reveal">
+      <div class="fg-cta-text">
+        <div class="fg-eyebrow">Field guide · 001</div>
+        <h3>Want the full picture? <span class="it">Read the field guide.</span></h3>
+        <p>Sequence diagrams, the JSON-RPC handshake, transports, and why the model never sees your credentials. Six minutes, end to end.</p>
+      </div>
+      <div class="fg-cta-action">
+        <a class="btn primary" href="https://go.napier.me/mcp/">Open the field guide <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
 <section class="section" id="process">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="kicker">002 — How it works</div>
+      <div class="kicker">003 — How it works</div>
       <h2>Three weeks. Three deliverables.<br/>One quiet system.</h2>
       <p class="sub">No discovery deck. No agency churn. We sit with your operation, plumb the parts that should already be talking, and leave you with something that runs without us.</p>
     </div>
@@ -931,7 +1244,7 @@
 <section class="section" id="why">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="kicker">003 — Why WildBreeze</div>
+      <div class="kicker">004 — Why WildBreeze</div>
       <h2>Built for operators,<br/>not buyers of dashboards.</h2>
       <p class="sub">We picked these constraints on purpose. They're why we can ship in three weeks and why your CFO doesn't have to sign a vendor risk review.</p>
     </div>
@@ -966,7 +1279,7 @@
   <div class="wrap">
     <div class="cta-block reveal">
       <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
-      <div class="kicker" style="margin-bottom: 12px; justify-content: center;">004 — Let's talk</div>
+      <div class="kicker" style="margin-bottom: 12px; justify-content: center;">005 — Let's talk</div>
       <h2>Find out what your operation looks like<br/>when the plumbing just works.</h2>
       <p>30 minutes, no slides, no commitments. Bring the spreadsheet someone is maintaining at 11pm — we'll tell you whether WildBreeze is the right fix or honestly point you elsewhere.</p>
       <div class="hero-cta">
