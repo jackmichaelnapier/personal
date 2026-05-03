@@ -620,6 +620,110 @@
     .fg-cta-text h3 { font-size: 22px; }
   }
 
+  /* ===== Concept grid (compact field-guide teasers) ===== */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 880px) {
+    .concept-grid { grid-template-columns: 1fr; }
+  }
+  .concept-card {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--rad);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
+    padding: 32px 30px 30px;
+    overflow: hidden;
+    transition: border-color 240ms ease, transform 240ms ease;
+    display: flex; flex-direction: column;
+  }
+  .concept-card::before {
+    content: ""; position: absolute;
+    left: -1px; right: -1px; top: -1px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    box-shadow: 0 0 10px var(--cyan);
+    opacity: 0.5;
+    transition: opacity 280ms ease;
+  }
+  .concept-card.agent::before {
+    background: linear-gradient(90deg, transparent, var(--phos), transparent);
+    box-shadow: 0 0 10px var(--phos);
+  }
+  .concept-card:hover {
+    border-color: var(--line-2);
+    transform: translateY(-2px);
+  }
+  .concept-card:hover::before { opacity: 1; }
+  .concept-card .concept-tag {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--cyan); letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 18px;
+  }
+  .concept-card.agent .concept-tag { color: var(--phos); }
+  .concept-card .concept-tag::before {
+    content: ""; width: 18px; height: 1px;
+    background: currentColor; box-shadow: 0 0 6px currentColor;
+  }
+  .concept-card .concept-diagram {
+    height: 200px;
+    margin-bottom: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background:
+      linear-gradient(180deg, rgba(10,14,26,0.4), rgba(10,14,26,0.1)),
+      radial-gradient(400px 200px at 50% 50%, rgba(94, 242, 255, 0.05), transparent 70%);
+    overflow: hidden;
+    position: relative;
+  }
+  .concept-card.agent .concept-diagram {
+    background:
+      linear-gradient(180deg, rgba(10,14,26,0.4), rgba(10,14,26,0.1)),
+      radial-gradient(400px 200px at 50% 50%, rgba(184, 255, 110, 0.05), transparent 70%);
+  }
+  .concept-card .concept-diagram svg {
+    width: 100%; height: 100%; display: block;
+  }
+  .concept-card h3 {
+    font-family: var(--serif); font-weight: 500;
+    font-size: 26px; letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 12px;
+  }
+  .concept-card h3 .it {
+    font-style: italic; color: var(--violet); font-weight: 400;
+  }
+  .concept-card p {
+    font-size: 15px; color: var(--ink-2);
+    line-height: 1.6; margin: 0 0 22px;
+    flex: 1;
+  }
+  .concept-card .concept-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+    font-family: var(--mono); font-size: 12px;
+    color: var(--cyan); letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: gap 200ms ease, color 200ms ease;
+  }
+  .concept-card.agent .concept-cta { color: var(--phos); }
+  .concept-card .concept-cta:hover { gap: 14px; color: var(--ink); }
+  .concept-card .concept-cta .arr {
+    transition: transform 200ms ease;
+  }
+  .concept-card .concept-cta:hover .arr { transform: translateX(4px); }
+  @media (max-width: 720px) {
+    .concept-card { padding: 26px 22px 22px; }
+    .concept-card .concept-diagram { height: 170px; }
+    .concept-card h3 { font-size: 22px; }
+  }
+
   /* ===== Process ===== */
   .process-wrap { position: relative; }
   .process-wrap::before {
@@ -1051,159 +1155,130 @@
   </div>
 </section>
 
-<!-- Process -->
+<!-- Under the hood — two field-guide teasers -->
 <section class="section anatomy-section" id="anatomy">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="kicker">002 — Under the hood</div>
-      <h2>The anatomy of <span class="it">an MCP.</span></h2>
-      <p class="sub">Three components on the wire. Three primitives on the surface. Once you see the shape, every connector you've ever used falls into place.</p>
+      <h2>Two ideas. <span class="it">Both inevitable.</span></h2>
+      <p class="sub">The wire that carries the model and the loop that lets it act on its own. If you're going to build with AI in the next two years, these are the only two diagrams you need in your head.</p>
     </div>
 
-    <div class="anatomy-stage reveal">
-      <div class="anatomy-svg-holder">
-        <svg class="anatomy-svg" viewBox="0 0 960 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="anaHostGrad" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stop-color="rgba(94, 242, 255, 0.10)"/>
-              <stop offset="100%" stop-color="rgba(94, 242, 255, 0.02)"/>
-            </linearGradient>
-            <linearGradient id="anaServerGrad" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stop-color="rgba(167, 139, 250, 0.12)"/>
-              <stop offset="100%" stop-color="rgba(167, 139, 250, 0.02)"/>
-            </linearGradient>
-            <linearGradient id="anaUpGrad" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stop-color="rgba(255, 180, 107, 0.10)"/>
-              <stop offset="100%" stop-color="rgba(255, 180, 107, 0.02)"/>
-            </linearGradient>
-            <marker id="anaArrowCy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="#5EF2FF"/>
-            </marker>
-            <marker id="anaArrowVi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="#A78BFA"/>
-            </marker>
-            <marker id="anaArrowWa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-              <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFB46B"/>
-            </marker>
-            <filter id="anaGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            <path id="wirePath1" d="M 322 130 L 466 130" />
-            <path id="wirePath2" d="M 670 130 L 794 130" />
-          </defs>
+    <div class="concept-grid">
 
-          <!-- HOST container -->
-          <rect x="40" y="60" width="282" height="200" rx="14" fill="url(#anaHostGrad)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.45"/>
-          <text x="60" y="86" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#6F7793" letter-spacing="2">HOST</text>
-          <text x="60" y="110" font-family="Space Grotesk, sans-serif" font-size="17" fill="#F2F4FA" font-weight="500">Claude.ai · Desktop · IDEs</text>
-
-          <!-- model + client inside host -->
-          <rect x="60" y="138" width="120" height="48" rx="8" fill="rgba(94, 242, 255, 0.07)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.4"/>
-          <text x="120" y="160" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" text-anchor="middle" font-weight="500">Model</text>
-          <text x="120" y="176" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" text-anchor="middle">decides what to call</text>
-
-          <rect x="192" y="138" width="120" height="48" rx="8" fill="rgba(94, 242, 255, 0.07)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.4"/>
-          <text x="252" y="160" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" text-anchor="middle" font-weight="500">Client</text>
-          <text x="252" y="176" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" text-anchor="middle">routes the call</text>
-
-          <line x1="180" y1="162" x2="192" y2="162" stroke="#5EF2FF" stroke-width="1" opacity="0.6"/>
-
-          <text x="60" y="216" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6F7793" letter-spacing="1">// the app you actually use</text>
-          <text x="60" y="234" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6F7793" letter-spacing="1">// owns one client per server</text>
-
-          <!-- JSON-RPC wire to server -->
-          <use href="#wirePath1" stroke="#A78BFA" stroke-width="1.6" fill="none" filter="url(#anaGlow)" marker-end="url(#anaArrowVi)" marker-start="url(#anaArrowVi)"/>
-          <text x="394" y="118" font-family="JetBrains Mono, monospace" font-size="10" fill="#A78BFA" text-anchor="middle">JSON-RPC 2.0</text>
-          <text x="394" y="148" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" text-anchor="middle">stdio · HTTP+SSE</text>
-
-          <!-- SERVER -->
-          <rect x="466" y="80" width="204" height="160" rx="14" fill="url(#anaServerGrad)" stroke="#A78BFA" stroke-width="1" stroke-opacity="0.55"/>
-          <text x="486" y="106" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#6F7793" letter-spacing="2">SERVER</text>
-          <text x="486" y="130" font-family="Space Grotesk, sans-serif" font-size="17" fill="#F2F4FA" font-weight="500">MCP Server</text>
-          <text x="486" y="158" font-family="JetBrains Mono, monospace" font-size="10" fill="#A78BFA">advertises:</text>
-          <text x="486" y="176" font-family="JetBrains Mono, monospace" font-size="11" fill="#5EF2FF">· tools()</text>
-          <text x="486" y="194" font-family="JetBrains Mono, monospace" font-size="11" fill="#A78BFA">· resources()</text>
-          <text x="486" y="212" font-family="JetBrains Mono, monospace" font-size="11" fill="#B8FF6E">· prompts()</text>
-          <text x="486" y="232" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#6F7793">credentials live here</text>
-
-          <!-- Server to upstream wire -->
-          <use href="#wirePath2" stroke="#FFB46B" stroke-width="1.6" fill="none" filter="url(#anaGlow)" marker-end="url(#anaArrowWa)"/>
-          <text x="732" y="118" font-family="JetBrains Mono, monospace" font-size="10" fill="#FFB46B" text-anchor="middle">native API</text>
-
-          <!-- UPSTREAM stack -->
-          <rect x="794" y="60" width="146" height="200" rx="14" fill="url(#anaUpGrad)" stroke="#FFB46B" stroke-width="1" stroke-opacity="0.5"/>
-          <text x="814" y="86" font-family="JetBrains Mono, monospace" font-size="10.5" fill="#6F7793" letter-spacing="2">UPSTREAM</text>
-          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#F2F4FA">
-            <rect x="810" y="102" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
-            <text x="867" y="117" text-anchor="middle">BigQuery</text>
-            <rect x="810" y="130" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
-            <text x="867" y="145" text-anchor="middle">Gmail</text>
-            <rect x="810" y="158" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
-            <text x="867" y="173" text-anchor="middle">Drive</text>
-            <rect x="810" y="186" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
-            <text x="867" y="201" text-anchor="middle">Slack</text>
-            <rect x="810" y="214" width="114" height="22" rx="5" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.8" stroke-opacity="0.5"/>
-            <text x="867" y="229" text-anchor="middle" fill="#6F7793">+ your stack</text>
-          </g>
-
-          <!-- Animated flow dots along the wires -->
-          <circle r="3" class="anatomy-flow-dot violet">
-            <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto">
-              <mpath href="#wirePath1"/>
-            </animateMotion>
-          </circle>
-          <circle r="3" class="anatomy-flow-dot violet">
-            <animateMotion dur="3.6s" begin="1.2s" repeatCount="indefinite" rotate="auto">
-              <mpath href="#wirePath1"/>
-            </animateMotion>
-          </circle>
-          <circle r="3" class="anatomy-flow-dot violet">
-            <animateMotion dur="3.6s" begin="2.4s" repeatCount="indefinite" rotate="auto">
-              <mpath href="#wirePath1"/>
-            </animateMotion>
-          </circle>
-          <circle r="3" class="anatomy-flow-dot warn">
-            <animateMotion dur="2.6s" repeatCount="indefinite" rotate="auto">
-              <mpath href="#wirePath2"/>
-            </animateMotion>
-          </circle>
-          <circle r="3" class="anatomy-flow-dot warn">
-            <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite" rotate="auto">
-              <mpath href="#wirePath2"/>
-            </animateMotion>
-          </circle>
-        </svg>
-      </div>
-    </div>
-
-    <div class="prim-grid reveal">
-      <article class="prim-card">
-        <div class="prim-tag">01 · Tools</div>
-        <h4>Things the model can do</h4>
-        <p>Functions with a name, a description, and a JSON schema. The model decides when to call them. <em>execute_sql, send_email, create_ticket.</em></p>
-        <div class="prim-meta"><span>controlled by</span><span class="v">the model</span></div>
+      <!-- MCP card -->
+      <article class="concept-card reveal">
+        <div class="concept-tag">Field guide · 001</div>
+        <div class="concept-diagram" aria-hidden="true">
+          <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="hMcpArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#A78BFA"/>
+              </marker>
+              <marker id="hMcpArrW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#FFB46B"/>
+              </marker>
+              <filter id="hMcpGlow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <path id="hMcpW1" d="M 130 100 L 224 100" />
+              <path id="hMcpW2" d="M 336 100 L 416 100" />
+            </defs>
+            <!-- HOST -->
+            <rect x="22" y="46" width="108" height="108" rx="10" fill="rgba(94, 242, 255, 0.10)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.5"/>
+            <text x="34" y="68" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" letter-spacing="2">HOST</text>
+            <text x="76" y="105" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" font-weight="500">Model</text>
+            <text x="76" y="124" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" font-weight="500">+ Client</text>
+            <!-- wire 1 -->
+            <use href="#hMcpW1" stroke="#A78BFA" stroke-width="1.4" fill="none" filter="url(#hMcpGlow)" marker-end="url(#hMcpArr)"/>
+            <text x="178" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#A78BFA">JSON-RPC</text>
+            <!-- SERVER -->
+            <rect x="224" y="56" width="112" height="88" rx="10" fill="rgba(167, 139, 250, 0.10)" stroke="#A78BFA" stroke-width="1" stroke-opacity="0.55"/>
+            <text x="236" y="76" font-family="JetBrains Mono, monospace" font-size="9" fill="#6F7793" letter-spacing="2">SERVER</text>
+            <text x="280" y="100" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="13" fill="#F2F4FA" font-weight="500">MCP</text>
+            <text x="280" y="118" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#A78BFA">tools · data</text>
+            <text x="280" y="132" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#A78BFA">prompts</text>
+            <!-- wire 2 -->
+            <use href="#hMcpW2" stroke="#FFB46B" stroke-width="1.4" fill="none" filter="url(#hMcpGlow)" marker-end="url(#hMcpArrW)"/>
+            <text x="376" y="92" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#FFB46B">native</text>
+            <!-- UPSTREAM -->
+            <rect x="416" y="46" width="46" height="108" rx="8" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="1" stroke-opacity="0.5"/>
+            <g font-family="JetBrains Mono, monospace" font-size="8.5" fill="#F2F4FA">
+              <rect x="421" y="56" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
+              <text x="439" y="66" text-anchor="middle">BQ</text>
+              <rect x="421" y="74" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
+              <text x="439" y="84" text-anchor="middle">Mail</text>
+              <rect x="421" y="92" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
+              <text x="439" y="102" text-anchor="middle">Drive</text>
+              <rect x="421" y="110" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.5"/>
+              <text x="439" y="120" text-anchor="middle">Slack</text>
+              <rect x="421" y="128" width="36" height="14" rx="2" fill="rgba(255, 180, 107, 0.06)" stroke="#FFB46B" stroke-width="0.6" stroke-opacity="0.3"/>
+              <text x="439" y="138" text-anchor="middle" fill="#6F7793">···</text>
+            </g>
+            <!-- animated dots -->
+            <circle r="2.5" fill="#A78BFA" filter="url(#hMcpGlow)">
+              <animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#hMcpW1"/></animateMotion>
+            </circle>
+            <circle r="2.5" fill="#A78BFA" filter="url(#hMcpGlow)">
+              <animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite"><mpath href="#hMcpW1"/></animateMotion>
+            </circle>
+            <circle r="2.5" fill="#FFB46B" filter="url(#hMcpGlow)">
+              <animateMotion dur="2.2s" repeatCount="indefinite"><mpath href="#hMcpW2"/></animateMotion>
+            </circle>
+          </svg>
+        </div>
+        <h3>MCP — <span class="it">the wire.</span></h3>
+        <p>The protocol that lets an AI assistant call your tools and read your data without a custom integration per app. One spec, every connector.</p>
+        <a class="concept-cta" href="https://go.napier.me/mcp/">Read field guide 001 <span class="arr">→</span></a>
       </article>
-      <article class="prim-card violet">
-        <div class="prim-tag">02 · Resources</div>
-        <h4>Data the model can read</h4>
-        <p>Files, query results, documents, anything addressable by URI. The host decides what gets pulled into context.</p>
-        <div class="prim-meta"><span>controlled by</span><span class="v">the application</span></div>
-      </article>
-      <article class="prim-card phos">
-        <div class="prim-tag">03 · Prompts</div>
-        <h4>Templates the user invokes</h4>
-        <p>Reusable workflows packaged as slash-commands or shortcuts. Pre-attached context, parameterised inputs, known shapes.</p>
-        <div class="prim-meta"><span>controlled by</span><span class="v">the user</span></div>
-      </article>
-    </div>
 
-    <div class="fg-cta reveal">
-      <div class="fg-cta-text">
-        <div class="fg-eyebrow">Field guide · 001</div>
-        <h3>Want the full picture? <span class="it">Read the field guide.</span></h3>
-        <p>Sequence diagrams, the JSON-RPC handshake, transports, and why the model never sees your credentials. Six minutes, end to end.</p>
-      </div>
-      <div class="fg-cta-action">
-        <a class="btn primary" href="https://go.napier.me/mcp/">Open the field guide <span class="arrow">→</span></a>
-      </div>
+      <!-- AGENTS card -->
+      <article class="concept-card agent reveal">
+        <div class="concept-tag">Field guide · 002</div>
+        <div class="concept-diagram" aria-hidden="true">
+          <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="hAgArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#B8FF6E"/>
+              </marker>
+              <filter id="hAgGlow"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <radialGradient id="hAgCenter" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(184, 255, 110, 0.18)"/>
+                <stop offset="60%" stop-color="rgba(184, 255, 110, 0.04)"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+              <path id="hAgLoop" d="M 240 30 A 70 70 0 0 1 310 100 A 70 70 0 0 1 240 170 A 70 70 0 0 1 170 100 A 70 70 0 0 1 240 30 Z" />
+            </defs>
+            <!-- center glow -->
+            <circle cx="240" cy="100" r="70" fill="url(#hAgCenter)"/>
+            <!-- guide loop -->
+            <use href="#hAgLoop" fill="none" stroke="rgba(184, 255, 110, 0.22)" stroke-width="1" stroke-dasharray="2 5"/>
+            <!-- 4 arc arrows clockwise -->
+            <path d="M 287 53 A 70 70 0 0 1 311 87" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
+            <path d="M 311 113 A 70 70 0 0 1 287 147" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
+            <path d="M 193 147 A 70 70 0 0 1 169 113" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
+            <path d="M 169 87 A 70 70 0 0 1 193 53" fill="none" stroke="#B8FF6E" stroke-width="1.6" marker-end="url(#hAgArr)" filter="url(#hAgGlow)"/>
+            <!-- 4 nodes -->
+            <circle cx="240" cy="30" r="22" fill="rgba(94, 242, 255, 0.10)" stroke="#5EF2FF" stroke-width="1" stroke-opacity="0.6"/>
+            <text x="240" y="34" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Observe</text>
+            <circle cx="310" cy="100" r="22" fill="rgba(167, 139, 250, 0.10)" stroke="#A78BFA" stroke-width="1" stroke-opacity="0.6"/>
+            <text x="310" y="104" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Reason</text>
+            <circle cx="240" cy="170" r="22" fill="rgba(255, 180, 107, 0.10)" stroke="#FFB46B" stroke-width="1" stroke-opacity="0.6"/>
+            <text x="240" y="174" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Act</text>
+            <circle cx="170" cy="100" r="22" fill="rgba(184, 255, 110, 0.10)" stroke="#B8FF6E" stroke-width="1" stroke-opacity="0.6"/>
+            <text x="170" y="104" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" fill="#F2F4FA" font-weight="500">Update</text>
+            <!-- center label -->
+            <text x="240" y="96" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8.5" fill="#6F7793" letter-spacing="2">THE LOOP</text>
+            <text x="240" y="110" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" fill="#F2F4FA" font-style="italic">until done</text>
+            <!-- traveling dot -->
+            <circle r="3" fill="#B8FF6E" filter="url(#hAgGlow)">
+              <animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"><mpath href="#hAgLoop"/></animateMotion>
+            </circle>
+          </svg>
+        </div>
+        <h3>Agents — <span class="it">the loop.</span></h3>
+        <p>A model running in a cycle with access to tools. It observes, decides, acts, and repeats — until the work is done. The cron job that knows what to do.</p>
+        <a class="concept-cta" href="https://go.napier.me/agents/">Read field guide 002 <span class="arr">→</span></a>
+      </article>
+
     </div>
   </div>
 </section>
@@ -1307,7 +1382,8 @@
           <a href="#services">Custom MCP servers</a>
           <a href="#services">Scheduled agents</a>
           <a href="#services">Weekly reports</a>
-          <a href="https://go.napier.me/mcp/">MCP field guide</a>
+          <a href="https://go.napier.me/mcp/">Field guide · MCP</a>
+          <a href="https://go.napier.me/agents/">Field guide · Agents</a>
         </div>
         <div class="col">
           <h5>Company</h5>
