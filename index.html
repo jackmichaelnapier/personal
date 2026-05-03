@@ -189,6 +189,15 @@
     font-family:'Newsreader',serif;font-size:20px;line-height:1.55;
     color:var(--ink-soft);max-width:680px;
   }
+  .now .project a.project-link{
+    display:inline-block;margin-top:18px;
+    font-family:'Anton',sans-serif;text-transform:uppercase;
+    font-size:18px;letter-spacing:0.04em;
+    color:var(--terracotta);text-decoration:none;
+    border-bottom:2px solid var(--terracotta);padding-bottom:2px;
+    transition:color 0.15s, border-color 0.15s;
+  }
+  .now .project a.project-link:hover{color:var(--ink);border-bottom-color:var(--ink);}
 
   /* ========== TRAIL ========== */
   .trail{
@@ -537,6 +546,7 @@
       <div>
         <h3>Wildbreeze <span class="tag">internal tooling, scheduled agents, weekly reports</span></h3>
         <p>The plumbing nobody sees and everyone benefits from. Custom MCP servers and scheduled tasks that keep small operations honest while the team is asleep.</p>
+        <a class="project-link" href="https://www.wildbreeze.io" target="_blank" rel="noopener">wildbreeze.io →</a>
       </div>
     </div>
   </div>
