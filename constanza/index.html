@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Constanza · Día de la Madre</title>
+<meta name="description" content="Una carta de Cora, Tiger y Jack para Constanza, en el día de la madre, desde una casa de piedra a los pies del Montgó en Jávea.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Serif+Display:ital@0;1&family=Caveat:wght@400;500;600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --whitewash: #f7f2e8;
+    --whitewash-shade: #ede5d2;
+    --sea: #2d5a7b;
+    --sea-deep: #1a3d57;
+    --sea-pale: #a8c4d6;
+    --sun: #e8b547;
+    --terracotta: #c8623a;
+    --terracotta-faded: #d89878;
+    --olive: #6b7a3f;
+    --ink: #2b2419;
+    --ink-soft: #5c5240;
+    --shadow: rgba(43, 36, 25, 0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--whitewash);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.17 0 0 0 0 0.14 0 0 0 0 0.10 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 19px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; height: 100vh;
+    background: linear-gradient(180deg,
+      rgba(168, 196, 214, 0.18) 0%,
+      rgba(168, 196, 214, 0.04) 30%,
+      transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('media/montgo.jpg');
+    background-size: cover;
+    background-position: center 40%;
+    filter: saturate(0.85) contrast(1.05);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg,
+        rgba(247,242,232,0) 35%,
+        rgba(247,242,232,0.45) 70%,
+        rgba(247,242,232,0.95) 95%,
+        var(--whitewash) 100%),
+      radial-gradient(ellipse at 30% 20%, rgba(232,181,71,0.15), transparent 60%);
+  }
+  .hero-mark {
+    position: absolute;
+    top: 32px; left: 32px; z-index: 3;
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+  .hero-mark::after {
+    content: '';
+    display: block;
+    width: 32px; height: 1px;
+    background: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .hero-coords {
+    position: absolute;
+    top: 32px; right: 32px; z-index: 3;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    text-align: right;
+    line-height: 1.6;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 0 8vw 8vh;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(56px, 11vw, 144px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+  h1 .small {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.32em;
+    letter-spacing: 0.02em;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+  }
+  h1 .accent {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--sea);
+  }
+  .hero-sub {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(22px, 2.8vw, 32px);
+    color: var(--ink-soft);
+    max-width: 640px;
+    line-height: 1.4;
+    transform: rotate(-0.5deg);
+    margin-left: 8px;
+  }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 12vh 0;
+  }
+  .col {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .col-wide {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .plate {
+    display: inline-block;
+    background: var(--sea);
+    color: var(--whitewash);
+    padding: 14px 22px;
+    margin-bottom: 28px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transform: rotate(-1.5deg);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .plate.terracotta { background: var(--terracotta); }
+  .plate.olive { background: var(--olive); }
+  .plate.sun { background: var(--sun); color: var(--ink); }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 36px;
+    max-width: 760px;
+  }
+  h2 .it {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--terracotta);
+  }
+  h2 .blue {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--sea);
+  }
+
+  p { margin-bottom: 1.3em; max-width: 620px; }
+  p.lede {
+    font-size: 1.25em;
+    line-height: 1.55;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 1.5em;
+  }
+  .opener::first-letter {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 6.5em;
+    float: left;
+    line-height: 0.82;
+    margin: 0.04em 0.1em -0.05em 0;
+    color: var(--terracotta);
+    font-style: italic;
+  }
+  .margin-note {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--sea-deep);
+    line-height: 1.3;
+    transform: rotate(-2deg);
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--terracotta-faded);
+    border-top: 1px dashed var(--terracotta-faded);
+    display: inline-block;
+    margin: 24px 0;
+  }
+
+  /* PHOTOS */
+  .photo {
+    background: #fcfaf3;
+    padding: 14px 14px 56px;
+    box-shadow: 0 4px 12px var(--shadow), 0 16px 32px rgba(43,36,25,0.06);
+    display: inline-block;
+    position: relative;
+  }
+  .photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: saturate(0.95) contrast(0.98);
+  }
+  .photo .cap {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    text-align: center;
+    margin-top: 14px;
+    color: var(--ink-soft);
+    line-height: 1.2;
+  }
+  .photo.tape::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 72px;
+    height: 22px;
+    background: rgba(232, 181, 71, 0.4);
+    border-left: 1px solid rgba(232, 181, 71, 0.6);
+    border-right: 1px solid rgba(232, 181, 71, 0.6);
+  }
+  .photo.tilt-l { transform: rotate(-2.2deg); }
+  .photo.tilt-r { transform: rotate(2deg); }
+  .photo.tilt-sm-l { transform: rotate(-1deg); }
+  .photo.tilt-sm-r { transform: rotate(1deg); }
+
+  .panorama {
+    margin: 80px 0;
+    position: relative;
+  }
+  .panorama img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: saturate(0.9) contrast(1.02);
+    box-shadow: 0 20px 60px rgba(43,36,25,0.15);
+  }
+  .panorama-cap {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    color: var(--sea-deep);
+    margin-top: 16px;
+    text-align: right;
+    padding-right: 8%;
+    transform: rotate(-0.5deg);
+  }
+
+  .scrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 32px;
+    align-items: center;
+    margin: 48px 0;
+  }
+  .stack { position: relative; padding: 24px 0; }
+
+  .wave {
+    display: block;
+    margin: 64px auto;
+    width: 180px;
+    height: 24px;
+    color: var(--terracotta);
+  }
+
+  /* PULL QUOTE */
+  .tile-quote {
+    margin: 80px auto;
+    max-width: 760px;
+    padding: 56px 48px;
+    background: var(--whitewash);
+    border: 6px double var(--sea);
+    text-align: center;
+    transform: rotate(-0.8deg);
+    box-shadow: 8px 8px 0 var(--whitewash-shade);
+    position: relative;
+  }
+  .tile-quote::before, .tile-quote::after {
+    content: '✦';
+    color: var(--sun);
+    font-size: 24px;
+    position: absolute;
+    top: 16px;
+  }
+  .tile-quote::before { left: 20px; }
+  .tile-quote::after { right: 20px; }
+  .tile-quote q {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(24px, 3.4vw, 36px);
+    line-height: 1.25;
+    color: var(--ink);
+    quotes: "\00AB" "\00BB";
+  }
+  .tile-quote q::before { color: var(--terracotta); font-size: 1.3em; line-height: 0; vertical-align: -0.25em; margin-right: 0.05em; }
+  .tile-quote q::after  { color: var(--terracotta); font-size: 1.3em; line-height: 0; vertical-align: -0.25em; margin-left: 0.05em; }
+
+  /* MENU */
+  .menu {
+    background: var(--whitewash-shade);
+    margin: 96px calc(50% - 50vw);
+    padding: 96px 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    position: relative;
+  }
+  .menu::before {
+    content: '';
+    position: absolute;
+    top: 8px; left: 0; right: 0;
+    height: 1px;
+    background: var(--ink);
+  }
+  .menu::after {
+    content: '';
+    position: absolute;
+    bottom: 8px; left: 0; right: 0;
+    height: 1px;
+    background: var(--ink);
+  }
+  .menu-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 32px;
+    text-align: center;
+  }
+  .menu-eyebrow {
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .menu h2 {
+    margin: 0 auto 56px;
+    text-align: center;
+  }
+  .menu-list { list-style: none; text-align: left; }
+  .menu-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    align-items: baseline;
+    padding: 22px 0;
+    border-bottom: 1px dotted var(--ink-soft);
+  }
+  .menu-list li:last-child { border-bottom: none; }
+  .menu-list .num {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--terracotta);
+    min-width: 36px;
+  }
+  .menu-list .body strong {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 24px;
+    display: block;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .menu-list .body span {
+    color: var(--ink-soft);
+    font-size: 17px;
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 32px;
+    text-align: center;
+    border-top: 2px dashed var(--terracotta-faded);
+    max-width: 700px;
+    margin: 64px auto 48px;
+  }
+  footer .stamp {
+    display: inline-block;
+    border: 2px solid var(--terracotta);
+    padding: 14px 18px;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--terracotta);
+    text-transform: uppercase;
+    transform: rotate(2deg);
+    margin-bottom: 16px;
+  }
+  footer .signoff {
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    color: var(--ink-soft);
+    transform: rotate(-1deg);
+    display: inline-block;
+  }
+
+  @media (max-width: 760px) {
+    body { font-size: 18px; }
+    .hero-content { padding: 0 24px 6vh; }
+    .hero-mark { top: 20px; left: 20px; }
+    .hero-coords { top: 20px; right: 20px; }
+    .col, .col-wide { padding: 0 24px; }
+    section { padding: 8vh 0; }
+    .scrap { grid-template-columns: 1fr; gap: 32px; }
+    .photo.tilt-l, .photo.tilt-r,
+    .photo.tilt-sm-l, .photo.tilt-sm-r { transform: rotate(-1deg); }
+    .menu { padding: 64px 0; }
+    .tile-quote { padding: 40px 24px; }
+    .panorama-cap { padding-right: 0; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-mark">El día de la madre<br>MMXXVI</div>
+  <div class="hero-coords">
+    38°47′N · 0°10′E<br>
+    Jávea · Alicante<br>
+    Para Constanza
+  </div>
+  <div class="hero-content">
+    <h1>
+      <span class="small">una carta de Cora, Tiger y papá</span>
+      Para mamá,<br>
+      <span class="accent">para ti.</span>
+    </h1>
+    <p class="hero-sub">desde una casa de piedra a los pies del Montgó,<br>con todo lo que somos</p>
+  </div>
+</header>
+
+<section>
+  <div class="col">
+    <p class="lede opener">Hay una luz que cae aquí en Jávea por la tarde, dorada y lenta, que no se parece a ninguna otra. Y siempre que la veo pienso en ti. Porque fuiste tú la que decidió que cambiáramos la ciudad por esta luz, que dejáramos el ruido por el silencio del Montgó, que los niños crecieran corriendo descalzos en lugar de subiendo en un ascensor.</p>
+
+    <p>Hoy, en el día de la madre, queremos contarte lo que tú ya sabes pero que a veces se nos olvida decir en voz alta: que todo esto, todo lo que ves a tu alrededor, lo has construido tú. La casa, la rutina, las risas de los niños, el olor de la cocina los domingos, la calma. Todo.</p>
+
+    <span class="margin-note">↳ y nada de esto sería sin ti</span>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <span class="plate">No. I · Barcelona</span>
+    <h2>Donde todo <span class="it">empezó</span></h2>
+    <p>El Hospital Clínic de Barcelona, dos veces. La primera vez en mayo, con un calor pegajoso y una niña diminuta llamada Cora envuelta en mantas demasiado grandes para ella. La segunda vez en invierno, con un abrigo beige y un niño llamado Tiger que parecía ya saberlo todo.</p>
+    <p>Te recuerdo en las puertas del hospital las dos veces, agotada y radiante, sosteniendo a tus hijos como si los hubieras estado esperando toda la vida. Y de alguna forma así era.</p>
+  </div>
+
+  <div class="col-wide">
+    <div class="scrap">
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-l tape" style="max-width: 380px;">
+          <img src="media/cora-nace.jpg" alt="Constanza saliendo del Hospital Clínic de Barcelona con la recién nacida Cora en su sillita">
+          <p class="cap">Cora, mayo<br>al salir del Clínic</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="photo tilt-sm-r" style="max-width: 420px;">
+          <img src="media/tiger-nace.jpg" alt="Constanza con el recién nacido Tiger en su sillita, sentada en el hospital">
+          <p class="cap">y Tiger, en invierno</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 56px;">
+      <div class="photo tilt-sm-l" style="max-width: 540px;">
+        <img src="media/cora-conoce-tiger.jpg" alt="Cora, todavía pequeña, conociendo a su hermano Tiger recién nacido en brazos de Constanza">
+        <p class="cap">el día que Cora conoció a su hermano</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M2 12 Q 17 2, 32 12 T 62 12 T 92 12 T 122 12 T 152 12 T 178 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>
+
+<section>
+  <div class="col">
+    <span class="plate olive">No. II · La Mudanza</span>
+    <h2>Cambiar Barcelona por <span class="blue">el Montgó</span></h2>
+    <p>Dejar Barcelona no fue fácil. Dejaste tus calles, tu gente, tu ritmo, las cafeterías donde te conocían. Lo hiciste sin aspavientos, como haces casi todo, porque viste lo que esta casa, este pueblo, este mar pequeño y tranquilo, podían darle a Cora y a Tiger.</p>
+    <p>Ahora la montaña es lo primero que vemos por la mañana y lo último por la tarde. Los locales la llaman <em>el elefante</em>, por la forma. Una vez la ves, ya no puedes dejar de verla. Como tantas otras cosas que tú nos enseñaste a mirar.</p>
+    <span class="margin-note">↳ pacientemente, sin quejarte casi nunca</span>
+  </div>
+  <div class="col-wide">
+    <div class="panorama">
+      <img src="media/montgo.jpg" alt="El Montgó al amanecer con una nube que cae por su ladera, visto desde una casa blanca de Jávea">
+      <p class="panorama-cap">— el elefante, por la mañana</p>
+    </div>
+  </div>
+</section>
+
+<div class="col-wide">
+  <div class="tile-quote">
+    <q>Lo que ellos llamarán hogar, lo has hecho tú con tus manos. Dos veces.</q>
+  </div>
+</div>
+
+<section>
+  <div class="col">
+    <span class="plate terracotta">No. III · Jávea</span>
+    <h2>En lo que se han convertido <span class="it">aquí</span></h2>
+    <p>La prueba honesta de un sitio es en lo que se convierten tus hijos en él. Los nuestros se han vuelto más morenos, más sucios, más rápidos, más hambrientos. Comen helado en el patio con la concentración seria de quien hace un trabajo importante. Tienen habitaciones con vistas a la montaña y camas en forma de casita, bajas, como dicen los Montessori que hay que hacerlas.</p>
+    <p>Duermen mejor aquí. Y cuando se despiertan corren al jardín, al pasillo, a la terraza, sin pedir permiso, porque saben que esta casa es suya. Eso lo hiciste tú.</p>
+  </div>
+
+  <div class="col-wide">
+    <div class="scrap">
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-l" style="max-width: 460px;">
+          <img src="media/terraza-arcos.jpg" alt="La terraza con arcos de la casa en Jávea, con Tiger jugando en el suelo y Cora dibujando en la mesa">
+          <p class="cap">la terraza, una mañana cualquiera</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="photo tilt-sm-r tape" style="max-width: 420px;">
+          <img src="media/sillas-jardin.jpg" alt="Cora y Tiger sentados juntos en sillitas plegables azules en el jardín de piedra">
+          <p class="cap">los dos, en el jardín</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrap">
+      <div class="stack">
+        <div class="photo tilt-r" style="max-width: 460px;">
+          <img src="media/helados.jpg" alt="Cora y Tiger comiendo helados de chocolate en el patio de grava">
+          <p class="cap">helados, un trabajo serio</p>
+        </div>
+      </div>
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-sm-l" style="max-width: 380px;">
+          <img src="media/cora-arte.jpg" alt="Cora sonriendo enorme mientras sostiene un cuadro de papel coloreado con su nombre escrito en morado">
+          <p class="cap">«CORA», por la artista</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrap">
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-l tape" style="max-width: 420px;">
+          <img src="media/cora-cama.jpg" alt="Cora saltando en su cama con forma de casita en su habitación de Jávea">
+          <p class="cap">Cora salta, otra vez</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="photo tilt-sm-r" style="max-width: 380px;">
+          <img src="media/tiger-puerta.jpg" alt="Tiger pequeño de espaldas en la puerta de la terraza, mirando el valle de Jávea">
+          <p class="cap">Tiger mirando el día</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <span class="plate">No. IV · El Mar</span>
+    <h2>Bajar al puerto, <span class="it">con dinosaurios</span></h2>
+    <p>El puerto de Jávea está a quince minutos de la casa. Una bahía larga, un paseo de piedra, palmeras, barcas de pesca, y los martes de invierno casi nadie. A Tiger le gusta llevar sus dinosaurios al paseo y organizar batallas elaboradas entre los bichos prehistóricos y el Mediterráneo. Cora supervisa. Las olas casi siempre ganan, pero los dinosaurios pelean bien.</p>
+    <p>Después hay pan con tomate, aceite bueno, y a veces una larga sobremesa de las que en la ciudad no salen, porque cuestan demasiado o vamos demasiado deprisa.</p>
+  </div>
+  <div class="col-wide">
+    <div class="scrap">
+      <div class="stack">
+        <div class="photo tilt-r" style="max-width: 480px;">
+          <img src="media/paseo-maritimo.jpg" alt="Tiger sosteniendo un dinosaurio de juguete frente al mar de Jávea, con Cora detrás">
+          <p class="cap">Tiger contra el Mediterráneo</p>
+        </div>
+      </div>
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-sm-l" style="max-width: 460px;">
+          <img src="media/tiger-piedras.jpg" alt="Tiger sentado en la playa de cantos rodados de Jávea tirando piedras al mar">
+          <p class="cap">tirando piedras, durante horas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="wave" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M2 12 Q 17 2, 32 12 T 62 12 T 92 12 T 122 12 T 152 12 T 178 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>
+
+<section>
+  <div class="col">
+    <span class="plate sun">No. V · La Tesis</span>
+    <h2>La carrera que <span class="it">pausaste</span></h2>
+    <p>Hay otra cosa que queremos decir hoy, porque casi nunca te lo decimos. Pausaste tu doctorado por ellos. Aplazaste tu carrera, los planes, los años que tenías ya marcados en una hoja en algún sitio, para estar con Cora y Tiger en los años en los que de verdad importa estar.</p>
+    <p>No usamos la palabra <em>renunciar</em>. Usamos <em>pausar</em>. Porque sabemos que volverás a tu tesis, a tu trabajo, a tu camino. La tesis te espera. Nosotros también, todos los días, en una casa que has hecho tuya.</p>
+    <span class="margin-note">↳ y volverá, a su tiempo</span>
+  </div>
+</section>
+
+<div class="menu">
+  <div class="menu-inner">
+    <p class="menu-eyebrow">Lo que haces sin pensar</p>
+    <h2>Las pequeñas cosas <span class="it">de todos los días</span></h2>
+    <ol class="menu-list">
+      <li><span class="num">i.</span><div class="body"><strong>Las canciones antes de dormir</strong><span>Una para Cora, otra para Tiger, otra para los dos. Sabes el orden de memoria, aunque cambian cada dos semanas.</span></div></li>
+      <li><span class="num">ii.</span><div class="body"><strong>El desayuno del sábado</strong><span>Tortitas, fruta, mucho cariño y un poco de paciencia. La cocina queda como un campo de batalla. No te importa.</span></div></li>
+      <li><span class="num">iii.</span><div class="body"><strong>La paciencia infinita en el coche</strong><span>«Otra vez la canción del cocodrilo, mamá». Otra vez. Y otra. Sin perder la sonrisa.</span></div></li>
+      <li><span class="num">iv.</span><div class="body"><strong>Las rabietas resueltas</strong><span>Te agachas a su altura, los miras a los ojos, esperas. Funcionan casi siempre. Las nuestras también, contigo.</span></div></li>
+      <li><span class="num">v.</span><div class="body"><strong>Las heridas curadas con un beso</strong><span>Y un poco de Betadine. El beso es lo que de verdad funciona.</span></div></li>
+      <li><span class="num">vi.</span><div class="body"><strong>La casa que recoges dos veces al día</strong><span>Y que vuelve a estar destrozada al día siguiente. Y aun así, mañana, vuelves a empezar.</span></div></li>
+      <li><span class="num">vii.</span><div class="body"><strong>Mirarlos cuando duermen</strong><span>Eso lo haces sola, casi en silencio. Pero te hemos visto.</span></div></li>
+    </ol>
+  </div>
+</div>
+
+<section>
+  <div class="col">
+    <p class="lede">No es un día perfecto. Tiger tiene los mocos. Cora ha pintado la pared otra vez. La cocina huele a algo que ninguno de los dos quiere reconocer. La realidad de la maternidad no entra en una postal.</p>
+    <p>Pero esta tarde, cuando vuelvas a casa, Cora y Tiger correrán hacia ti como siempre, con esa cara de no haberte visto en años aunque solo hayan pasado dos horas. Y todo lo que has hecho hoy, y todo lo que has dejado por ellos, brillará un momento en sus ojos. Y nosotros, los tres, te lo recordaremos.</p>
+    <p>Gracias, mamá. Por la luz, por la casa, por la montaña, por las dos veces que nos hiciste familia. Por todo lo que has pausado para estar con ellos. Por todo lo que aún serás.</p>
+  </div>
+</section>
+
+<section>
+  <div class="col-wide">
+    <div style="text-align: center;">
+      <div class="photo tilt-sm-r" style="max-width: 620px;">
+        <img src="media/mesa-terraza.jpg" alt="Cora y Tiger en la mesa de la terraza al atardecer, saludando a la cámara con las manos en alto">
+        <p class="cap">para ti, mamá, los dos</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="stamp">Correo · Jávea · Para Mamá</div><br>
+  <p class="signoff">con todo nuestro amor,<br>Cora, Tiger y papá</p>
+</footer>
+
+</body>
+</html>
