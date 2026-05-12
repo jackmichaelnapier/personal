@@ -272,6 +272,29 @@
   }
   .tiger-caption b{color:var(--ink);font-weight:500;}
 
+  .javea-cta{
+    max-width:780px;margin:56px auto 0;padding:32px 36px;
+    background:var(--paper-warm);border-left:4px solid var(--terracotta);
+    font-family:'Newsreader',serif;font-style:italic;
+    font-size:21px;line-height:1.55;color:var(--ink);
+    position:relative;
+  }
+  .javea-cta::before{
+    content:'P.S.';
+    position:absolute;top:-12px;left:24px;
+    background:var(--paper);
+    padding:0 10px;color:var(--terracotta);
+    font-family:'Anton',sans-serif;font-style:normal;font-size:18px;
+    letter-spacing:0.08em;
+  }
+  .javea-cta a{
+    color:var(--terracotta);text-decoration:none;
+    border-bottom:2px solid var(--terracotta);padding-bottom:1px;font-style:normal;
+    font-weight:500;transition:color 0.15s, border-color 0.15s;
+  }
+  .javea-cta a:hover{color:var(--ink);border-bottom-color:var(--ink);}
+  .javea-cta a::after{content:' →';font-family:'Newsreader',serif;}
+
   .postcard-wall{
     margin-top:96px;
     display:grid;grid-template-columns:repeat(12,1fr);gap:24px;
@@ -595,6 +618,8 @@
     <p>We landed in Jávea because it had the things a working family needs and nothing it doesn't. A sea. A mountain (Montgó, photogenic on bad days and unbelievable on good ones). An orange grove in the back garden that flowers white in February. Enough quiet to think.</p>
   </div>
 
+  <p class="javea-cta">If you ever find yourself in Jávea with small kids of your own, I keep a <a href="/javea/">running field guide to our weekends here</a>. Beaches, markets, the lighthouse walk, an honest opinion on every playground within thirty minutes.</p>
+
   <div class="postcard-wall">
     <div class="postcard brothers" data-cap="The brothers. Oregon, this winter."></div>
     <div class="postcard montgo" data-cap="Montgó in cloud. The view from the kitchen."></div>
@@ -634,6 +659,7 @@
     <a href="mailto:jack@napier.me">jack@napier.me</a>
     <a href="https://github.com/jackmichaelnapier" target="_blank" rel="noopener">github</a>
     <a href="https://www.linkedin.com/in/jacknapier" target="_blank" rel="noopener">linkedin</a>
+    <a href="/javea/">jávea guide</a>
   </div>
   <div class="colophon">
     <span>napier.me. Written and maintained by hand.</span>
