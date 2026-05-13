@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Where do agent drafts actually go?</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  h1 { font-size: 32px; line-height: 1.2; margin: 0 0 14px; font-weight: 600; letter-spacing: -0.015em; }
+  h2 { font-size: 22px; margin: 0 0 8px; font-weight: 600; letter-spacing: -0.005em; }
+  h3 { font-size: 17px; margin: 0 0 8px; font-weight: 600; }
+  p  { margin: 0 0 12px; }
+  .lede { font-size: 17px; color: #555; max-width: 62ch; margin: 0; }
+
+  section { margin-top: 56px; }
+  .section-head { margin-bottom: 24px; max-width: 62ch; }
+  .section-head .sub { font-size: 15px; color: #666; margin: 0; }
+
+  /* ==========================================================
+     MENTAL MODEL — flow diagram
+     ========================================================== */
+  .model {
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 28px;
+    background: #fafafa;
+  }
+  .model-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    gap: 8px;
+    align-items: stretch;
+    margin-bottom: 16px;
+  }
+  .model-box {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .model-box .lbl {
+    font-size: 10.5px; font-weight: 600;
+    color: #888; letter-spacing: 0.06em;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+  .model-box .val { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+  .model-box .sub-val { font-size: 12px; color: #666; margin-top: 4px; }
+  .model-box.agent {
+    background: #1a1a1a; border-color: #1a1a1a;
+  }
+  .model-box.agent .lbl { color: #999; }
+  .model-box.agent .val { color: #fff; }
+  .model-box.agent .sub-val { color: #bbb; }
+  .model-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: #bbb; font-size: 18px;
+  }
+  .model-caption {
+    font-size: 13.5px; color: #555;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .model-caption b { color: #1a1a1a; }
+  @media (max-width: 760px) {
+    .model-row { grid-template-columns: 1fr; gap: 6px; }
+    .model-arrow { transform: rotate(90deg); padding: 4px 0; }
+  }
+
+  /* ==========================================================
+     DESTINATION BLOCK — heading + mockup + plumbing
+     ========================================================== */
+  .dest {
+    margin-top: 32px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .dest-head {
+    padding: 18px 22px;
+    background: #fafafa;
+    border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .dest-num {
+    background: #1a1a1a; color: #fff;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .dest-head .text { flex: 1; }
+  .dest-head h3 { margin: 0 0 4px; }
+  .dest-head .desc { font-size: 14px; color: #555; margin: 0; }
+  .dest-body {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 0;
+  }
+  .mockup-wrap {
+    padding: 24px;
+    background: #f5f6f8;
+    border-right: 1px solid #e5e5e5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .plumbing {
+    padding: 22px 22px 22px;
+    background: #fff;
+  }
+  .plumbing h4 {
+    margin: 0 0 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888;
+  }
+  .plumbing p {
+    font-size: 13.5px;
+    color: #444;
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+  .plumbing code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    background: #f5f5f5;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 12px;
+    color: #1a1a1a;
+  }
+  .plumbing .review {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #eee;
+  }
+  @media (max-width: 760px) {
+    .dest-body { grid-template-columns: 1fr; }
+    .mockup-wrap { border-right: 0; border-bottom: 1px solid #e5e5e5; }
+  }
+
+  /* ==========================================================
+     GMAIL MOCKUP
+     ========================================================== */
+  .gmail {
+    background: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    font-family: "Google Sans", "Segoe UI", Roboto, sans-serif;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .gmail-bar {
+    background: #f6f8fc;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e8eaed;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px;
+    color: #5f6368;
+  }
+  .gmail-bar .logo {
+    width: 18px; height: 18px;
+    background: linear-gradient(135deg, #4285f4, #ea4335 60%, #fbbc04 80%, #34a853);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .gmail-sidebar {
+    display: grid; grid-template-columns: 130px 1fr; height: 280px;
+  }
+  .gmail-folders {
+    background: #f6f8fc;
+    padding: 12px 8px;
+    font-size: 13px;
+    border-right: 1px solid #e8eaed;
+  }
+  .gmail-folders .item {
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: #3c4043;
+    display: flex; justify-content: space-between;
+    margin-bottom: 2px;
+  }
+  .gmail-folders .item.active {
+    background: #d3e3fd;
+    color: #001d35;
+    font-weight: 600;
+  }
+  .gmail-folders .item .count {
+    background: #c2d7f5;
+    color: #001d35;
+    border-radius: 999px;
+    padding: 0 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .gmail-folders .item.active.has-new .count { background: #185abc; color: #fff; }
+  .gmail-compose {
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+  .gmail-compose .field {
+    border-bottom: 1px solid #e8eaed;
+    padding: 6px 0;
+    color: #3c4043;
+    font-size: 12.5px;
+  }
+  .gmail-compose .field b { color: #1a1a1a; }
+  .gmail-compose .body {
+    padding-top: 12px;
+    font-size: 13px;
+    color: #1a1a1a;
+    line-height: 1.55;
+  }
+  .gmail-status {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: #1e8e3e;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .gmail-status::before {
+    content: ""; width: 7px; height: 7px;
+    border-radius: 50%; background: #1e8e3e;
+  }
+
+  /* ==========================================================
+     HELPDESK / INTERCOM-LIKE MOCKUP
+     ========================================================== */
+  .helpdesk {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    font-size: 13px;
+  }
+  .helpdesk-head {
+    padding: 10px 14px;
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+    font-size: 12px;
+    color: #666;
+    display: flex; justify-content: space-between;
+  }
+  .helpdesk-head b { color: #1a1a1a; }
+  .helpdesk-msg {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f3f3f3;
+  }
+  .helpdesk-msg .from { font-size: 12px; color: #888; margin-bottom: 4px; }
+  .helpdesk-msg .from b { color: #1a1a1a; }
+  .helpdesk-msg .text { font-size: 13px; color: #333; }
+  .helpdesk-msg.customer { background: #fff; }
+  .helpdesk-msg.draft { background: #fffbe6; border-left: 3px solid #f4c324; }
+  .helpdesk-msg.draft .tag {
+    display: inline-block;
+    background: #f4c324;
+    color: #5b4400;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 10.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+  .helpdesk-actions {
+    padding: 10px 14px;
+    display: flex; gap: 8px;
+    background: #fafafa;
+  }
+  .helpdesk-actions button {
+    font-size: 12px;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 6px;
+    color: #333;
+    font-family: inherit;
+    cursor: default;
+  }
+  .helpdesk-actions button.primary {
+    background: #1a1a1a; color: #fff; border-color: #1a1a1a;
+  }
+
+  /* ==========================================================
+     SLACK MOCKUP
+     ========================================================== */
+  .slack {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    font-family: "Lato", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .slack-head {
+    padding: 10px 14px;
+    border-bottom: 1px solid #eee;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 600;
+    color: #1a1a1a;
+  }
+  .slack-head .hash { color: #888; }
+  .slack-msg {
+    padding: 12px 16px;
+    display: flex; gap: 10px;
+  }
+  .slack-avatar {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 4px;
+    background: #1a1a1a;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .slack-body { flex: 1; min-width: 0; }
+  .slack-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1d1c1d;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .slack-name .bot {
+    background: #e0e0e0; color: #555;
+    font-size: 10px; font-weight: 600;
+    padding: 0 5px; border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+  .slack-time { font-size: 12px; color: #888; font-weight: 400; }
+  .slack-text {
+    font-size: 13.5px; color: #1d1c1d;
+    line-height: 1.5;
+    margin-top: 4px;
+    white-space: pre-wrap;
+  }
+  .slack-buttons {
+    margin-top: 10px;
+    display: flex; gap: 6px;
+  }
+  .slack-buttons button {
+    font-size: 12.5px;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 4px;
+    color: #1d1c1d;
+    font-family: inherit;
+    cursor: default;
+    font-weight: 600;
+  }
+  .slack-buttons button.approve { background: #007a5a; color: #fff; border-color: #007a5a; }
+  .slack-reactions {
+    margin-top: 8px;
+    display: flex; gap: 4px;
+  }
+  .slack-reactions span {
+    background: #f1f3f7; border: 1px solid #d7dee5;
+    border-radius: 12px; font-size: 12px;
+    padding: 2px 8px;
+  }
+
+  /* ==========================================================
+     APPROVAL QUEUE MOCKUP
+     ========================================================== */
+  .queue {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .queue-head {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px; font-weight: 600;
+    color: #1a1a1a;
+    display: flex; justify-content: space-between;
+  }
+  .queue-head .count {
+    background: #fff7ed; color: #9a3412;
+    font-size: 11px; font-weight: 600;
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .queue-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f3f3;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+  .queue-item:last-child { border-bottom: 0; }
+  .queue-item .desc { font-size: 13px; color: #1a1a1a; }
+  .queue-item .desc .meta {
+    font-size: 11.5px; color: #888;
+    display: flex; gap: 8px; margin-top: 2px;
+  }
+  .queue-item .desc .meta b { color: #444; }
+  .queue-item .acts {
+    display: flex; gap: 4px;
+  }
+  .queue-item .acts button {
+    width: 28px; height: 28px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    color: #444;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: default;
+  }
+  .queue-item .acts button.go { background: #16a34a; color: #fff; border-color: #16a34a; }
+  .queue-item .acts button.no { color: #999; }
+
+  /* ==========================================================
+     GOOGLE DOC MOCKUP
+     ========================================================== */
+  .doc {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    display: grid;
+    grid-template-columns: 1fr 200px;
+  }
+  .doc-text {
+    padding: 16px;
+    font-family: "Georgia", serif;
+    font-size: 13px;
+    color: #1a1a1a;
+    line-height: 1.6;
+    border-right: 1px solid #eee;
+  }
+  .doc-text .highlight {
+    background: #fff5b8;
+    border-bottom: 2px dotted #b8860b;
+    padding: 0 2px;
+  }
+  .doc-comment {
+    padding: 14px 12px;
+    background: #fafafa;
+    font-size: 12px;
+  }
+  .doc-comment .author {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+  }
+  .doc-comment .author small { color: #888; font-weight: 400; }
+  .doc-comment .body {
+    font-size: 12px;
+    color: #444;
+    line-height: 1.5;
+  }
+  .doc-comment .suggestion {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-top: 8px;
+    font-size: 11.5px;
+    color: #333;
+  }
+  .doc-comment .suggestion s { color: #d4302a; }
+  .doc-comment .suggestion .add { color: #1e8e3e; }
+
+  /* ==========================================================
+     TASK MOCKUP
+     ========================================================== */
+  .task {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 460px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    padding: 16px 18px;
+  }
+  .task-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px;
+  }
+  .task-status {
+    background: #e0e0e0; color: #444;
+    padding: 2px 10px; border-radius: 4px;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .task-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 6px 0 12px;
+  }
+  .task-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .task-row .key { color: #888; }
+  .task-row .val { color: #1a1a1a; }
+  .task-row .val .avatar {
+    display: inline-block;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 10px;
+    text-align: center;
+    line-height: 18px;
+    margin-right: 6px;
+    vertical-align: -3px;
+  }
+  .task-row .val .tag {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-size: 11px;
+    color: #444;
+  }
+  .task-desc {
+    font-size: 13px;
+    color: #444;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+  }
+
+  /* ==========================================================
+     STARTER ADVICE
+     ========================================================== */
+  .starter {
+    margin-top: 56px;
+    padding: 24px;
+    background: #f5f9ff;
+    border: 1px solid #d9e7ff;
+    border-radius: 10px;
+  }
+  .starter h3 { color: #0c2342; margin: 0 0 8px; }
+  .starter p { font-size: 14.5px; color: #1e3a5f; margin: 0 0 8px; }
+  .starter p:last-child { margin: 0; }
+  .starter b { color: #0c2342; }
+
+  /* ==========================================================
+     COMPARISON TABLE
+     ========================================================== */
+  .compare {
+    margin-top: 24px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .compare table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .compare th, .compare td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .compare th {
+    background: #fafafa;
+    font-weight: 600;
+    color: #555;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .compare tr:last-child td { border-bottom: 0; }
+  .compare td.dest-name { font-weight: 600; color: #1a1a1a; }
+  .compare td .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .pill.easy   { background: #ecfdf5; color: #047857; }
+  .pill.medium { background: #fef3c7; color: #92400e; }
+  .pill.hard   { background: #fee2e2; color: #b91c1c; }
+
+  @media (max-width: 600px) {
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 8px 10px; }
+  }
+
+  /* PAGE NAV */
+  .pagenav { margin-top: 56px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 13.5px; color: #888; gap: 16px; flex-wrap: wrap; }
+  .pagenav a { color: #1a1a1a; text-decoration: none; border-bottom: 1px solid #ddd; }
+  .pagenav a:hover { border-bottom-color: #1a1a1a; }
+  .pagenav .right { text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ==========================================================
+       HEADER
+       ========================================================== -->
+  <header>
+    <h1>Where do agent drafts actually go?</h1>
+    <p class="lede">An agent doesn't have its own magic UI. It writes the draft into a tool you already use. When you saw "the agent drafts a reply" on the previous page, here's the physical mechanism: which tool, which surface, what the human actually sees and clicks.</p>
+  </header>
+
+  <!-- ==========================================================
+       1 · MENTAL MODEL
+       ========================================================== -->
+  <section>
+    <div class="section-head">
+      <h2>1 · The mental model</h2>
+      <p class="sub">Every agent has the same plumbing. It talks to a destination tool over an API, the tool stores the draft, and you review it in the normal interface of that tool. No new app to log into.</p>
+    </div>
+
+    <div class="model">
+      <div class="model-row">
+        <div class="model-box">
+          <div class="lbl">1 · Trigger</div>
+          <div class="val">Schedule or event</div>
+          <div class="sub-val">"new email arrives"</div>
+        </div>
+        <div class="model-arrow">→</div>
+        <div class="model-box agent">
+          <div class="lbl">2 · Agent runs</div>
+          <div class="val">Reads inputs, decides</div>
+          <div class="sub-val">drafts the reply</div>
+        </div>
+        <div class="model-arrow">→</div>
+        <div class="model-box">
+          <div class="lbl">3 · API call</div>
+          <div class="val">to destination tool</div>
+          <div class="sub-val">gmail.drafts.create</div>
+        </div>
+        <div class="model-arrow">→</div>
+        <div class="model-box">
+          <div class="lbl">4 · You review</div>
+          <div class="val">in your normal tool</div>
+          <div class="sub-val">Gmail Drafts folder</div>
+        </div>
+      </div>
+
+      <div class="model-caption">
+        <b>The whole trick is step 3.</b> Almost every business tool you use has an API that lets an outside program write into it. Gmail has a Drafts API. Helpdesks have a "draft reply" endpoint. Slack has post-message. Notion, ClickUp, Google Docs, Trello, all the same. The agent calls that API, the draft shows up in your tool, and you take it from there. There is no special "AI inbox" the agent lives in.
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       2 · DESTINATION MOCKUPS
+       ========================================================== -->
+  <section>
+    <div class="section-head">
+      <h2>2 · The six places drafts actually land</h2>
+      <p class="sub">Each one is a real surface in a tool you already have. The left side shows roughly what you see. The right side shows the plumbing underneath.</p>
+    </div>
+
+    <!-- ============== 1 · GMAIL DRAFT ============== -->
+    <div class="dest">
+      <div class="dest-head">
+        <div class="dest-num">1</div>
+        <div class="text">
+          <h3>Gmail / Outlook Drafts folder</h3>
+          <p class="desc">The agent creates a draft reply that sits in your normal Drafts folder. You open Gmail like any other morning, see "Drafts (4)", click in, read, edit, hit send.</p>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div class="mockup-wrap">
+
+          <div class="gmail">
+            <div class="gmail-bar">
+              <div class="logo"></div>
+              <span>Gmail · you@your-company.com</span>
+            </div>
+            <div class="gmail-sidebar">
+              <div class="gmail-folders">
+                <div class="item">Inbox <span class="count">12</span></div>
+                <div class="item">Starred</div>
+                <div class="item active has-new">Drafts <span class="count">4</span></div>
+                <div class="item">Sent</div>
+                <div class="item">All Mail</div>
+              </div>
+              <div class="gmail-compose">
+                <div class="field"><b>To:</b> customer-a@example.com</div>
+                <div class="field"><b>Subject:</b> Re: My order hasn't shipped yet</div>
+                <div class="body">Hi Alex,
+
+Thanks for getting in touch. I checked order #ORD-48291 and it left the warehouse on Tuesday 11 May...</div>
+                <div class="gmail-status">Draft autosaved · created by AR-Agent · 07:14</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="plumbing">
+          <h4>How it works</h4>
+          <p>The agent authenticates to Gmail via OAuth (one-time setup, you click "allow") and calls <code>users.drafts.create</code> with the recipient, subject, and body it generated.</p>
+          <p>Gmail stores it in the same Drafts folder you've always used. The agent never sends; it can only create the draft.</p>
+          <div class="review">
+            <h4>Your review</h4>
+            <p>Open Gmail like normal. Drafts folder shows a number. Click, scan, edit, send. Or trash it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== 2 · HELPDESK DRAFT REPLY ============== -->
+    <div class="dest">
+      <div class="dest-head">
+        <div class="dest-num">2</div>
+        <div class="text">
+          <h3>Helpdesk draft reply (Intercom, Zendesk, Freshdesk, Gorgias)</h3>
+          <p class="desc">Every modern helpdesk has a "draft reply" API. The agent attaches a suggested response to the ticket, your support team sees a yellow banner that says "AI suggested reply" with approve / edit / discard buttons.</p>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div class="mockup-wrap">
+
+          <div class="helpdesk">
+            <div class="helpdesk-head">
+              <span><b>Ticket #4192</b> · Customer A.</span>
+              <span>Open · Shipping</span>
+            </div>
+            <div class="helpdesk-msg customer">
+              <div class="from"><b>Customer A.</b> · 06:48</div>
+              <div class="text">Hi, I ordered three days ago and there's still no tracking. Where is it?</div>
+            </div>
+            <div class="helpdesk-msg draft">
+              <div class="tag">AI SUGGESTED REPLY</div>
+              <div class="from"><b>Draft</b> · awaiting approval</div>
+              <div class="text">Hi Alex, thanks for getting in touch. I've checked order #ORD-48291 and it left the warehouse on Tuesday 11 May with carrier GLS. Tracking shows it's in Valencia and should land tomorrow.</div>
+            </div>
+            <div class="helpdesk-actions">
+              <button class="primary">✓ Approve &amp; send</button>
+              <button>Edit</button>
+              <button>Discard</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="plumbing">
+          <h4>How it works</h4>
+          <p>The agent listens for new tickets via webhook, looks up the order in your e-commerce system, generates a reply, and calls something like <code>POST /tickets/{id}/draft_reply</code>.</p>
+          <p>It never auto-sends in the first version. The reply sits in the ticket as a draft until a human approves.</p>
+          <div class="review">
+            <h4>Your review</h4>
+            <p>Support team opens the ticket in their normal queue. The draft is already there. One click sends, one click discards.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== 3 · SLACK REVIEW CHANNEL ============== -->
+    <div class="dest">
+      <div class="dest-head">
+        <div class="dest-num">3</div>
+        <div class="text">
+          <h3>Slack / Teams review channel with buttons</h3>
+          <p class="desc">The simplest setup of all. The agent posts to a dedicated Slack channel like <code>#agent-review</code> with the draft and two buttons. You tap "approve" from your phone in line at the supermarket. The agent then does the action.</p>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div class="mockup-wrap">
+
+          <div class="slack">
+            <div class="slack-head">
+              <span class="hash">#</span> agent-review
+            </div>
+            <div class="slack-msg">
+              <div class="slack-avatar">A</div>
+              <div class="slack-body">
+                <div class="slack-name">AR-Agent <span class="bot">APP</span> <span class="slack-time">07:14</span></div>
+                <div class="slack-text">⚠️ <b>Invoice INV-2089 is 21 days late</b>
+Customer: Alex @ Example Corp
+Amount: €2,840
+
+Drafted follow-up email ready. Approve to send.</div>
+                <div class="slack-buttons">
+                  <button class="approve">✓ Approve &amp; send</button>
+                  <button>View draft</button>
+                  <button>Skip</button>
+                </div>
+                <div class="slack-reactions">
+                  <span>👀 1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="plumbing">
+          <h4>How it works</h4>
+          <p>The agent posts to Slack using <code>chat.postMessage</code> with "interactive blocks" (Slack's name for buttons). When you tap a button, Slack sends a webhook back to the agent telling it what you chose.</p>
+          <p>This is the lowest-friction setup for a first agent. Slack is free, the API is mature, your phone notifies you.</p>
+          <div class="review">
+            <h4>Your review</h4>
+            <p>Tap the button. Slack tells the agent your choice. The agent then sends the email (or whatever the next step is) and posts back "✓ sent at 07:15".</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== 4 · CUSTOM APPROVAL QUEUE ============== -->
+    <div class="dest">
+      <div class="dest-head">
+        <div class="dest-num">4</div>
+        <div class="text">
+          <h3>A custom approval queue (Airtable, Notion, Retool, or a small web app)</h3>
+          <p class="desc">For higher volume or more structured work, you don't want 200 individual Slack messages. The agent writes each pending item to a table. You open the table once a day, scan the rows, batch approve.</p>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div class="mockup-wrap">
+
+          <div class="queue">
+            <div class="queue-head">
+              <span>Pending review</span>
+              <span class="count">7 waiting</span>
+            </div>
+            <div class="queue-item">
+              <div class="desc">Return request RTN-1842 → recommend <b>investigate</b>
+                <div class="meta"><b>Fraud signal</b><span>·</span><b>€39.95</b><span>·</span>2 min ago</div>
+              </div>
+              <div class="acts"><button class="go">✓</button><button class="no">✗</button></div>
+            </div>
+            <div class="queue-item">
+              <div class="desc">Stockout warning: WHEY-CHOC-2KG → suggested PO 200u
+                <div class="meta"><b>Days cover: 6</b><span>·</span>14 min ago</div>
+              </div>
+              <div class="acts"><button class="go">✓</button><button class="no">✗</button></div>
+            </div>
+            <div class="queue-item">
+              <div class="desc">Review reply for ⭐⭐⭐⭐⭐ "Best service ever!"
+                <div class="meta"><b>Trustpilot</b><span>·</span>23 min ago</div>
+              </div>
+              <div class="acts"><button class="go">✓</button><button class="no">✗</button></div>
+            </div>
+            <div class="queue-item">
+              <div class="desc">Lead score 8/10 → drafted personalised outreach
+                <div class="meta"><b>ICP fit: high</b><span>·</span>41 min ago</div>
+              </div>
+              <div class="acts"><button class="go">✓</button><button class="no">✗</button></div>
+            </div>
+          </div>
+
+        </div>
+        <div class="plumbing">
+          <h4>How it works</h4>
+          <p>The agent writes each item to an Airtable base, a Notion database, or a small custom page. Each row has the agent's draft plus an "approve" and "reject" column you tick.</p>
+          <p>A second small job watches the "approved" rows and executes them. Or the agent polls the table itself every few minutes.</p>
+          <div class="review">
+            <h4>Your review</h4>
+            <p>Once or twice a day, scan the queue, tick the boxes. Five minutes total for what used to take an hour.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== 5 · GOOGLE DOC COMMENT ============== -->
+    <div class="dest">
+      <div class="dest-head">
+        <div class="dest-num">5</div>
+        <div class="text">
+          <h3>Google Docs / Notion comment with suggestion</h3>
+          <p class="desc">For agents reviewing written work (compliance checker, brand voice editor, copy reviewer) the natural place is the document itself. The agent leaves a comment on the relevant paragraph with a suggested rewrite.</p>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div class="mockup-wrap">
+
+          <div class="doc">
+            <div class="doc-text">
+              <p>Whey Protein 2kg is our flagship product.</p>
+              <p>It <span class="highlight">boosts your immune system</span> and supports lean muscle growth after every workout.</p>
+              <p>Trusted by 12,000 athletes.</p>
+            </div>
+            <div class="doc-comment">
+              <div class="author">Compliance-Agent <small>· 07:21</small></div>
+              <div class="body">Unauthorised health claim. EU Reg 1924/2006, Art. 10.</div>
+              <div class="suggestion">
+                <s>boosts your immune system</s><br>
+                <span class="add">contributes to normal immune system function*</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="plumbing">
+          <h4>How it works</h4>
+          <p>The agent reads the doc via the Google Docs or Notion API, runs its check, and posts comments using the same API.</p>
+          <p>Suggestions appear as native Google Docs suggestions, which the doc owner can accept or reject with one click.</p>
+          <div class="review">
+            <h4>Your review</h4>
+            <p>Open the doc. Comments sit in the margin like a colleague's review. Click "accept" to apply the rewrite, or reply to push back.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============== 6 · TASK / CRM ============== -->
+    <div class="dest">
+      <div class="dest-head">
+        <div class="dest-num">6</div>
+        <div class="text">
+          <h3>A task in your task system (ClickUp, Asana, Linear) or a CRM field</h3>
+          <p class="desc">For agents that produce work for a person to do later (meeting action items, lead followups, reorder requests), the draft becomes a task assigned to the right person with all context attached.</p>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div class="mockup-wrap">
+
+          <div class="task">
+            <div class="task-head">
+              <span class="task-status">TO DO</span>
+            </div>
+            <div class="task-title">Send Q2 forecast draft to operations lead by Friday</div>
+            <div class="task-row">
+              <div class="key">Assignee</div>
+              <div class="val"><span class="avatar">F</span> Founder</div>
+            </div>
+            <div class="task-row">
+              <div class="key">Due</div>
+              <div class="val">Fri 16 May</div>
+            </div>
+            <div class="task-row">
+              <div class="key">Source</div>
+              <div class="val"><span class="tag">created by Meeting-Agent</span></div>
+            </div>
+            <div class="task-row">
+              <div class="key">Tags</div>
+              <div class="val"><span class="tag">finance</span> <span class="tag">leadership</span></div>
+            </div>
+            <div class="task-desc">
+              Created from "Leadership weekly · 13 May" at 14:32. Commitment captured at timestamp 28:14 in the transcript.
+            </div>
+          </div>
+
+        </div>
+        <div class="plumbing">
+          <h4>How it works</h4>
+          <p>The agent calls the task system's API (ClickUp <code>create_task</code>, Asana <code>POST /tasks</code>, Linear <code>issueCreate</code>) with the title, owner, due date, and a description that includes the source.</p>
+          <p>You can also use this pattern for CRM updates: the agent writes a "next action" field on a deal record rather than creating a separate task.</p>
+          <div class="review">
+            <h4>Your review</h4>
+            <p>The task appears in your normal task list. You see it during your morning planning, do it, mark it done. No new place to check.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================
+       3 · COMPARISON
+       ========================================================== -->
+  <section>
+    <div class="section-head">
+      <h2>3 · Which destination should you use?</h2>
+      <p class="sub">Match the destination to the kind of decision the agent is making and how often it happens. The single most common mistake is putting high-volume work in a Slack channel, where it drowns.</p>
+    </div>
+
+    <div class="compare">
+      <table>
+        <thead>
+          <tr>
+            <th>Destination</th>
+            <th>Best for</th>
+            <th>Volume tolerance</th>
+            <th>Setup difficulty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dest-name">Gmail / Outlook draft</td>
+            <td>Outbound emails: AR chasing, follow-ups, replies</td>
+            <td>Low to medium (under 50/day)</td>
+            <td><span class="pill easy">Easy</span></td>
+          </tr>
+          <tr>
+            <td class="dest-name">Helpdesk draft reply</td>
+            <td>Support tickets</td>
+            <td>High (built for it)</td>
+            <td><span class="pill medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td class="dest-name">Slack channel + buttons</td>
+            <td>Alerts, single decisions, urgent stuff</td>
+            <td>Low (under 20/day or it gets noisy)</td>
+            <td><span class="pill easy">Easy</span></td>
+          </tr>
+          <tr>
+            <td class="dest-name">Approval queue (Airtable etc.)</td>
+            <td>High-volume routine decisions</td>
+            <td>High (hundreds/day)</td>
+            <td><span class="pill medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td class="dest-name">Doc / Notion comment</td>
+            <td>Reviewing written content</td>
+            <td>Medium</td>
+            <td><span class="pill medium">Medium</span></td>
+          </tr>
+          <tr>
+            <td class="dest-name">Task / CRM field</td>
+            <td>Work that becomes someone's next action</td>
+            <td>High</td>
+            <td><span class="pill easy">Easy</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       4 · SIMPLEST STARTER
+       ========================================================== -->
+  <section>
+    <div class="section-head">
+      <h2>4 · The simplest setup to start with</h2>
+      <p class="sub">If you've never built one of these, here's the path of least resistance.</p>
+    </div>
+
+    <div class="starter">
+      <h3>Slack channel + buttons, then graduate.</h3>
+      <p>Create a channel called <b>#agent-review</b>. Have your first agent post drafts there with two buttons: <b>approve</b> and <b>skip</b>. That's it. You'll have it running in a day. When approve is tapped, the agent goes and does the thing (sends the email, creates the task, updates the record).</p>
+      <p>Live with this for two weeks. You'll learn three things: which decisions you always approve (those can later be automatic), which the agent gets wrong (the prompt needs work), and how many items per day is the right volume.</p>
+      <p>Once you know the volume, pick a more permanent home: helpdesk for support, an approval queue for high-volume routine work, Gmail drafts for outbound emails. The Slack channel stays as the "anything new" home for any future agent's first month.</p>
+    </div>
+  </section>
+
+  <div class="pagenav">
+    <span class="left"><a href="/pricemart-agents/patterns/">← Business agents, explained visually</a></span>
+    <span class="right"><a href="/pricemart-agents/">Meet your agents →</a></span>
+  </div>
+
+</div>
+
+</body>
+</html>
