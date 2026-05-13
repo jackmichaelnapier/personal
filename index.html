@@ -108,8 +108,12 @@
     margin-top:48px;display:flex;flex-wrap:wrap;gap:8px 28px;
     font-family:'Newsreader',serif;font-style:italic;font-size:18px;
     color:var(--ink-soft);
-    border-top:1px solid var(--ink);
-    padding-top:18px;max-width:980px;
+    padding-top:18px;max-width:640px;
+    position:relative;
+  }
+  .opening .billing::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--ink);
+    max-width:100%;
   }
   .opening .billing b{font-weight:500;font-style:normal;color:var(--ink);}
 
@@ -198,6 +202,14 @@
     transition:color 0.15s, border-color 0.15s;
   }
   .now .project a.project-link:hover{color:var(--ink);border-bottom-color:var(--ink);}
+  .now .project a.project-aside{
+    display:block;margin-top:12px;width:fit-content;
+    font-family:'Newsreader',serif;font-style:italic;font-size:15px;
+    color:var(--muted);text-decoration:none;
+    border-bottom:1px dotted var(--muted);padding-bottom:1px;
+    transition:color 0.15s, border-color 0.15s;
+  }
+  .now .project a.project-aside:hover{color:var(--terracotta);border-bottom-color:var(--terracotta);}
 
   /* ========== TRAIL ========== */
   .trail{
@@ -553,6 +565,8 @@
       <div>
         <h3>Pricemart <span class="tag">a pan-European functional-food platform</span></h3>
         <p>Connecting health-driven brands with the right shelves across the EU. International by default. Nothing about it works in only one country, which is the entire point.</p>
+        <a class="project-link" href="https://www.pricemart.eu" target="_blank" rel="noopener">pricemart.eu →</a>
+        <a class="project-aside" href="/pricemart-agents/">A field guide to the AI agents I built to run it →</a>
       </div>
     </div>
 
@@ -660,6 +674,7 @@
     <a href="https://github.com/jackmichaelnapier" target="_blank" rel="noopener">github</a>
     <a href="https://www.linkedin.com/in/jacknapier" target="_blank" rel="noopener">linkedin</a>
     <a href="/javea/">jávea guide</a>
+    <a href="/pricemart-agents/">agents guide</a>
   </div>
   <div class="colophon">
     <span>napier.me. Written and maintained by hand.</span>
