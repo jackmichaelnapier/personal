@@ -131,18 +131,30 @@
   .closing { margin-top: 64px; padding: 24px; background: #f5f9ff; border: 1px solid #d9e7ff; border-radius: 10px; font-size: 15px; color: #1e3a5f; }
   .closing b { color: #0c2342; }
 
+  /* MASTHEAD */
+  .masthead { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; margin-bottom: 36px; border-bottom: 1px solid #e5e5e5; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; gap: 12px; flex-wrap: wrap; }
+  .masthead .name { color: #1a1a1a; font-weight: 600; }
+
   /* PAGE NAV */
   .pagenav { margin-top: 56px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 13.5px; color: #888; gap: 16px; flex-wrap: wrap; }
   .pagenav a { color: #1a1a1a; text-decoration: none; border-bottom: 1px solid #ddd; }
   .pagenav a:hover { border-bottom-color: #1a1a1a; }
   .pagenav .right { text-align: right; }
 
-
+  /* COLOPHON */
+  footer { margin-top: 32px; padding-top: 18px; border-top: 1px solid #e5e5e5; display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; gap: 12px; flex-wrap: wrap; }
+  footer strong { color: #1a1a1a; font-weight: 600; }
+  @media (max-width: 720px) { .masthead, footer { flex-direction: column; align-items: flex-start; gap: 6px; } }
 </style>
 </head>
 <body>
 
 <div class="wrap">
+
+  <div class="masthead">
+    <span class="name">A field guide · for the PriceMart team</span>
+    <span class="meta">Edition 02 · 2026</span>
+  </div>
 
   <header>
     <h1>Business agents, explained visually.</h1>
@@ -1329,6 +1341,11 @@ Accounts
     <span class="left"><a href="/pricemart-agents/">← Meet your agents</a></span>
     <span class="right"><a href="/pricemart-agents/drafts/">Where do agent drafts actually go? →</a></span>
   </div>
+
+  <footer>
+    <span class="left"><strong>PriceMart × Wildbreeze</strong> · Field guide 02</span>
+    <span class="right">Companion piece · patterns &amp; anatomy</span>
+  </footer>
 
 </div>
 
