@@ -30,6 +30,11 @@
   .section-head { margin-bottom: 24px; max-width: 62ch; }
   .section-head .sub { font-size: 15px; color: #666; margin: 0; }
 
+  /* Section illustration (Gemini-rendered infographic poster) */
+  .illustration { margin: 0 0 28px; display: flex; justify-content: center; }
+  .illustration img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid #e5e5e5; border-radius: 16px; background: #fafafa; }
+  @media (max-width: 600px) { .illustration img { max-width: 100%; border-radius: 12px; } }
+
   /* ANATOMY */
   .anatomy { border: 1px solid #e5e5e5; border-radius: 12px; padding: 28px; background: #fafafa; }
   .anatomy-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
@@ -170,6 +175,10 @@
       <p class="sub">Strip the marketing language away and every working business agent has the same five parts. If you can describe these five things, you have an agent spec.</p>
     </div>
 
+    <figure class="illustration">
+      <img src="../media/share-anatomy-illustrated.png" alt="Illustrated diagram of the five parts of an agent: Trigger, Read, Guard, Compute, Post.">
+    </figure>
+
     <div class="anatomy">
       <div class="anatomy-row">
 
@@ -241,6 +250,10 @@
       <p class="sub">Most projects fail because the first agent was the wrong first agent. Plot your candidates on effort vs value and start in the top-right quadrant.</p>
     </div>
 
+    <figure class="illustration">
+      <img src="../media/share-pick-first.png" alt="Illustrated effort-vs-value 2x2 matrix. The 'Build first' quadrant (high value, low effort) is highlighted in mint green with the friendly robot character pointing to a star.">
+    </figure>
+
     <div class="matrix-wrap">
 
       <div style="position: relative; padding: 0 0 36px 24px;">
@@ -298,6 +311,10 @@
       <h2>3 · Twenty patterns, in production today</h2>
       <p class="sub">Each one shows the flow, an example of what the agent actually posts, and indicators for effort and time saved. Patterns with three or more filled green dots in "value" are the ones most owners regret not building sooner.</p>
     </div>
+
+    <figure class="illustration">
+      <img src="../media/share-patterns-wall.png" alt="A wall of small illustrated vignettes showing the same friendly robot doing different jobs across categories: customer, ops, marketing, internal, founder.">
+    </figure>
 
     <!-- ============== CUSTOMER FACING ============== -->
     <div class="cat-section">
@@ -1253,6 +1270,10 @@ Accounts
       <p class="sub">Run your shortlist through these five questions, in order. Stop at the first "no" and pick a different candidate.</p>
     </div>
 
+    <figure class="illustration">
+      <img src="../media/share-decision-tree.png" alt="The friendly robot character with a clipboard, checking off five qualifying questions before building an agent.">
+    </figure>
+
     <div class="tree">
 
       <div class="tree-node">
@@ -1306,6 +1327,10 @@ Accounts
       <h2>5 · What goes wrong (and how to dodge it)</h2>
       <p class="sub">The same four mistakes account for most failed agent projects. Knowing them up front is worth more than another tutorial.</p>
     </div>
+
+    <figure class="illustration">
+      <img src="../media/share-pitfalls.png" alt="Four warning cards illustrating the four most common ways agent projects fail, with the friendly robot character in each.">
+    </figure>
 
     <div class="pitfalls">
 
