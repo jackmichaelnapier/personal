@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Anatomy of an agent — share graphic</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1a1a1a;
+    background: #e9e9e9;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .square {
+    width: 1080px;
+    height: 1080px;
+    background: #ffffff;
+    margin: 0 auto;
+    padding: 64px 60px 56px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* HEADER */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #888;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 36px;
+  }
+  .masthead .name { color: #1a1a1a; font-weight: 600; }
+
+  /* TITLE */
+  .title-block { margin-bottom: 36px; }
+  .title-block h1 {
+    font-size: 44px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+  .title-block h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: #1e3a5f;
+  }
+  .title-block p {
+    font-size: 19px;
+    color: #555;
+    margin: 0;
+    line-height: 1.45;
+    max-width: 56ch;
+  }
+
+  /* CARDS */
+  .anatomy {
+    flex: 1;
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .step {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 56px 92px 1fr;
+    gap: 22px;
+    align-items: center;
+  }
+  .step .icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+  }
+  .step .icon-wrap svg {
+    width: 28px;
+    height: 28px;
+  }
+  .step .meta { display: flex; flex-direction: column; gap: 4px; }
+  .step .num {
+    font-size: 11px;
+    color: #888;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .step .name {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #1a1a1a;
+  }
+  .step .desc {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  /* The agent-emphasis step (Compute, since it's where the LLM happens) */
+  .step.emphasis {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+  .step.emphasis .icon-wrap {
+    background: #2a2a2a;
+    color: #fff;
+  }
+  .step.emphasis .num { color: #888; }
+  .step.emphasis .name { color: #fff; }
+  .step.emphasis .desc { color: #c5c5c5; }
+
+  /* FOOTER */
+  footer {
+    margin-top: 26px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #888;
+  }
+  footer .left strong { color: #1a1a1a; font-weight: 600; }
+  footer .right { font-family: ui-monospace, "SF Mono", Menlo, monospace; text-transform: none; letter-spacing: 0; }
+</style>
+</head>
+<body>
+
+<div class="square">
+
+  <div class="masthead">
+    <span class="name">A field guide · for the PriceMart team</span>
+    <span class="meta">Edition 02 · 2026</span>
+  </div>
+
+  <div class="title-block">
+    <h1>The anatomy <em>every agent</em> shares.</h1>
+    <p>Strip the marketing language away and every working business agent has the same five parts. If you can describe these five things, you have an agent spec.</p>
+  </div>
+
+  <div class="anatomy">
+
+    <div class="step">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">Part 1</div>
+        <div class="name">Trigger</div>
+      </div>
+      <div class="desc">When does it run? A schedule, a new event, a webhook, or a user request.</div>
+    </div>
+
+    <div class="step">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18M3 12h18M3 18h12"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">Part 2</div>
+        <div class="name">Read</div>
+      </div>
+      <div class="desc">Which data sources does it pull from? Warehouse, inbox, API, documents.</div>
+    </div>
+
+    <div class="step">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">Part 3</div>
+        <div class="name">Guard</div>
+      </div>
+      <div class="desc">When should it refuse to act? Bad data, missing inputs, risky conditions.</div>
+    </div>
+
+    <div class="step emphasis">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="4" width="16" height="16" rx="2"/>
+          <line x1="8" y1="9" x2="16" y2="9"/>
+          <line x1="8" y1="13" x2="14" y2="13"/>
+          <line x1="8" y1="17" x2="12" y2="17"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">Part 4</div>
+        <div class="name">Compute</div>
+      </div>
+      <div class="desc">What logic, summarisation, or LLM call turns the inputs into a decision or message?</div>
+    </div>
+
+    <div class="step">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </div>
+      <div class="meta">
+        <div class="num">Part 5</div>
+        <div class="name">Post</div>
+      </div>
+      <div class="desc">One destination, one message. A Slack channel, an email, a CRM field, a doc.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="left"><strong>PriceMart × Wildbreeze</strong> · The five parts of an agent</span>
+    <span class="right">napier.me/pricemart-agents/patterns</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
