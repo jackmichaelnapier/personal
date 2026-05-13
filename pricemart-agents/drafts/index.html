@@ -621,16 +621,30 @@
     .compare th, .compare td { padding: 8px 10px; }
   }
 
+  /* MASTHEAD */
+  .masthead { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; margin-bottom: 36px; border-bottom: 1px solid #e5e5e5; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; gap: 12px; flex-wrap: wrap; }
+  .masthead .name { color: #1a1a1a; font-weight: 600; }
+
   /* PAGE NAV */
   .pagenav { margin-top: 56px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 13.5px; color: #888; gap: 16px; flex-wrap: wrap; }
   .pagenav a { color: #1a1a1a; text-decoration: none; border-bottom: 1px solid #ddd; }
   .pagenav a:hover { border-bottom-color: #1a1a1a; }
   .pagenav .right { text-align: right; }
+
+  /* COLOPHON */
+  footer { margin-top: 32px; padding-top: 18px; border-top: 1px solid #e5e5e5; display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; gap: 12px; flex-wrap: wrap; }
+  footer strong { color: #1a1a1a; font-weight: 600; }
+  @media (max-width: 720px) { .masthead, footer { flex-direction: column; align-items: flex-start; gap: 6px; } }
 </style>
 </head>
 <body>
 
 <div class="wrap">
+
+  <div class="masthead">
+    <span class="name">A field guide · for the PriceMart team</span>
+    <span class="meta">Edition 03 · 2026</span>
+  </div>
 
   <!-- ==========================================================
        HEADER
@@ -1068,6 +1082,11 @@ Drafted follow-up email ready. Approve to send.</div>
     <span class="left"><a href="/pricemart-agents/patterns/">← Business agents, explained visually</a></span>
     <span class="right"><a href="/pricemart-agents/">Meet your agents →</a></span>
   </div>
+
+  <footer>
+    <span class="left"><strong>PriceMart × Wildbreeze</strong> · Field guide 03</span>
+    <span class="right">The mechanics · where drafts land</span>
+  </footer>
 
 </div>
 
