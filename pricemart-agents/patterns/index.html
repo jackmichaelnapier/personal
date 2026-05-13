@@ -4,1372 +4,912 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Business agents, explained visually</title>
+<title>Business agents · an illustrated field guide</title>
+<meta name="description" content="A friendly, illustrated field guide to AI agents for small businesses. What they are, how they work, what they look like in production, and how to pick the right first one to build.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #1a1a1a;
-    background: #ffffff;
-    line-height: 1.55;
-    font-size: 16px;
+  :root {
+    /* PALETTE — pulled from the Gemini illustrations */
+    --paper:      #fafafa;
+    --card:       #ffffff;
+    --ink:        #111111;
+    --ink-soft:   #4a4a4a;
+    --ink-muted:  #7d7d7d;
+    --hairline:   #e6e6e6;
+    --hairline-2: #efefef;
+
+    --mint-bg:        #f0fdf4;
+    --mint-tint:      #ecfdf5;
+    --mint-border:    #bbf7d0;
+    --mint-ink:       #14532d;
+    --mint-accent:    #22c55e;
+
+    --peri-bg:        #f4f3ff;
+    --peri-tint:      #eef2ff;
+    --peri-border:    #c7d2fe;
+    --peri-ink:       #3730a3;
+    --peri-accent:    #6366f1;
+
+    --sun-bg:         #fffbeb;
+    --sun-tint:       #fef9c3;
+    --sun-border:     #fde68a;
+    --sun-ink:        #92400e;
+    --sun-accent:     #f59e0b;
+
+    --rose-bg:        #fdf2f8;
+    --rose-border:    #fbcfe8;
+    --rose-ink:       #9d174d;
+
+    --sky-bg:         #eff6ff;
+    --sky-border:     #bfdbfe;
+    --sky-ink:        #1e40af;
+
+    --cyan-bg:        #ecfeff;
+    --cyan-border:    #a5f3fc;
+    --cyan-ink:       #155e75;
+
+    --warm-bg:        #fff7ed;
+    --warm-border:    #fed7aa;
+    --warm-ink:       #9a3412;
   }
 
-  .wrap { max-width: 980px; margin: 0 auto; padding: 48px 24px 80px; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
 
-  h1 { font-size: 34px; line-height: 1.15; margin: 0 0 14px; font-weight: 600; letter-spacing: -0.015em; }
-  h2 { font-size: 24px; margin: 0 0 8px; font-weight: 600; letter-spacing: -0.01em; }
-  h3 { font-size: 17px; margin: 0 0 8px; font-weight: 600; }
-  h4 { font-size: 14.5px; margin: 0 0 6px; font-weight: 600; }
-  p  { margin: 0 0 12px; }
-  .lede { font-size: 17px; color: #555; max-width: 62ch; margin: 0; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 56px 28px 96px; }
 
-  section { margin-top: 64px; }
-  .section-head { margin-bottom: 24px; max-width: 62ch; }
-  .section-head .sub { font-size: 15px; color: #666; margin: 0; }
+  a { color: inherit; text-decoration: none; }
 
-  /* Section illustration (Gemini-rendered infographic poster) */
-  .illustration { margin: 0 0 28px; display: flex; justify-content: center; }
-  .illustration img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid #e5e5e5; border-radius: 16px; background: #fafafa; }
-  @media (max-width: 600px) { .illustration img { max-width: 100%; border-radius: 12px; } }
+  /* ─────────────────────────────────────────
+     MASTHEAD
+     ───────────────────────────────────────── */
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-bottom: 18px;
+    margin-bottom: 56px;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .masthead .name { color: var(--ink); font-weight: 600; }
 
-  /* ANATOMY */
-  .anatomy { border: 1px solid #e5e5e5; border-radius: 12px; padding: 28px; background: #fafafa; }
-  .anatomy-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 18px; }
-  .anatomy-step { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 14px 12px; position: relative; }
-  .anatomy-step .num { font-size: 11px; color: #888; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px; }
-  .anatomy-step .name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .anatomy-step .desc { font-size: 12.5px; color: #555; line-height: 1.45; }
-  .anatomy-step .icon { width: 22px; height: 22px; margin-bottom: 10px; color: #555; }
-  .anatomy-example { margin-top: 6px; padding: 16px 18px; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; color: #444; line-height: 1.7; }
-  .anatomy-example .label { color: #888; }
-  .anatomy-example .val { color: #1a1a1a; }
-  @media (max-width: 760px) { .anatomy-row { grid-template-columns: repeat(2, 1fr); } }
+  /* ─────────────────────────────────────────
+     HERO
+     ───────────────────────────────────────── */
+  .hero { text-align: center; margin-bottom: 80px; }
+  .hero-illo {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto 28px;
+    display: block;
+    aspect-ratio: 1 / 1;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.03), 0 8px 24px -12px rgba(17,17,17,0.08);
+  }
+  .hero-illo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mint-ink);
+    background: var(--mint-bg);
+    border: 1px solid var(--mint-border);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 4.6vw, 52px);
+    line-height: 1.08;
+    margin: 0 0 16px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+  .hero .lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin: 0 auto;
+  }
 
-  /* MATRIX */
-  .matrix-wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 28px; align-items: start; }
-  .matrix { position: relative; aspect-ratio: 1 / 1; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; background: #fff; }
-  .matrix .quadrant { position: absolute; width: 50%; height: 50%; padding: 14px; font-size: 12.5px; color: #555; display: flex; flex-direction: column; justify-content: flex-end; }
-  .matrix .quadrant b { color: #1a1a1a; font-weight: 600; margin-bottom: 4px; font-size: 13px; }
-  .matrix .q-tl { top: 0; left: 0; border-right: 1px solid #eee; border-bottom: 1px solid #eee; background: #f0f9ff; }
-  .matrix .q-tr { top: 0; right: 0; border-bottom: 1px solid #eee; background: #f0fdf4; }
-  .matrix .q-bl { bottom: 0; left: 0; border-right: 1px solid #eee; background: #fafafa; }
-  .matrix .q-br { bottom: 0; right: 0; background: #fef3f2; }
-  .matrix .axis-y { position: absolute; top: 50%; left: -8px; transform: translate(-100%, -50%) rotate(-90deg); transform-origin: center; font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-  .matrix .axis-x { position: absolute; bottom: -28px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.06em; }
-  .matrix-side .point { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #eee; }
-  .matrix-side .point:last-child { border-bottom: 0; }
-  .matrix-side .dot { flex-shrink: 0; width: 14px; height: 14px; border-radius: 50%; margin-top: 4px; }
-  .matrix-side .point.green .dot { background: #22c55e; }
-  .matrix-side .point.blue .dot { background: #3b82f6; }
-  .matrix-side .point.gray .dot { background: #999; }
-  .matrix-side .point.red .dot { background: #ef4444; }
-  .matrix-side .point .text { font-size: 14px; color: #444; }
-  .matrix-side .point .text b { color: #1a1a1a; }
-  @media (max-width: 760px) { .matrix-wrap { grid-template-columns: 1fr; gap: 36px; } }
+  /* ─────────────────────────────────────────
+     SECTIONS — common shell
+     ───────────────────────────────────────── */
+  section { margin-top: 96px; }
+  section:first-of-type { margin-top: 72px; }
 
-  /* PATTERN CARD */
-  .cat-section { margin-top: 48px; }
-  .cat-tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
-  .cat-customer { background: #eff6ff; color: #1e40af; }
-  .cat-ops      { background: #f0fdf4; color: #166534; }
-  .cat-marketing{ background: #faf5ff; color: #6b21a8; }
-  .cat-hr       { background: #fff7ed; color: #9a3412; }
-  .cat-internal { background: #ecfeff; color: #155e75; }
-  .cat-founder  { background: #fdf2f8; color: #9d174d; }
-  .pattern { border: 1px solid #e5e5e5; border-radius: 12px; padding: 24px; margin-bottom: 16px; background: #fff; }
-  .pattern-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
-  .pattern-icon { flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; color: #444; }
-  .pattern-icon svg { width: 22px; height: 22px; }
-  .pattern-head .text { flex: 1; }
-  .pattern-head h3 { margin: 0 0 4px; font-size: 17px; }
-  .pattern-head .one-line { font-size: 14.5px; color: #555; margin: 0; }
-  .pattern-num { font-size: 11px; color: #888; font-family: ui-monospace, "SF Mono", Menlo, monospace; background: #f5f5f5; padding: 2px 8px; border-radius: 6px; flex-shrink: 0; }
+  .section-head { text-align: center; max-width: 64ch; margin: 0 auto 32px; }
+  .section-num {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+    font-feature-settings: "tnum";
+  }
+  .section-num .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--ink-muted);
+    border-radius: 50%;
+    margin: 0 8px 2px;
+    vertical-align: middle;
+  }
+  .section-head h2 {
+    font-size: clamp(28px, 3.4vw, 36px);
+    line-height: 1.12;
+    margin: 0 0 14px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .section-head .sub {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+  }
 
-  /* FLOW */
-  .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 10px; align-items: stretch; margin: 0 0 18px; }
-  .flow-step { background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 12px; font-size: 12.5px; }
-  .flow-step .lbl { font-size: 10.5px; font-weight: 600; color: #888; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
-  .flow-step .val { color: #1a1a1a; line-height: 1.4; }
-  .flow-step .val .item { display: block; }
-  .flow-arrow { display: flex; align-items: center; color: #bbb; font-size: 20px; padding: 0 2px; }
-  .flow-step.agent { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
-  .flow-step.agent .lbl { color: #999; }
-  .flow-step.agent .val { color: #fff; }
-  @media (max-width: 760px) { .flow { grid-template-columns: 1fr; gap: 6px; } .flow-arrow { transform: rotate(90deg); justify-content: center; padding: 4px 0; } }
+  .section-illo {
+    margin: 0 auto 36px;
+    max-width: 560px;
+    display: block;
+    aspect-ratio: 1 / 1;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.03), 0 8px 24px -12px rgba(17,17,17,0.08);
+  }
+  .section-illo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-  /* EXAMPLE */
-  .example { border: 1px solid #e5e5e5; border-radius: 8px; padding: 14px 16px; background: #fdfdfd; margin-bottom: 16px; }
-  .example .ex-label { font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; }
-  .example .ex-body { font-size: 13.5px; line-height: 1.55; color: #333; font-family: ui-monospace, "SF Mono", Menlo, monospace; white-space: pre-wrap; }
-  .example.email .ex-body { font-family: inherit; }
-  .example .ex-body b { color: #1a1a1a; font-weight: 600; }
+  /* ─────────────────────────────────────────
+     WORKED EXAMPLE (Section 1)
+     ───────────────────────────────────────── */
+  .worked {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.03);
+  }
+  .worked .worked-label {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mint-ink);
+    background: var(--mint-bg);
+    border: 1px solid var(--mint-border);
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .worked h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+  .worked-rows { display: grid; gap: 10px; }
+  .worked-row {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--hairline);
+  }
+  .worked-row:last-child { border-bottom: 0; padding-bottom: 0; }
+  .worked-row .part {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .worked-row .desc {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.55;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-feature-settings: "tnum";
+  }
+  .worked-row .desc em { color: var(--peri-ink); font-style: normal; font-weight: 600; }
 
-  /* STATS */
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding-top: 16px; border-top: 1px solid #eee; }
-  .stat .stat-lbl { font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px; }
-  .stat .stat-val { font-size: 14px; color: #1a1a1a; display: flex; align-items: center; gap: 6px; }
-  .dots { display: inline-flex; gap: 3px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #e5e5e5; display: inline-block; }
-  .dot.on { background: #1a1a1a; }
-  .dot.on-green { background: #22c55e; }
-  @media (max-width: 600px) { .stats { grid-template-columns: 1fr; gap: 8px; } }
+  /* ─────────────────────────────────────────
+     PROPERTIES (Section 2)
+     ───────────────────────────────────────── */
+  .props {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .prop {
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 22px 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.03);
+  }
+  .prop .check {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--mint-bg);
+    border: 1px solid var(--mint-border);
+    color: var(--mint-ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .prop .check svg { width: 14px; height: 14px; }
+  .prop h4 { font-size: 16px; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .prop p { font-size: 14.5px; color: var(--ink-soft); margin: 0; line-height: 1.5; }
+  @media (max-width: 680px) { .props { grid-template-columns: 1fr; } }
 
-  /* TREE */
-  .tree { border: 1px solid #e5e5e5; border-radius: 12px; padding: 24px; background: #fafafa; }
-  .tree-node { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start; }
-  .tree-node .qnum { flex-shrink: 0; background: #1a1a1a; color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
-  .tree-node .qtext { font-size: 14.5px; }
-  .tree-node .qtext b { color: #1a1a1a; }
-  .tree-node .qtext .answer { color: #666; font-size: 13.5px; margin-top: 4px; }
+  /* ─────────────────────────────────────────
+     PATTERN GRID (Section 3)
+     ───────────────────────────────────────── */
+  .patterns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .pattern {
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.03);
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+  .pattern:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgba(17,17,17,0.03), 0 10px 28px -16px rgba(17,17,17,0.12); }
+  .pattern .cat {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+    align-self: flex-start;
+  }
+  .cat.customer  { background: var(--sky-bg);  color: var(--sky-ink);  border: 1px solid var(--sky-border); }
+  .cat.ops       { background: var(--mint-bg); color: var(--mint-ink); border: 1px solid var(--mint-border); }
+  .cat.marketing { background: var(--peri-bg); color: var(--peri-ink); border: 1px solid var(--peri-border); }
+  .cat.internal  { background: var(--cyan-bg); color: var(--cyan-ink); border: 1px solid var(--cyan-border); }
+  .cat.founder   { background: var(--rose-bg); color: var(--rose-ink); border: 1px solid var(--rose-border); }
 
-  /* PITFALLS */
-  .pitfalls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .pitfall { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 16px; }
-  .pitfall h4 { margin: 0 0 6px; font-size: 14.5px; color: #9a3412; font-weight: 600; }
-  .pitfall p { margin: 0; font-size: 13.5px; color: #6b3410; line-height: 1.5; }
-  @media (max-width: 600px) { .pitfalls { grid-template-columns: 1fr; } }
+  .pattern h3 { font-size: 16.5px; font-weight: 700; margin: 4px 0 0; letter-spacing: -0.01em; }
+  .pattern .one-line { font-size: 14px; color: var(--ink-soft); margin: 0; line-height: 1.5; flex: 1; }
+  .pattern .flow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .pattern .flow .chip {
+    background: var(--paper);
+    border: 1px solid var(--hairline-2);
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: var(--ink);
+  }
+  .pattern .flow .arr { color: var(--ink-muted); }
 
-  /* CLOSING */
-  .closing { margin-top: 64px; padding: 24px; background: #f5f9ff; border: 1px solid #d9e7ff; border-radius: 10px; font-size: 15px; color: #1e3a5f; }
-  .closing b { color: #0c2342; }
+  .pattern .meta {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--hairline);
+  }
+  .pattern .badge {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: var(--ink-muted);
+  }
+  .pattern .badge .v { color: var(--ink); font-weight: 700; margin-left: 4px; }
+  .pattern .badge.effort { background: var(--paper); border: 1px solid var(--hairline-2); }
+  .pattern .badge.value  { background: var(--mint-tint); border: 1px solid var(--mint-border); color: var(--mint-ink); }
+  .pattern .badge.value .v { color: var(--mint-ink); }
 
-  /* MASTHEAD */
-  .masthead { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; margin-bottom: 36px; border-bottom: 1px solid #e5e5e5; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; gap: 12px; flex-wrap: wrap; }
-  .masthead .name { color: #1a1a1a; font-weight: 600; }
+  @media (max-width: 940px) { .patterns { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .patterns { grid-template-columns: 1fr; } }
 
-  /* PAGE NAV */
-  .pagenav { margin-top: 56px; padding-top: 20px; border-top: 1px solid #eee; display: flex; justify-content: space-between; font-size: 13.5px; color: #888; gap: 16px; flex-wrap: wrap; }
-  .pagenav a { color: #1a1a1a; text-decoration: none; border-bottom: 1px solid #ddd; }
-  .pagenav a:hover { border-bottom-color: #1a1a1a; }
+  /* ─────────────────────────────────────────
+     QUESTIONS (Section 4)
+     ───────────────────────────────────────── */
+  .questions {
+    max-width: 760px;
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+  }
+  .question {
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 20px 22px;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.03);
+  }
+  .question .num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    font-feature-settings: "tnum";
+  }
+  .question h4 { font-size: 17px; font-weight: 700; margin: 5px 0 4px; letter-spacing: -0.01em; }
+  .question p { font-size: 14.5px; color: var(--ink-soft); margin: 0; line-height: 1.55; }
+  .question p strong { color: var(--ink); font-weight: 600; }
+  .question.last { border-color: var(--mint-border); background: var(--mint-bg); }
+  .question.last .num { background: #ffffff; border-color: var(--mint-border); color: var(--mint-ink); }
+
+  /* ─────────────────────────────────────────
+     PITFALLS (Section 5)
+     ───────────────────────────────────────── */
+  .pitfalls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .pitfall {
+    background: var(--warm-bg);
+    border: 1px solid var(--warm-border);
+    border-radius: 16px;
+    padding: 22px 24px;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.02);
+  }
+  .pitfall .warn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--warm-ink);
+    margin-bottom: 10px;
+  }
+  .pitfall .warn svg { width: 14px; height: 14px; }
+  .pitfall h4 { font-size: 17px; font-weight: 700; margin: 0 0 6px; color: var(--ink); letter-spacing: -0.01em; }
+  .pitfall p { font-size: 14.5px; line-height: 1.55; color: var(--warm-ink); margin: 0; }
+  @media (max-width: 680px) { .pitfalls { grid-template-columns: 1fr; } }
+
+  /* ─────────────────────────────────────────
+     CLOSING
+     ───────────────────────────────────────── */
+  .closing {
+    margin-top: 96px;
+    text-align: center;
+  }
+  .closing-illo {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto 28px;
+    aspect-ratio: 1 / 1;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.03), 0 8px 24px -12px rgba(17,17,17,0.08);
+  }
+  .closing-illo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .closing .quote {
+    font-size: clamp(22px, 2.6vw, 28px);
+    line-height: 1.35;
+    font-weight: 600;
+    max-width: 56ch;
+    margin: 0 auto 18px;
+    letter-spacing: -0.015em;
+  }
+  .closing .quote em {
+    font-style: normal;
+    background: linear-gradient(180deg, transparent 62%, var(--sun-tint) 62%);
+    padding: 0 4px;
+  }
+  .closing .punch {
+    font-size: 16px;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ─────────────────────────────────────────
+     PAGE NAV + FOOTER
+     ───────────────────────────────────────── */
+  .pagenav {
+    margin-top: 72px;
+    padding-top: 22px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 13.5px;
+    color: var(--ink-muted);
+  }
+  .pagenav a {
+    color: var(--ink);
+    border-bottom: 1px solid var(--hairline);
+    padding-bottom: 1px;
+  }
+  .pagenav a:hover { border-bottom-color: var(--ink); }
   .pagenav .right { text-align: right; }
 
-  /* COLOPHON */
-  footer { margin-top: 32px; padding-top: 18px; border-top: 1px solid #e5e5e5; display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #888; gap: 12px; flex-wrap: wrap; }
-  footer strong { color: #1a1a1a; font-weight: 600; }
-  @media (max-width: 720px) { .masthead, footer { flex-direction: column; align-items: flex-start; gap: 6px; } }
+  footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  footer strong { color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 40px 22px 72px; }
+    .masthead, footer, .pagenav { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .pagenav .right { text-align: left; }
+    section { margin-top: 72px; }
+  }
 </style>
 </head>
 <body>
 
 <div class="wrap">
 
-  <div class="masthead">
+  <header class="masthead">
     <span class="name">A field guide · for the PriceMart team</span>
     <span class="meta">Edition 02 · 2026</span>
-  </div>
-
-  <header>
-    <h1>Business agents, explained visually.</h1>
-    <p class="lede">What they are, how they work, what they actually look like in production, and how to pick the one you should build first. Skim the diagrams, deep-read what catches you.</p>
   </header>
 
-  <!-- =========================================================
-       SECTION 1: ANATOMY OF ANY AGENT
-       ========================================================= -->
+  <!-- ─────────────────────────────────────────
+       HERO
+       ───────────────────────────────────────── -->
+  <header class="hero">
+    <figure class="hero-illo">
+      <img src="../media/share-hero.png" alt="A friendly small round robot character sitting cross-legged, holding an open field guide. Soft pastel pattern cards float around it.">
+    </figure>
+    <span class="eyebrow">An illustrated field guide</span>
+    <h1>Business agents, in plain English.</h1>
+    <p class="lede">
+      What they are, how they work, what they actually look like in production, and how to pick the one
+      you should build first. Skim the pictures. Read the parts that catch you.
+    </p>
+  </header>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 1 — ANATOMY
+       ───────────────────────────────────────── -->
   <section>
     <div class="section-head">
-      <h2>1 · The anatomy every agent shares</h2>
-      <p class="sub">Strip the marketing language away and every working business agent has the same five parts. If you can describe these five things, you have an agent spec.</p>
+      <div class="section-num">Chapter <span class="dot"></span> 01</div>
+      <h2>The anatomy every agent shares</h2>
+      <p class="sub">
+        Strip the marketing language away and every working business agent has the same five parts.
+        If you can describe these five things for one of your own tasks, you have an agent spec.
+      </p>
     </div>
 
-    <figure class="illustration">
-      <img src="../media/share-anatomy-illustrated.png" alt="Illustrated diagram of the five parts of an agent: Trigger, Read, Guard, Compute, Post.">
+    <figure class="section-illo">
+      <img src="../media/share-anatomy-illustrated.png" alt="An illustrated diagram of the five parts of an agent: Trigger, Read, Guard, Compute, Post, with the friendly robot character demonstrating each one.">
     </figure>
 
-    <div class="anatomy">
-      <div class="anatomy-row">
-
-        <div class="anatomy-step">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>
-          </svg>
-          <div class="num">Part 1</div>
-          <div class="name">Trigger</div>
-          <div class="desc">When does it run? A schedule, a new event, a webhook, or a user request.</div>
-        </div>
-
-        <div class="anatomy-step">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 6h18M3 12h18M3 18h12"/>
-          </svg>
-          <div class="num">Part 2</div>
-          <div class="name">Read</div>
-          <div class="desc">Which data sources does it pull from? Warehouse, inbox, API, documents.</div>
-        </div>
-
-        <div class="anatomy-step">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          <div class="num">Part 3</div>
-          <div class="name">Guard</div>
-          <div class="desc">When should it refuse to act? Bad data, missing inputs, risky conditions.</div>
-        </div>
-
-        <div class="anatomy-step">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2"/>
-            <path d="M9 9h6M9 13h6M9 17h3"/>
-          </svg>
-          <div class="num">Part 4</div>
-          <div class="name">Compute</div>
-          <div class="desc">What logic, summarisation, or LLM call turns the inputs into a decision or message?</div>
-        </div>
-
-        <div class="anatomy-step">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/>
-          </svg>
-          <div class="num">Part 5</div>
-          <div class="name">Post</div>
-          <div class="desc">One destination, one message. A Slack channel, an email, a CRM field, a doc.</div>
-        </div>
-
-      </div>
-
-      <div class="anatomy-example">
-        <div><span class="label">Worked example —</span> <span class="val">daily revenue snapshot agent</span></div>
-        <div><span class="label">  trigger:</span> <span class="val">every weekday at 07:30</span></div>
-        <div><span class="label">  read:</span>    <span class="val">sales.daily_agg, sales.hourly_live, same-weekday-LY</span></div>
-        <div><span class="label">  guard:</span>   <span class="val">skip if rows(yesterday) &lt; 70% expected</span></div>
-        <div><span class="label">  compute:</span> <span class="val">revenue Δ, orders Δ, AOV Δ vs LY</span></div>
-        <div><span class="label">  post:</span>    <span class="val">→ slack #finance with formatted snapshot</span></div>
+    <div class="worked">
+      <div class="worked-label">A worked example</div>
+      <h3>Daily revenue snapshot agent</h3>
+      <div class="worked-rows">
+        <div class="worked-row"><div class="part">Trigger</div><div class="desc">Every weekday at <em>07:30</em></div></div>
+        <div class="worked-row"><div class="part">Read</div><div class="desc">sales.daily_agg, sales.hourly_live, same weekday <em>last year</em></div></div>
+        <div class="worked-row"><div class="part">Guard</div><div class="desc">Skip if rows(yesterday) &lt; <em>70%</em> of expected</div></div>
+        <div class="worked-row"><div class="part">Compute</div><div class="desc">Revenue Δ, orders Δ, AOV Δ <em>vs LY</em></div></div>
+        <div class="worked-row"><div class="part">Post</div><div class="desc">→ Slack <em>#finance</em> with a formatted snapshot</div></div>
       </div>
     </div>
   </section>
 
-  <!-- =========================================================
-       SECTION 2: WHICH AGENT TO BUILD FIRST
-       ========================================================= -->
+  <!-- ─────────────────────────────────────────
+       SECTION 2 — PICK THE FIRST ONE
+       ───────────────────────────────────────── -->
   <section>
     <div class="section-head">
-      <h2>2 · Which one should you build first?</h2>
-      <p class="sub">Most projects fail because the first agent was the wrong first agent. Plot your candidates on effort vs value and start in the top-right quadrant.</p>
+      <div class="section-num">Chapter <span class="dot"></span> 02</div>
+      <h2>Pick the right first agent</h2>
+      <p class="sub">
+        Most projects fail because the first agent was the wrong agent.
+        Plot your candidates on effort vs value and start in the top-right quadrant.
+      </p>
     </div>
 
-    <figure class="illustration">
-      <img src="../media/share-pick-first.png" alt="Illustrated effort-vs-value 2x2 matrix. The 'Build first' quadrant (high value, low effort) is highlighted in mint green with the friendly robot character pointing to a star.">
+    <figure class="section-illo">
+      <img src="../media/share-pick-first.png" alt="An illustrated effort-vs-value 2x2 matrix. The Build First quadrant glows mint green with the robot pointing to a star.">
     </figure>
 
-    <div class="matrix-wrap">
-
-      <div style="position: relative; padding: 0 0 36px 24px;">
-        <div class="matrix">
-          <div class="q-tl quadrant">
-            <b>High value · High effort</b>
-            <span>Save for agent #2 or #3. Build something here once you have wins on the board.</span>
-          </div>
-          <div class="q-tr quadrant">
-            <b>★ Build first</b>
-            <span>High value, low effort. This is your starting candidate. If you have one of these and you haven't built it, build it this week.</span>
-          </div>
-          <div class="q-bl quadrant">
-            <b>Skip</b>
-            <span>Low value, high effort. The "wouldn't it be cool if" pile. Resist.</span>
-          </div>
-          <div class="q-br quadrant">
-            <b>Maybe</b>
-            <span>Low value, low effort. Sometimes a good way to practice the workflow before tackling the real one.</span>
-          </div>
-          <div class="axis-y">Value (hours back per week)</div>
-        </div>
-        <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.06em;">← Effort (days to build) →</div>
-      </div>
-
-      <div class="matrix-side">
-        <h3 style="margin: 0 0 14px;">The four properties of a good first agent</h3>
-
-        <div class="point green">
-          <div class="dot"></div>
-          <div class="text"><b>Repetitive.</b> It happens at least daily, and the answer is roughly similar each time.</div>
-        </div>
-        <div class="point green">
-          <div class="dot"></div>
-          <div class="text"><b>Clean data.</b> The inputs already live somewhere accessible. Don't try to fix data pipelines and build agents in the same project.</div>
-        </div>
-        <div class="point green">
-          <div class="dot"></div>
-          <div class="text"><b>Safe to fail.</b> A wrong output causes embarrassment, not financial or legal harm.</div>
-        </div>
-        <div class="point green">
-          <div class="dot"></div>
-          <div class="text"><b>Measurable.</b> You can count the hours per week it saves, in numbers, by the end of month one.</div>
+    <div class="props">
+      <div class="prop">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div>
+          <h4>Repetitive</h4>
+          <p>It happens at least daily and the answer is roughly similar each time.</p>
         </div>
       </div>
+      <div class="prop">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div>
+          <h4>Clean data</h4>
+          <p>The inputs already live somewhere accessible. Don't fix data pipelines and build agents in the same project.</p>
+        </div>
+      </div>
+      <div class="prop">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div>
+          <h4>Safe to fail</h4>
+          <p>A wrong output causes embarrassment, not financial or legal harm.</p>
+        </div>
+      </div>
+      <div class="prop">
+        <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div>
+          <h4>Measurable</h4>
+          <p>You can count the hours per week it saves, in numbers, by the end of month one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 3 — TWELVE PATTERNS
+       ───────────────────────────────────────── -->
+  <section>
+    <div class="section-head">
+      <div class="section-num">Chapter <span class="dot"></span> 03</div>
+      <h2>Twelve patterns, one anatomy</h2>
+      <p class="sub">
+        The same five-part shape, applied to the jobs that actually move the needle in a small business.
+        Pick the row that sounds most like your week.
+      </p>
+    </div>
+
+    <figure class="section-illo">
+      <img src="../media/share-patterns-wall.png" alt="A wall of twelve small illustrated vignettes showing the same friendly robot doing different jobs, grouped by category.">
+    </figure>
+
+    <div class="patterns">
+
+      <article class="pattern">
+        <span class="cat customer">Customer</span>
+        <h3>Support ticket triage</h3>
+        <p class="one-line">Read every new ticket, route it by topic, and draft replies to the easy ones.</p>
+        <div class="flow"><span class="chip">Inbox</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Drafts</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Low</span></span>
+          <span class="badge value">Value<span class="v">High</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat customer">Customer</span>
+        <h3>Returns &amp; refund classifier</h3>
+        <p class="one-line">Sort returns by reason, flag the suspicious ones, surface trends to the buyer.</p>
+        <div class="flow"><span class="chip">Returns</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Tags + alert</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Low</span></span>
+          <span class="badge value">Value<span class="v">High</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat customer">Customer</span>
+        <h3>Review &amp; NPS responder</h3>
+        <p class="one-line">Watch reviews, draft a calm reply to negatives, summarise themes weekly.</p>
+        <div class="flow"><span class="chip">Reviews</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Drafts</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Low</span></span>
+          <span class="badge value">Value<span class="v">Mid</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat ops">Ops</span>
+        <h3>Daily revenue snapshot</h3>
+        <p class="one-line">Yesterday's numbers, vs last year, with one clear sentence on why.</p>
+        <div class="flow"><span class="chip">Sales DB</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Slack</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Low</span></span>
+          <span class="badge value">Value<span class="v">High</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat ops">Ops</span>
+        <h3>Inventory watchdog</h3>
+        <p class="one-line">Spot SKUs about to stock out, surface a tight shortlist to purchasing.</p>
+        <div class="flow"><span class="chip">Stock + sales</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Shortlist</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Mid</span></span>
+          <span class="badge value">Value<span class="v">High</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat ops">Ops</span>
+        <h3>AR / collections chaser</h3>
+        <p class="one-line">Draft polite reminders for overdue invoices on a quiet schedule.</p>
+        <div class="flow"><span class="chip">Invoices</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Email drafts</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Mid</span></span>
+          <span class="badge value">Value<span class="v">High</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat ops">Ops</span>
+        <h3>Metric anomaly detector</h3>
+        <p class="one-line">Notice when a number drifts outside its normal band, name it in plain English.</p>
+        <div class="flow"><span class="chip">Warehouse</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Alert</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Mid</span></span>
+          <span class="badge value">Value<span class="v">High</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat marketing">Marketing</span>
+        <h3>Ad ops monitor</h3>
+        <p class="one-line">Watch ROAS and spend, flag the campaigns that drifted overnight.</p>
+        <div class="flow"><span class="chip">Ads API</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Slack</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Mid</span></span>
+          <span class="badge value">Value<span class="v">Mid</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat marketing">Marketing</span>
+        <h3>Competitor watcher</h3>
+        <p class="one-line">Notice price, copy, and PDP changes on a curated list of rivals.</p>
+        <div class="flow"><span class="chip">Scrape</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Digest</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Mid</span></span>
+          <span class="badge value">Value<span class="v">Mid</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat internal">Internal</span>
+        <h3>Meeting to action items</h3>
+        <p class="one-line">Turn a transcript into a short shared note: decisions, owners, deadlines.</p>
+        <div class="flow"><span class="chip">Transcript</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Doc</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Low</span></span>
+          <span class="badge value">Value<span class="v">Mid</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat internal">Internal</span>
+        <h3>Compliance reviewer</h3>
+        <p class="one-line">Pre-flight check a document against a policy and flag the gaps.</p>
+        <div class="flow"><span class="chip">Doc</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Review</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Mid</span></span>
+          <span class="badge value">Value<span class="v">Mid</span></span>
+        </div>
+      </article>
+
+      <article class="pattern">
+        <span class="cat founder">Founder</span>
+        <h3>Daily briefing</h3>
+        <p class="one-line">One short morning note: yesterday's numbers, today's calendar, this week's risks.</p>
+        <div class="flow"><span class="chip">All of it</span><span class="arr">→</span><span class="chip">Agent</span><span class="arr">→</span><span class="chip">Email</span></div>
+        <div class="meta">
+          <span class="badge effort">Effort<span class="v">Mid</span></span>
+          <span class="badge value">Value<span class="v">High</span></span>
+        </div>
+      </article>
 
     </div>
   </section>
 
-  <!-- =========================================================
-       SECTION 3: THE PATTERNS
-       ========================================================= -->
+  <!-- ─────────────────────────────────────────
+       SECTION 4 — FIVE QUESTIONS
+       ───────────────────────────────────────── -->
   <section>
     <div class="section-head">
-      <h2>3 · Twenty patterns, in production today</h2>
-      <p class="sub">Each one shows the flow, an example of what the agent actually posts, and indicators for effort and time saved. Patterns with three or more filled green dots in "value" are the ones most owners regret not building sooner.</p>
+      <div class="section-num">Chapter <span class="dot"></span> 04</div>
+      <h2>Five questions before you build</h2>
+      <p class="sub">
+        Run your shortlist through these, in order. Stop at the first "no" and pick a different candidate.
+      </p>
     </div>
 
-    <figure class="illustration">
-      <img src="../media/share-patterns-wall.png" alt="A wall of small illustrated vignettes showing the same friendly robot doing different jobs across categories: customer, ops, marketing, internal, founder.">
+    <figure class="section-illo">
+      <img src="../media/share-decision-tree.png" alt="The friendly robot character with a clipboard, ticking through five qualifying questions.">
     </figure>
 
-    <!-- ============== CUSTOMER FACING ============== -->
-    <div class="cat-section">
-      <span class="cat-tag cat-customer">Customer facing</span>
+    <div class="questions">
 
-      <!-- 01 Support ticket triage -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Support ticket triage</h3>
-            <p class="one-line">Classifies incoming support tickets, drafts a reply, escalates anything hard to a human.</p>
-          </div>
-          <div class="pattern-num">// 01</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Helpdesk inbox</span><span class="item">Help docs</span><span class="item">Order data</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Classifies, drafts reply, scores confidence</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Draft in helpdesk</span><span class="item">Or human queue</span></div>
-          </div>
-        </div>
-
-        <div class="example email">
-          <div class="ex-label">What the agent drafts</div>
-          <div class="ex-body"><b>Subject:</b> Re: My order hasn't shipped yet
-
-Hi Alex,
-
-Thanks for getting in touch. I've checked order <b>#ORD-48291</b> and it left the warehouse on Tuesday 11 May with carrier GLS. Tracking shows it's currently in Valencia and should land with you tomorrow, Thursday 14 May.
-
-You can follow it live here: [tracking link]
-
-Anything else, just hit reply.
-
-— Support team
-<span style="color:#888">[confidence: 92%  ·  draft awaiting human approval]</span></div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 5 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span></span>
-              <span>~12 to 20 hrs</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — drafts go through human</span></div>
-          </div>
+      <div class="question">
+        <div class="num">1</div>
+        <div>
+          <h4>Does this task happen at least 3 times a week?</h4>
+          <p><strong>If no →</strong> reconsider. The win compounds with frequency. Once-a-month tasks rarely justify the build.</p>
         </div>
       </div>
 
-      <!-- 02 Returns classifier -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M14 17l-3-3 3-3"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Returns &amp; refund classifier</h3>
-            <p class="one-line">Sorts returns into "auto-refund", "replace", "investigate". Flags fraud patterns.</p>
-          </div>
-          <div class="pattern-num">// 02</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Return form</span><span class="item">Order &amp; customer history</span><span class="item">Refund policy</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Classifies, checks fraud signals, recommends action</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Return system tag</span><span class="item">Investigate queue if flagged</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">What the agent posts in Slack</div>
-          <div class="ex-body">📦 <b>Return #RTN-1841</b> — Whey Protein 2kg, €54.95
-  Customer: <b>customer-a@example.com</b> · 1st purchase
-  Reason: "wrong flavour"
-  Recommendation: <b>auto-refund</b> (under €100, first order, low fraud signal)
-
-⚠️ <b>Return #RTN-1842</b> — Pre-Workout, €39.95
-  Customer: <b>customer-b@example.com</b> · 4 returns / 6 orders in 60 days
-  Recommendation: <b>investigate</b> — flagged for fraud pattern review</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 5 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>~6 to 10 hrs</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Medium — money moves</span></div>
-          </div>
+      <div class="question">
+        <div class="num">2</div>
+        <div>
+          <h4>Can I describe the data sources in one sentence each?</h4>
+          <p><strong>If no →</strong> the data isn't ready. Fix the data plumbing first as its own project, then come back.</p>
         </div>
       </div>
 
-      <!-- 03 Review / NPS responder -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Review &amp; NPS responder</h3>
-            <p class="one-line">Drafts personalised replies to public reviews and survey responses. Different tone for 5★ vs 1★.</p>
-          </div>
-          <div class="pattern-num">// 03</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Review/NPS feed</span><span class="item">Customer order</span><span class="item">Brand voice doc</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Drafts tone-matched reply, routes legal-sensitive to human</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Trustpilot / Google</span><span class="item">Or approval queue</span></div>
-          </div>
-        </div>
-
-        <div class="example email">
-          <div class="ex-label">Two drafts the agent produced this morning</div>
-          <div class="ex-body"><b>★★★★★ "Best service ever!"</b>
-Draft: "Thank you so much. We share these every Friday with the warehouse team and they really do read them. See you on your next order. — the team"
-
-<b>★ "Never got my order. Awful."</b>
-Draft: <span style="color:#9a3412">[escalated to human queue — negative review with delivery complaint, sentiment -0.81, requires investigation before reply]</span></div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 5 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>~4 to 8 hrs</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — public approval gate</span></div>
-          </div>
+      <div class="question">
+        <div class="num">3</div>
+        <div>
+          <h4>If the agent gets it wrong, is the fallout recoverable in under an hour?</h4>
+          <p><strong>If no →</strong> skip for the first agent. Build something where embarrassment is the worst case.</p>
         </div>
       </div>
 
-    </div>
-
-    <!-- ============== OPERATIONS & REPORTING ============== -->
-    <div class="cat-section">
-      <span class="cat-tag cat-ops">Operations &amp; reporting</span>
-
-      <!-- 04 Daily snapshot -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="5"/><rect x="12" y="9" width="3" height="9"/><rect x="17" y="5" width="3" height="13"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Daily revenue snapshot</h3>
-            <p class="one-line">Each morning, posts yesterday's numbers vs same weekday last year, with one-line commentary.</p>
-          </div>
-          <div class="pattern-num">// 04</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Sales warehouse</span><span class="item">Same-weekday LY</span><span class="item">Hourly intraday</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">YoY deltas, freshness guard, one-line commentary</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Slack #finance</span><span class="item">07:30 daily</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">What the team sees at 07:30 every weekday</div>
-          <div class="ex-body">☀️ <b>Tuesday 12 May</b> — daily revenue snapshot
-
-  Revenue:  <b>€18,420</b>  ▲ +12.4% vs Tue LY (€16,388)
-  Orders:   <b>247</b>      ▲ +8.1%  vs Tue LY (228)
-  AOV:      <b>€74.57</b>   ▲ +4.0%  vs Tue LY (€71.69)
-
-  Today so far (07:30): <b>€892</b>  vs same hour LY <b>€731</b>
-
-  "Plans are nothing; planning is everything." — Eisenhower</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>2 to 4 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span></span>
-              <span>~5 hrs + alignment</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — freshness guard catches it</span></div>
-          </div>
+      <div class="question">
+        <div class="num">4</div>
+        <div>
+          <h4>Can I write the exact format of what the agent outputs?</h4>
+          <p><strong>If no →</strong> you're not ready. If you can't describe the output in detail, you don't know the task well enough to delegate it.</p>
         </div>
       </div>
 
-      <!-- 05 Inventory watchdog -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-              <line x1="12" y1="22.08" x2="12" y2="12"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Inventory watchdog</h3>
-            <p class="one-line">Watches stock vs sell-through velocity, flags SKUs about to stock out, drafts the PO.</p>
-          </div>
-          <div class="pattern-num">// 05</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Inventory levels</span><span class="item">Sell-through 30d</span><span class="item">Supplier lead times</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Forecasts stockouts, drafts PO emails to suppliers</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Purchasing channel</span><span class="item">PO draft for approval</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">Stockout warning posted this morning</div>
-          <div class="ex-body">⚠️ <b>3 SKUs at risk of stockout before next PO arrival</b>
-
-  <b>WHEY-CHOC-2KG</b>
-    Stock: 84 units · Daily velocity: 14/day
-    Days of cover: <b>6</b> · Supplier lead time: <b>10 days</b>
-    Suggested order qty: <b>200 units</b>
-    [draft PO ready for supplier review]
-
-  <b>CREATINE-500G</b>
-    Stock: 31 units · Days of cover: <b>4</b>
-    [draft PO ready]</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>4 to 7 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span></span>
-              <span>Lost-sale prevention</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — human approves PO</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 06 AR chaser -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="1" x2="12" y2="23"/>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>AR / collections chaser</h3>
-            <p class="one-line">Watches the aging report. Sends polite, increasingly firm follow-ups to late-paying customers.</p>
-          </div>
-          <div class="pattern-num">// 06</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">AR aging report</span><span class="item">Customer record</span><span class="item">AP contact email</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Picks tone for age bucket, drafts email, schedules send</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Customer AP email</span><span class="item">CC internal owner at 30d+</span></div>
-          </div>
-        </div>
-
-        <div class="example email">
-          <div class="ex-label">Sample drafted email — invoice 21 days late</div>
-          <div class="ex-body"><b>Subject:</b> Friendly reminder: invoice INV-2089 (due 21 Apr)
-
-Hi Alex,
-
-A quick reminder that invoice <b>INV-2089</b> for <b>€2,840.00</b> was due on 21 April and is showing as unpaid on our side. It's likely already with you for processing — could you confirm where it sits and when we can expect payment?
-
-Happy to resend a copy if useful.
-
-Thanks,
-Accounts
-<span style="color:#888">[escalation: next nudge at 30 days · CC accounts@yourco at 45 days]</span></div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 5 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span></span>
-              <span>Cash unlocked > hours saved</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — read-only at first send</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 07 Anomaly detector -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 12h4l3-9 6 18 3-9h4"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Metric anomaly detector</h3>
-            <p class="one-line">Watches your KPIs. When one deviates from expected range, posts a focused alert naming the likely cause.</p>
-          </div>
-          <div class="pattern-num">// 07</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Warehouse metrics</span><span class="item">14-day baselines</span><span class="item">Segment cuts</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Computes deviation, drills into segments, names the suspect</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Alert channel</span><span class="item">Only when meaningful</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">Yesterday's anomaly alert</div>
-          <div class="ex-body">🔔 <b>Anomaly: Sweden conversion rate</b>
-
-  Current: <b>1.84%</b> · 14-day baseline: <b>2.91%</b>
-  Deviation: <b>-37%</b> (4 standard deviations below mean)
-
-  Most affected segment:
-    Device = mobile
-    Source = paid_search
-    SKU category = pre-workout
-
-  Possible cause: bid changes on SE pre-workout campaigns yesterday
-  Owner: @marketing</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>4 to 7 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span></span>
-              <span>Catches issues days earlier</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — humans investigate</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ============== MARKETING ============== -->
-    <div class="cat-section">
-      <span class="cat-tag cat-marketing">Marketing</span>
-
-      <!-- 08 Ad ops monitor -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 17 9 11 13 15 21 7"/>
-              <polyline points="14 7 21 7 21 14"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Ad ops monitor</h3>
-            <p class="one-line">Watches campaign ROAS. Alerts when a campaign breaks its own pattern for two days running.</p>
-          </div>
-          <div class="pattern-num">// 08</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Meta Ads API</span><span class="item">Google Ads API</span><span class="item">Attribution</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Checks ROAS thresholds, flags fatigued creative</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Marketing channel</span><span class="item">Recommendations only</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">Morning ad ops digest</div>
-          <div class="ex-body">📉 <b>2 campaigns below ROAS threshold (2 days running)</b>
-
-  <b>🇩🇰 DK · Cold · Pre-workout video set</b>
-    ROAS: 1.4x (target 2.0x) · Spend: €312
-    Days at risk: 2 of 2
-    Recommendation: <b>pause</b> — review creative fatigue
-
-  <b>🇸🇪 SE · Retargeting · Carousel</b>
-    ROAS: 1.7x (target 2.5x)
-    Recommendation: <b>halve budget</b>, monitor 48h
-
-✅ 7 campaigns healthy · No action needed</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>4 to 6 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span></span>
-              <span>~5 hrs + wasted-spend cut</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — recommends, doesn't execute</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 09 Competitor watcher -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Competitor watcher</h3>
-            <p class="one-line">Tracks 5-10 competitors for new products, price changes, and ad creatives. Weekly digest.</p>
-          </div>
-          <div class="pattern-num">// 09</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Competitor URLs</span><span class="item">Ad libraries</span><span class="item">Pricing pages</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Diff vs last week, screenshot, summarise changes</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Weekly Monday digest</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">This week's competitor changes</div>
-          <div class="ex-body">🔍 <b>Competitor watch — week 19</b>
-
-  <b>Bulkpowders.dk</b>
-    • Launched new SKU: Vegan Protein Vanilla, €38.95
-    • Sale extended to Friday (was Wed)
-
-  <b>Myprotein.se</b>
-    • Price drop: Creatine 500g now SEK 199 (was 249)
-    • 3 new TikTok ad creatives in EU library
-
-  <b>Proteinkungen.se</b>
-    • No changes this week</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 7 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>~3 hrs + reaction speed</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Very low — read-only</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ============== INTERNAL & FOUNDER ============== -->
-    <div class="cat-section">
-      <span class="cat-tag cat-internal">Internal leverage</span>
-
-      <!-- 10 Meeting → action items -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 11l3 3L22 4"/>
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Meeting to action items</h3>
-            <p class="one-line">Reads the transcript, pulls out commitments, creates tasks with owners and due dates.</p>
-          </div>
-          <div class="pattern-num">// 10</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Meeting transcript</span><span class="item">Attendee list</span><span class="item">Existing tasks</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Extracts commitments, infers owners and dates</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Task system (ClickUp/Asana)</span><span class="item">DM each owner a recap</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">Action items extracted from Monday's leadership meeting</div>
-          <div class="ex-body">📝 <b>3 action items created from meeting "Leadership weekly · 13 May"</b>
-
-  • <b>Founder</b> — Send Q2 forecast draft to operations lead by Friday
-    [created in ClickUp · due Fri 16 May]
-
-  • <b>COO</b> — Get back to logistics partner with the new pallet config
-    [created in ClickUp · due Wed 14 May]
-
-  • <b>Head of sales</b> — Share BD pipeline review for the new market
-    [created in ClickUp · due next Monday 19 May]
-
-  ✉️ Personal recap sent to each owner</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>2 to 4 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span></span>
-              <span>~3 hrs + follow-through</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — owner can correct</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 11 Compliance reviewer -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              <polyline points="9 12 11 14 15 10"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Compliance reviewer</h3>
-            <p class="one-line">Reads draft marketing copy against your rules doc. Flags risky phrases with the rule cited.</p>
-          </div>
-          <div class="pattern-num">// 11</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Draft copy</span><span class="item">Policy / rules doc</span><span class="item">Past violation log</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Annotates inline, cites the rule, suggests rewrite</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Comment on doc</span><span class="item">Or block if hard violation</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">Inline review of a product description draft</div>
-          <div class="ex-body">✏️ <b>3 flags on draft "Whey Protein landing copy v3"</b>
-
-  ⚠️ Line 4: "boosts your immune system"
-     → Rule violated: EU Reg 1924/2006, Art. 10 (no unauthorised health claims)
-     → Suggested rewrite: "contributes to normal immune system function"
-       (this exact wording IS authorised for vitamin C / D / zinc)
-
-  ⚠️ Line 12: "scientifically proven to burn fat"
-     → Rule violated: no fat-loss claims for protein products
-     → Suggested rewrite: "supports lean muscle when combined with training"
-
-  ℹ️ Line 18: "best protein on the market"
-     → Style flag (not a hard violation) — superlatives risky in Sweden</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 5 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span></span>
-              <span>Fine-avoidance + speed</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — human ships final</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ============== FOUNDER ============== -->
-    <div class="cat-section">
-      <span class="cat-tag cat-founder">Founder &amp; executive</span>
-
-      <!-- 12 Daily briefing -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"/>
-              <line x1="12" y1="1" x2="12" y2="3"/>
-              <line x1="12" y1="21" x2="12" y2="23"/>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-              <line x1="1" y1="12" x2="3" y2="12"/>
-              <line x1="21" y1="12" x2="23" y2="12"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Daily briefing</h3>
-            <p class="one-line">One morning message: calendar prep, last 24h KPIs, three relevant news items, personal nudges.</p>
-          </div>
-          <div class="pattern-num">// 12</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">Calendar</span><span class="item">KPI dashboards</span><span class="item">News + email</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Synthesises into one personal briefing</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Personal DM at 06:30</span></div>
-          </div>
-        </div>
-
-        <div class="example">
-          <div class="ex-label">Your inbox at 06:30 tomorrow</div>
-          <div class="ex-body">☕ <b>Good morning, Wednesday 14 May</b>
-
-  <b>Today:</b>
-   • 09:30 — Weekly ops sync (30m). Last note: review shipping costs vs Q1 baseline.
-   • 11:00 — Team lead 1:1. Prep brief attached.
-   • 14:30 — School pickup (early-out Wed)
-
-  <b>Last 24h:</b>
-   • Revenue €18.4k (+12% vs LY Tue)
-   • 2 new 5★ reviews · 0 negative
-   • Ad ROAS healthy across 7 of 9 campaigns
-
-  <b>Worth reading:</b>
-   • EU updates protein health claim list (relevant: vit D + immune)
-   • Klarna launches new Nordic merchant rates
-
-  <b>One nudge:</b>
-   Kid's swimming lesson trial expires Sunday — book or skip?</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 6 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span></span>
-              <span>~5 hrs + better mornings</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>None — you read it and move on</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 13 Calendar defender -->
-      <div class="pattern">
-        <div class="pattern-head">
-          <div class="pattern-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
-          </div>
-          <div class="text">
-            <h3>Calendar defender</h3>
-            <p class="one-line">Watches incoming invites vs your stated weekly priorities. Drafts polite declines for misfits.</p>
-          </div>
-          <div class="pattern-num">// 13</div>
-        </div>
-
-        <div class="flow">
-          <div class="flow-step">
-            <div class="lbl">Reads</div>
-            <div class="val"><span class="item">New invite</span><span class="item">Your week priorities</span><span class="item">Existing load</span></div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step agent">
-            <div class="lbl">Agent</div>
-            <div class="val">Scores fit, drafts decline or counter-proposal</div>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-step">
-            <div class="lbl">Posts to</div>
-            <div class="val"><span class="item">Your approval queue</span><span class="item">One-tap send</span></div>
-          </div>
-        </div>
-
-        <div class="example email">
-          <div class="ex-label">Draft decline waiting for your tap</div>
-          <div class="ex-body"><b>Incoming invite:</b> "Quick chat about marketing automation tools" — Thursday 15:00
-<b>Sender:</b> External, no prior thread
-<b>Fit score:</b> Low — week's priorities are Q2 close, operations review, school enrolment
-
-<b>Draft reply:</b>
-"Thanks for reaching out. This week is unusually full — I'd rather not take a call I can't be present for. Could you send a short note on what you'd want to cover? If there's something I can help with by email, I'll respond properly. If a call is needed, let's look at the week of 26 May."
-
-[ approve & send · edit · accept the meeting instead ]</div>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-lbl">Build effort</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-              <span>3 to 5 days</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Time saved / week</div>
-            <div class="stat-val">
-              <span class="dots"><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot on-green"></span><span class="dot"></span></span>
-              <span>~3 hrs of meetings declined</span>
-            </div>
-          </div>
-          <div class="stat">
-            <div class="stat-lbl">Risk if wrong</div>
-            <div class="stat-val"><span>Low — you approve every send</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-  <!-- =========================================================
-       SECTION 4: DECISION TREE
-       ========================================================= -->
-  <section>
-    <div class="section-head">
-      <h2>4 · How to choose your first one, fast</h2>
-      <p class="sub">Run your shortlist through these five questions, in order. Stop at the first "no" and pick a different candidate.</p>
-    </div>
-
-    <figure class="illustration">
-      <img src="../media/share-decision-tree.png" alt="The friendly robot character with a clipboard, checking off five qualifying questions before building an agent.">
-    </figure>
-
-    <div class="tree">
-
-      <div class="tree-node">
-        <div class="qnum">1</div>
-        <div class="qtext">
-          <b>Does this task happen at least 3 times a week?</b>
-          <div class="answer">If no → reconsider. The win compounds with frequency. Once-a-month tasks rarely justify the agent build.</div>
-        </div>
-      </div>
-
-      <div class="tree-node">
-        <div class="qnum">2</div>
-        <div class="qtext">
-          <b>Can I describe the data sources in one sentence each?</b>
-          <div class="answer">If no → the data isn't ready. Fix the data plumbing first as its own project, then come back.</div>
-        </div>
-      </div>
-
-      <div class="tree-node">
-        <div class="qnum">3</div>
-        <div class="qtext">
-          <b>If the agent gets it wrong, is the fallout recoverable in under an hour?</b>
-          <div class="answer">If no → skip for the first agent. Build something where embarrassment is the worst case.</div>
-        </div>
-      </div>
-
-      <div class="tree-node">
-        <div class="qnum">4</div>
-        <div class="qtext">
-          <b>Can I write the exact format of what the agent outputs?</b>
-          <div class="answer">If no → you're not ready. If you can't describe the output in detail, you don't know the task well enough to delegate it.</div>
-        </div>
-      </div>
-
-      <div class="tree-node">
-        <div class="qnum">5</div>
-        <div class="qtext">
-          <b>Will I know in week one whether it's working?</b>
-          <div class="answer">If no → measure first, build later. Most agent failures are actually measurement failures.</div>
+      <div class="question last">
+        <div class="num">5</div>
+        <div>
+          <h4>Will I know in week one whether it's working?</h4>
+          <p><strong>If no →</strong> measure first, build later. Most agent failures are actually measurement failures.</p>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- =========================================================
-       SECTION 5: PITFALLS
-       ========================================================= -->
+  <!-- ─────────────────────────────────────────
+       SECTION 5 — PITFALLS
+       ───────────────────────────────────────── -->
   <section>
     <div class="section-head">
-      <h2>5 · What goes wrong (and how to dodge it)</h2>
-      <p class="sub">The same four mistakes account for most failed agent projects. Knowing them up front is worth more than another tutorial.</p>
+      <div class="section-num">Chapter <span class="dot"></span> 05</div>
+      <h2>Four ways agents fail</h2>
+      <p class="sub">
+        The same four mistakes account for most failed agent projects. Knowing them up front is worth more than another tutorial.
+      </p>
     </div>
 
-    <figure class="illustration">
-      <img src="../media/share-pitfalls.png" alt="Four warning cards illustrating the four most common ways agent projects fail, with the friendly robot character in each.">
+    <figure class="section-illo">
+      <img src="../media/share-pitfalls.png" alt="Four warning cards illustrating the most common ways agent projects fail.">
     </figure>
 
     <div class="pitfalls">
-
       <div class="pitfall">
-        <h4>⚠️ Building "an AI for the business"</h4>
+        <div class="warn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Pitfall 01
+        </div>
+        <h4>Building "an AI for the business"</h4>
         <p>One agent does one thing. The owner who tries to build a single intelligent assistant that does everything ships nothing. Pick a narrow, scheduled, boring task first.</p>
       </div>
 
       <div class="pitfall">
-        <h4>⚠️ Skipping the guard</h4>
+        <div class="warn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Pitfall 02
+        </div>
+        <h4>Skipping the guard</h4>
         <p>The agent will run on a day when its inputs are missing or wrong. Without a guard it will publish garbage with full confidence. Always include "refuse to act if X is missing".</p>
       </div>
 
       <div class="pitfall">
-        <h4>⚠️ No measurement plan</h4>
+        <div class="warn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Pitfall 03
+        </div>
+        <h4>No measurement plan</h4>
         <p>"It feels useful" is not a result. Decide on day one how you'll measure hours saved or money moved by week four. Write it down before you start.</p>
       </div>
 
       <div class="pitfall">
-        <h4>⚠️ Letting it autonomously act on humans</h4>
+        <div class="warn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Pitfall 04
+        </div>
+        <h4>Letting it autonomously act on humans</h4>
         <p>For agent #1, the agent always drafts and a human always approves. The day you let it auto-send is the day it embarrasses you. Earn the trust over weeks, not hours.</p>
       </div>
-
     </div>
   </section>
 
-  <!-- Closing -->
+  <!-- ─────────────────────────────────────────
+       CLOSING
+       ───────────────────────────────────────── -->
   <div class="closing">
-    <b>The single most useful idea on this page:</b> a working agent is a scheduled task with a clear input, a guard, and one output channel. That's it. Everything else is decoration. If you can describe one of those for your business by tonight, you're closer to shipping than 90% of operators talking about AI.
+    <figure class="closing-illo">
+      <img src="../media/share-closing.png" alt="The friendly robot character holding out a small card with three small symbols, gesturing 'your turn'.">
+    </figure>
+    <p class="quote">
+      A working agent is a <em>scheduled task</em> with a clear input, a guard, and one output channel.
+    </p>
+    <p class="punch">
+      Everything else is decoration. If you can describe one of those for your business by tonight,
+      you're closer to shipping than 90% of operators talking about AI.
+    </p>
   </div>
 
-  <div class="pagenav">
-    <span class="left"><a href="/pricemart-agents/">← Meet your agents</a></span>
-    <span class="right"><a href="/pricemart-agents/drafts/">Where do agent drafts actually go? →</a></span>
-  </div>
+  <nav class="pagenav">
+    <a href="../">← Back to the introduction</a>
+    <span class="right">napier.me/pricemart-agents/patterns</span>
+  </nav>
 
   <footer>
     <span class="left"><strong>PriceMart × Wildbreeze</strong> · Field guide 02</span>
-    <span class="right">Companion piece · patterns &amp; anatomy</span>
+    <span class="right">Quiet automation, one small step at a time</span>
   </footer>
 
 </div>
