@@ -108,7 +108,7 @@
       <span class="chip">A worked example</span>
       <h2>The same five parts, <em>for one real agent</em>.</h2>
       <p class="sub">
-        Here's a "Daily Sales Briefing" agent dissected. Any business with a sales database could build this one.
+        Here's an "Inventory Watchdog" agent dissected. Any business that buys and sells physical product could build this one.
       </p>
     </div>
 
@@ -118,13 +118,13 @@
 
     <div class="card worked-spec">
       <span class="label">Worked example</span>
-      <h3>The Daily Sales Briefing agent</h3>
+      <h3>The Inventory Watchdog agent</h3>
       <div class="rows">
-        <div class="row"><div class="part">Trigger</div><div class="desc">Every weekday at <em>08:00</em> [your timezone]</div></div>
-        <div class="row"><div class="part">Read</div><div class="desc">Yesterday's sales totals, today so far, same weekday <em>last year</em></div></div>
-        <div class="row"><div class="part">Guard</div><div class="desc">Refuse if yesterday's row count &lt; <em>70%</em> of normal</div></div>
-        <div class="row"><div class="part">Compute</div><div class="desc">Revenue Δ, orders Δ, AOV Δ <em>vs LY</em>. One short narrative.</div></div>
-        <div class="row"><div class="part">Post</div><div class="desc">→ One message to your team's <em>#sales</em> channel</div></div>
+        <div class="row"><div class="part">Trigger</div><div class="desc">Every weekday at <em>07:00</em> [your timezone]</div></div>
+        <div class="row"><div class="part">Read</div><div class="desc">Current stock per SKU, last 14 days of unit <em>velocity</em>, supplier lead times</div></div>
+        <div class="row"><div class="part">Guard</div><div class="desc">Refuse if stock table hasn't refreshed since <em>last close</em></div></div>
+        <div class="row"><div class="part">Compute</div><div class="desc">Days-of-cover per SKU. Flag where cover &lt; lead time. Top <em>15</em>.</div></div>
+        <div class="row"><div class="part">Post</div><div class="desc">→ One message to your team's <em>#purchasing</em> channel</div></div>
       </div>
     </div>
 
