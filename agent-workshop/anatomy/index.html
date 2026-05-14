@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Station 02 · The five parts — The Agent Workshop</title>
+<meta name="description" content="Every agent has the same anatomy: trigger, read, guard, compute, post. Once you see it, you see it everywhere.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Agent Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span><span class="sep"></span>
+    <span class="step current">2</span><span class="sep"></span>
+    <span class="step">3</span><span class="sep"></span>
+    <span class="step">4</span><span class="sep"></span>
+    <span class="step">5</span><span class="sep"></span>
+    <span class="step">6</span><span class="sep"></span>
+    <span class="step studio">7</span><span class="sep"></span>
+    <span class="step studio">8</span><span class="sep"></span>
+    <span class="step studio">9</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Station 02 · The Anatomy Wall</span>
+    <h1>The five <em>parts</em> every agent shares.</h1>
+    <p class="sub">
+      Strip the marketing language away and every agent has the same five parts.
+      If you can describe these five things for one of your own tasks, you have an agent spec.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <figure class="card banner">
+      <img src="../media/s2-banner.png" alt="A workshop wall with a large poster pinned to it. The poster shows five small labelled cards in a row: 01 Trigger (clock), 02 Read (lines), 03 Guard (shield), 04 Compute (chip), 05 Post (paper airplane). Pip stands on a stool pointing at the poster.">
+    </figure>
+
+    <div class="card quote">
+      Every agent reads <em>one thing</em>, decides <em>one thing</em>, and posts <em>one thing</em>.
+    </div>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s2-trigger.png" alt="Pip beside a small wall clock floating in the air."></div>
+      <div>
+        <h3>01 · Trigger</h3>
+        <p>When does it run? Pick one: a schedule (every weekday at 07:30), an event (a new ticket arrives), or a person asking (someone clicks a button).</p>
+        <p class="ex">→ Your first agent should run on a schedule. Event-driven is a year-2 problem.</p>
+      </div>
+    </div>
+
+    <div class="card concept flip">
+      <div>
+        <h3>02 · Read</h3>
+        <p>Where does it look? Name the sources in plain language: an inbox, a database, a spreadsheet, a folder.</p>
+        <p class="ex">→ If you can't name the source in one sentence, the data isn't ready yet.</p>
+      </div>
+      <div class="illo"><img src="../media/s2-read.png" alt="Pip holding a magnifying glass over a small stack of pastel papers."></div>
+    </div>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s2-guard.png" alt="Pip holding a small mint shield in a gentle protective stance."></div>
+      <div>
+        <h3>03 · Guard</h3>
+        <p>When should it refuse? When the inputs look wrong, missing, or impossible. This is the part everyone skips and regrets.</p>
+        <p class="ex">→ Every guard you write here saves you from one future embarrassing post.</p>
+      </div>
+    </div>
+
+    <div class="aside-pip">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip thinks…</div>
+        <p>The Guard is the most important part. <em>Without one, an agent will publish garbage with full confidence.</em> Write one more guard than you think you need.</p>
+      </div>
+    </div>
+
+    <div class="card concept flip">
+      <div>
+        <h3>04 · Compute</h3>
+        <p>What does it actually do with the input? Summarise, compare, classify, decide, draft.</p>
+        <p class="ex">→ If you can't write the rules in plain English, you can't write them at all.</p>
+      </div>
+      <div class="illo"><img src="../media/s2-compute.png" alt="Pip in a thinking pose with a small lightbulb in a thought bubble above its head."></div>
+    </div>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s2-post.png" alt="Pip releasing a paper airplane toward a small chat bubble."></div>
+      <div>
+        <h3>05 · Post</h3>
+        <p>Where does the answer go? One destination, one message. A Slack channel, an email, a doc, a CRM field.</p>
+        <p class="ex">→ One destination only. Multi-channel agents fail twice as often.</p>
+      </div>
+    </div>
+
+    <div class="sign" style="margin: 24px auto 0;">
+      <span class="chip">A worked example</span>
+      <h2>The same five parts, <em>for one real agent</em>.</h2>
+      <p class="sub">
+        Here's a "Daily Sales Briefing" agent dissected. Any business with a sales database could build this one.
+      </p>
+    </div>
+
+    <figure class="card banner">
+      <img src="../media/s2-worked-example.png" alt="A clipboard with five labelled rows, each showing one part of an agent's anatomy filled in. Pip stands beside it pointing at one row.">
+    </figure>
+
+    <div class="card worked-spec">
+      <span class="label">Worked example</span>
+      <h3>The Daily Sales Briefing agent</h3>
+      <div class="rows">
+        <div class="row"><div class="part">Trigger</div><div class="desc">Every weekday at <em>08:00</em> [your timezone]</div></div>
+        <div class="row"><div class="part">Read</div><div class="desc">Yesterday's sales totals, today so far, same weekday <em>last year</em></div></div>
+        <div class="row"><div class="part">Guard</div><div class="desc">Refuse if yesterday's row count &lt; <em>70%</em> of normal</div></div>
+        <div class="row"><div class="part">Compute</div><div class="desc">Revenue Δ, orders Δ, AOV Δ <em>vs LY</em>. One short narrative.</div></div>
+        <div class="row"><div class="part">Post</div><div class="desc">→ One message to your team's <em>#sales</em> channel</div></div>
+      </div>
+    </div>
+
+    <div class="card quote">
+      One agent, <em>one job</em>.
+    </div>
+
+    <div class="try">
+      <span class="label">Try this, before you scroll on</span>
+      <h4>Fill in five lines for one of your tasks.</h4>
+      <p>
+        Pick the repetitive thing you held in your head from Station 01. Try to write down its
+        Trigger, Read, Guard, Compute, and Post in a single sentence each. If you can do that,
+        you can build it. If you can't, you've found which part needs more thought.
+      </p>
+    </div>
+
+    <div class="souvenir">
+      <span class="label">You finished Station 02</span>
+      <div class="badge">
+        <img src="../media/sticker-anatomy-apprentice.png" alt="Anatomy Apprentice sticker — Pip in a mint ring holding a small gear.">
+      </div>
+      <h3>Anatomy Apprentice</h3>
+      <p>Second sticker. Seven more to collect.</p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../foundation/">
+      <span class="dir">← Previous</span>
+      <span class="label">Station 01 · What's an agent</span>
+    </a>
+    <a class="nav-card next" href="../business-map/">
+      <span class="dir">Next →</span>
+      <span class="label">Station 03 · Where they help</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Agent Workshop</strong> · Station 02</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
