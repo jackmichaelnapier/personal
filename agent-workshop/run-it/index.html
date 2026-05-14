@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Station 06 · Run it. Don't break it. — The Agent Workshop</title>
+<meta name="description" content="The operational reality of running an agent. The schedule, the trust ramp, the 'I don't know' button, and the four ways agents fail.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Agent Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span><span class="sep"></span>
+    <span class="step done">2</span><span class="sep"></span>
+    <span class="step done">3</span><span class="sep"></span>
+    <span class="step done">4</span><span class="sep"></span>
+    <span class="step done">5</span><span class="sep"></span>
+    <span class="step current">6</span><span class="sep"></span>
+    <span class="step studio">7</span><span class="sep"></span>
+    <span class="step studio">8</span><span class="sep"></span>
+    <span class="step studio">9</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Station 06 · The Test Bench</span>
+    <h1>Run it. <em>Don't break it.</em></h1>
+    <p class="sub">
+      The operational reality. How an agent actually runs day-to-day, plus the four mistakes
+      that account for most failed agent projects. Knowing these is worth more than another tutorial.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <figure class="card banner">
+      <img src="../media/s6-banner.png" alt="Pip at a workshop test bench beside a small glowing envelope-machine, holding a stopwatch and observing.">
+    </figure>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s6-schedule.png" alt="Pip beside a small wall calendar with weekdays circled."></div>
+      <div>
+        <h3>The schedule</h3>
+        <p>Most agents run on a clock. Once a day, twice a day, every Monday morning. Pick the lowest frequency that's still useful.</p>
+        <p class="ex">→ "Every weekday at 08:00" is a great first schedule.</p>
+      </div>
+    </div>
+
+    <div class="card concept flip">
+      <div>
+        <h3>The trust ramp</h3>
+        <p>Don't go from zero to autonomous. Five rungs: drafts a human reads → drafts a human glances at → sends easy ones, escalates hard → sends most, you sample → retired.</p>
+        <p class="ex">→ Spend the first month on rung 1. Earn the trust week by week.</p>
+      </div>
+      <div class="illo"><img src="../media/s6-trust-ramp.png" alt="A small ladder with five rungs, Pip climbing up."></div>
+    </div>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s6-idk-button.png" alt="Pip holding up a small yellow flag with a question-mark."></div>
+      <div>
+        <h3>The "I don't know" button</h3>
+        <p>Every good agent has a way to stop and ask a human when it's unsure. Silence is the worst possible answer.</p>
+        <p class="ex">→ The day your agent stops escalating is the day you should worry.</p>
+      </div>
+    </div>
+
+    <div class="card quote">
+      A well-designed agent fails <em>loudly</em>. A badly-designed one fails <em>silently</em>.
+    </div>
+
+    <div class="sign" style="margin: 24px auto 0;">
+      <span class="chip">Four ways agents fail</span>
+      <h2>The same four <em>mistakes</em>.</h2>
+      <p class="sub">Most failed agent projects look the same up close. Know them up front.</p>
+    </div>
+
+    <div class="pitfalls-grid">
+
+      <div class="pitfall-card">
+        <div class="illo"><img src="../media/s6-pitfall-1.png" alt="Pip looking up at a tall messy tower about to topple."></div>
+        <div class="body">
+          <span class="warn">⚠ Pitfall 01</span>
+          <h4>Building "an AI for the business"</h4>
+          <p>One agent does one thing. The owner who tries to build a single intelligent assistant that does everything ships nothing. Pick a narrow, scheduled, boring task first.</p>
+        </div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="illo"><img src="../media/s6-pitfall-2.png" alt="Pip surprised as an envelope flies out without going through a shield."></div>
+        <div class="body">
+          <span class="warn">⚠ Pitfall 02</span>
+          <h4>Skipping the guard</h4>
+          <p>The agent will run on a day when its inputs are missing or wrong. Without a guard it publishes garbage with full confidence. Always include "refuse to act if X is missing".</p>
+        </div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="illo"><img src="../media/s6-pitfall-3.png" alt="Pip looking puzzled at a blank ruler and empty graph."></div>
+        <div class="body">
+          <span class="warn">⚠ Pitfall 03</span>
+          <h4>No measurement plan</h4>
+          <p>"It feels useful" is not a result. Decide on day one how you'll measure hours saved or money moved by week four. Write it down before you start.</p>
+        </div>
+      </div>
+
+      <div class="pitfall-card">
+        <div class="illo"><img src="../media/s6-pitfall-4.png" alt="Pip holding both hands up as many envelopes fly out too fast."></div>
+        <div class="body">
+          <span class="warn">⚠ Pitfall 04</span>
+          <h4>Letting it auto-send too early</h4>
+          <p>For agent #1, the agent always drafts and a human always approves. The day you let it auto-send is the day it embarrasses you. Earn the trust over weeks, not hours.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="aside-pip warm">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip thinks…</div>
+        <p>If you only remember one thing from this station: <em>write one more guard than you think you need</em>. Future-you will write a thank-you note.</p>
+      </div>
+    </div>
+
+    <div class="try">
+      <span class="label">Try this, before you scroll on</span>
+      <h4>Which pitfall is most likely to bite you?</h4>
+      <p>
+        Be honest. For most owners it's pitfall 1 (too ambitious) or pitfall 3 (no measurement).
+        Knowing your own tendency is half the protection.
+      </p>
+    </div>
+
+    <div class="souvenir">
+      <span class="label">You finished Station 06 (and the tour!)</span>
+      <div class="badge">
+        <img src="../media/sticker-operator.png" alt="Operator sticker — Pip with a stopwatch in a warm-cream ring.">
+      </div>
+      <h3>Operator</h3>
+      <p>Sixth sticker. Three studios left — these are optional, and they're where you actually build.</p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../choosing/">
+      <span class="dir">← Previous</span>
+      <span class="label">Station 05 · Pick your first one</span>
+    </a>
+    <a class="nav-card next" href="../spec-bench/">
+      <span class="dir">Next →</span>
+      <span class="label">Studio 07 · The Spec Bench</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Agent Workshop</strong> · Station 06</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
