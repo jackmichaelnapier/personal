@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Studio 07 · The Spec Bench — The Agent Workshop</title>
+<meta name="description" content="Fill in 14 small fields and walk out with a real written specification for your first AI agent. Your answers are saved in your browser and exportable to Markdown.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Agent Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span><span class="sep"></span>
+    <span class="step done">2</span><span class="sep"></span>
+    <span class="step done">3</span><span class="sep"></span>
+    <span class="step done">4</span><span class="sep"></span>
+    <span class="step done">5</span><span class="sep"></span>
+    <span class="step done">6</span><span class="sep"></span>
+    <span class="step studio current">7</span><span class="sep"></span>
+    <span class="step studio">8</span><span class="sep"></span>
+    <span class="step studio">9</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Studio 07 · The Spec Bench</span>
+    <h1>Write a <em>real spec</em> for your first agent.</h1>
+    <p class="sub">
+      Fill in 14 small fields. Most take 1-3 sentences each. By the end of this studio you'll have
+      a written specification you can hand to a builder or use yourself. Your answers save automatically
+      in your browser. You can export the whole thing as Markdown.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <figure class="card banner">
+      <img src="../media/s7-banner.png" alt="Pip at a wide spec bench covered in clipboards and pencils, gesturing welcomingly at an empty clipboard in front.">
+    </figure>
+
+    <div class="aside-pip">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip thinks…</div>
+        <p>
+          This is where we stop talking and start designing. Take your time.
+          If you get stuck on a field, skip it and come back. Most fields are 1-3 sentences.
+          By the end you'll have something most people never reach: a written spec.
+        </p>
+      </div>
+    </div>
+
+    <div class="sign" style="margin: 16px auto 0;">
+      <span class="chip">Part A · The Why (4 fields)</span>
+      <h2>Why <em>this</em> agent.</h2>
+    </div>
+
+    <form id="spec-form">
+
+      <!-- 01 NAME -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f01-name.png" alt="Pip holding a small blank name tag."></div>
+        <div>
+          <div class="head"><span class="num">Field 01</span><h4>Name</h4></div>
+          <p class="prompt">What will you call this agent? Keep it short and descriptive. Avoid clever puns.</p>
+          <div class="why"><strong>Why it matters →</strong> The name is the handle everyone will use to talk about it. "Daily Sales Briefing" beats "SalesBot 9000."</div>
+          <div class="example"><span class="lbl">Example</span>Daily Sales Briefing</div>
+          <input type="text" name="f01" placeholder="Your agent's name…">
+          <div class="pip-tip"><em>If you can't name it in three words, you don't know what it is yet.</em></div>
+        </div>
+      </div>
+
+      <!-- 02 JOB -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f02-job.png" alt="Pip writing one short line on a small piece of paper."></div>
+        <div>
+          <div class="head"><span class="num">Field 02</span><h4>The one-sentence job</h4></div>
+          <p class="prompt">In one sentence, what does this agent do?</p>
+          <div class="why"><strong>Why it matters →</strong> If you can't write one sentence, the agent isn't scoped. If your sentence has "and" in it twice, you have two agents pretending to be one.</div>
+          <div class="example"><span class="lbl">Example</span>Every weekday morning, post a short note to the sales channel comparing yesterday's revenue to the same weekday last year.</div>
+          <textarea name="f02" placeholder="In one sentence…"></textarea>
+          <div class="pip-tip"><em>Read your sentence to a colleague. If they say "wait, what?" the sentence is wrong.</em></div>
+        </div>
+      </div>
+
+      <!-- 03 PROBLEM -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f03-problem.png" alt="Pip with a magnifying glass over a small soft-red pain-point dot."></div>
+        <div>
+          <div class="head"><span class="num">Field 03</span><h4>The problem it solves</h4></div>
+          <p class="prompt">What's painful about how this gets done today? Who feels the pain?</p>
+          <div class="why"><strong>Why it matters →</strong> No problem, no agent. This field protects you from building something nobody actually needs.</div>
+          <div class="example"><span class="lbl">Example</span>The owner opens the sales tool every morning and writes the comparison by hand. Takes 15 minutes. Only actually happens 3 days a week, so trend awareness is patchy.</div>
+          <textarea name="f03" placeholder="What's painful today, and who feels it…"></textarea>
+          <div class="pip-tip"><em>If the answer is "it would just be cool," close the spec and go for a walk.</em></div>
+        </div>
+      </div>
+
+      <!-- 04 SUCCESS -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f04-success.png" alt="Pip beside a small bar chart with one bar highlighted."></div>
+        <div>
+          <div class="head"><span class="num">Field 04</span><h4>Success in numbers</h4></div>
+          <p class="prompt">How will you know in 4 weeks whether this is working? Use numbers.</p>
+          <div class="why"><strong>Why it matters →</strong> Forces measurement before building. Without this, every agent is "kinda working" forever.</div>
+          <div class="example"><span class="lbl">Example</span>By end of month one: 5 unaided runs per week. Owner spends zero minutes on it. Owner trusts the number on 8 out of 10 sampled days.</div>
+          <textarea name="f04" placeholder="Numbers you'll check by week 4…"></textarea>
+          <div class="pip-tip"><em>If you can't measure it, you can't keep it. Write a number you'll actually check.</em></div>
+        </div>
+      </div>
+
+      <div class="sign" style="margin: 32px auto 16px;">
+        <span class="chip">Part B · The Five Parts (8 fields)</span>
+        <h2>The <em>anatomy</em>, filled in for your agent.</h2>
+      </div>
+
+      <!-- 05 TRIGGER -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f05-trigger.png" alt="Pip holding a small wall clock."></div>
+        <div>
+          <div class="head"><span class="num">Field 05</span><h4>Trigger</h4></div>
+          <p class="prompt">When does this agent run? Pick one: a schedule, an event, or a person asking.</p>
+          <div class="why"><strong>Why it matters →</strong> Triggers shape everything downstream. Scheduled agents are simplest. Start there.</div>
+          <div class="example"><span class="lbl">Example</span>Monday-Friday at 08:00 [your timezone]</div>
+          <input type="text" name="f05" placeholder="When does it run…">
+          <div class="pip-tip"><em>Your first agent should run on a schedule. Event-driven is a year-2 problem.</em></div>
+        </div>
+      </div>
+
+      <!-- 06 READ -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f06-read.png" alt="Pip with a magnifier over a small stack of papers."></div>
+        <div>
+          <div class="head"><span class="num">Field 06</span><h4>Read</h4></div>
+          <p class="prompt">What sources does it pull from? List each one in plain language.</p>
+          <div class="why"><strong>Why it matters →</strong> Naming sources forces you to confront whether the data actually exists where you think it does. Half of failed agent projects die here.</div>
+          <div class="example"><span class="lbl">Example</span>1. Sales database — yesterday's totals
+2. Same source filtered to same weekday last year
+3. Today's running totals so far</div>
+          <textarea name="f06" placeholder="List the sources, one per line…"></textarea>
+          <div class="pip-tip"><em>If you can't name the source in one line, the data isn't ready. Fix the data first.</em></div>
+        </div>
+      </div>
+
+      <!-- 07 CONTEXT -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f07-context.png" alt="Pip surrounded by 5 small floating note-slips."></div>
+        <div>
+          <div class="head"><span class="num">Field 07</span><h4>Context per run</h4></div>
+          <p class="prompt">Each time the agent runs, what specific information does it need handed to it?</p>
+          <div class="why"><strong>Why it matters →</strong> Smaller is better. Five focused inputs beats fifty random ones. This is the "stack of notes" you hand the agent.</div>
+          <div class="example"><span class="lbl">Example</span>1. Yesterday's totals (revenue, orders, AOV)
+2. Today's running totals so far
+3. Same-weekday-LY totals
+4. The previous 4 daily snapshots, for trend</div>
+          <textarea name="f07" placeholder="What gets handed to the agent each run…"></textarea>
+          <div class="pip-tip"><em>Anything more than 5 inputs and you're confusing your agent. Trim.</em></div>
+        </div>
+      </div>
+
+      <!-- 08 GUARD REFUSE -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f08-refuse.png" alt="Pip holding up a small shield in a stop gesture."></div>
+        <div>
+          <div class="head"><span class="num">Field 08</span><h4>Guard: refuse conditions</h4></div>
+          <p class="prompt">What conditions should make the agent refuse to run? List them.</p>
+          <div class="why"><strong>Why it matters →</strong> This is the field people skip and regret. Every refuse condition you write saves you from one future embarrassing post.</div>
+          <div class="example"><span class="lbl">Example</span>1. Refuse if rows(yesterday) &lt; 70% of recent median
+2. Refuse if yesterday's revenue is null
+3. Refuse if it's a public holiday</div>
+          <textarea name="f08" placeholder="When should it refuse to run…"></textarea>
+          <div class="pip-tip"><em>Write one more guard than you think you need. Future-you will write a thank-you note.</em></div>
+        </div>
+      </div>
+
+      <!-- 09 IDK -->
+      <div class="field">
+        <div class="icon"><img src="../media/s7-f09-idk.png" alt="Pip holding up a small yellow flag with a question mark."></div>
+        <div>
+          <div class="head"><span class="num">Field 09</span><h4>Guard: the "I don't know" path</h4></div>
+          <p class="prompt">When the agent refuses or is unsure, what does it do instead?</p>
+          <div class="why"><strong>Why it matters →</strong> Silence is the worst possible answer. An agent that fails loudly is a hundred times better than one that fails silently.</div>
+          <div class="example"><span class="lbl">Example</span>Post a short "data isn't complete yet, retrying at 09:00" message. Try once at 09:00. If still failing, post "data incomplete, please check pipeline" and stop for the day.</div>
+          <textarea name="f09" placeholder="What does it do when it doesn't know…"></textarea>
+          <div class="pip-tip"><em>Every good agent has an "I don't know" button. The day yours stops using it is the day to worry.</em></div>
+        </div>
+      </div>
+
+      <!-- 10 COMPUTE -->
+      <div class="field">
+        <div class="icon placeholder">10</div>
+        <div>
+          <div class="head"><span class="num">Field 10</span><h4>Compute: instructions</h4></div>
+          <p class="prompt">What rules does the agent follow to turn the inputs into the answer? Write them as if to a thoughtful junior colleague.</p>
+          <div class="why"><strong>Why it matters →</strong> This is the agent's brain. Plain English here translates directly into the actual prompt or code that runs.</div>
+          <div class="example"><span class="lbl">Example</span>1. Compute three deltas: revenue, orders, AOV. Compare to same weekday LY.
+2. Identify the biggest mover and write 2-3 sentences in plain English.
+3. Tone: calm, factual. No emojis. No exclamation points.
+4. Never speculate about causes.</div>
+          <textarea name="f10" placeholder="Rules in plain English…"></textarea>
+          <div class="pip-tip"><em>If you can't write the rules in plain English, you can't write them at all. Don't skip to code yet.</em></div>
+        </div>
+      </div>
+
+      <!-- 11 FORMAT -->
+      <div class="field">
+        <div class="icon placeholder">11</div>
+        <div>
+          <div class="head"><span class="num">Field 11</span><h4>Compute: output format</h4></div>
+          <p class="prompt">What exact shape does the output take? A sketch is fine.</p>
+          <div class="why"><strong>Why it matters →</strong> Without this, the output will drift week to week. Locking the format means readers scan it the same way every morning.</div>
+          <div class="example"><span class="lbl">Example</span>Subject: "Revenue · {date} · {↑/↓} {delta%} vs LY"
+Body:
+• Revenue: €{x} ({delta%} vs LY)
+• Orders: {n} ({delta%})
+• AOV: €{x} ({delta%})
+{2-3 sentence narrative}
+Footer: source + run time</div>
+          <textarea name="f11" placeholder="Sketch the output shape…"></textarea>
+          <div class="pip-tip"><em>Sketch the actual output before you build. If you can't draw it, the agent can't write it.</em></div>
+        </div>
+      </div>
+
+      <!-- 12 POST -->
+      <div class="field">
+        <div class="icon placeholder">12</div>
+        <div>
+          <div class="head"><span class="num">Field 12</span><h4>Post: where it goes</h4></div>
+          <p class="prompt">Where does the output land? One destination only.</p>
+          <div class="why"><strong>Why it matters →</strong> One agent, one channel. Multi-channel agents fail twice as often.</div>
+          <div class="example"><span class="lbl">Example</span>One message to the team's #sales channel. No threads, no DMs, no email copy.</div>
+          <input type="text" name="f12" placeholder="One destination, one format…">
+          <div class="pip-tip"><em>One destination, one message. Adding a second channel doubles your maintenance forever.</em></div>
+        </div>
+      </div>
+
+      <div class="sign" style="margin: 32px auto 16px;">
+        <span class="chip">Part C · Lifecycle (2 fields)</span>
+        <h2>Who <em>owns</em> it. When does it <em>end</em>.</h2>
+      </div>
+
+      <!-- 13 OWNER -->
+      <div class="field">
+        <div class="icon placeholder">13</div>
+        <div>
+          <div class="head"><span class="num">Field 13</span><h4>Owner</h4></div>
+          <p class="prompt">Who's the one human responsible for this agent? What's their response time when it breaks?</p>
+          <div class="why"><strong>Why it matters →</strong> No owner means no maintenance means dead agent in 6 months. Every agent needs one named human.</div>
+          <div class="example"><span class="lbl">Example</span>[Head of Sales]. Reviews failures within 4 business hours. Updates the prompt if the narrative drifts. Renews the spec annually.</div>
+          <textarea name="f13" placeholder="Who owns this and how do they care for it…"></textarea>
+          <div class="pip-tip"><em>If you can't name an owner, don't build the agent. It will become someone's silent problem.</em></div>
+        </div>
+      </div>
+
+      <!-- 14 RETIRE -->
+      <div class="field">
+        <div class="icon placeholder">14</div>
+        <div>
+          <div class="head"><span class="num">Field 14</span><h4>Retirement criteria</h4></div>
+          <p class="prompt">Under what conditions should this agent be retired or replaced?</p>
+          <div class="why"><strong>Why it matters →</strong> Agents have lifespans. Writing this on day one is the easiest way to remember to actually retire them.</div>
+          <div class="example"><span class="lbl">Example</span>Retire if any of:
+1. The owner stops reading the output for 4 consecutive weeks.
+2. A successor agent that handles multi-country splits is shipped.
+3. The underlying data source migrates and the spec hasn't been updated in 30 days.</div>
+          <textarea name="f14" placeholder="When does this agent end…"></textarea>
+          <div class="pip-tip"><em>Decide when it ends now, while you're calm. Future-you might be too attached.</em></div>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- WORKED EXAMPLE -->
+    <div class="sign" style="margin: 32px auto 16px;">
+      <span class="chip">For reference</span>
+      <h2>What a <em>finished spec</em> looks like.</h2>
+      <p class="sub">All 14 fields filled in for the Daily Sales Briefing agent.</p>
+    </div>
+
+    <figure class="card banner" style="aspect-ratio: 4 / 3; max-width: 640px; margin: 0 auto;">
+      <img src="../media/s7-worked-example.png" alt="A finished filled-in spec document with 14 short rows and a small mint approved stamp.">
+    </figure>
+
+    <!-- EXPORT PANEL -->
+    <div class="export-panel">
+      <h3>Your spec</h3>
+      <p>
+        Saved automatically in this browser. Export it as Markdown or print it as a PDF
+        (your browser's print dialog → "Save as PDF").
+      </p>
+      <div class="actions">
+        <button type="button" id="export-md">Copy as Markdown</button>
+        <button type="button" class="secondary" id="download-md">Download .md file</button>
+        <button type="button" class="secondary" id="clear-form">Clear all fields</button>
+      </div>
+      <div class="save-state" id="save-state">Loading…</div>
+    </div>
+
+    <!-- SOUVENIR -->
+    <div class="souvenir">
+      <span class="label">You finished Studio 07</span>
+      <div class="badge" style="width: 220px; height: 220px;">
+        <img src="../media/sticker-spec-author.png" alt="Spec Author sticker — Pip holding a finished scroll, mint double-ring border.">
+      </div>
+      <h3>Spec Author</h3>
+      <p>The big sticker. You did the work most people don't.</p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../run-it/">
+      <span class="dir">← Previous</span>
+      <span class="label">Station 06 · Run it. Don't break it.</span>
+    </a>
+    <a class="nav-card next disabled">
+      <span class="dir">Coming soon →</span>
+      <span class="label">Studio 08 · The Instruction Desk</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Agent Workshop</strong> · Studio 07</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'workshop_spec_v1';
+  const form = document.getElementById('spec-form');
+  const saveState = document.getElementById('save-state');
+  const fieldLabels = {
+    f01: 'Name',
+    f02: 'One-sentence job',
+    f03: 'Problem it solves',
+    f04: 'Success in numbers',
+    f05: 'Trigger',
+    f06: 'Read',
+    f07: 'Context per run',
+    f08: 'Guard: refuse conditions',
+    f09: 'Guard: I-don\'t-know path',
+    f10: 'Compute: instructions',
+    f11: 'Compute: output format',
+    f12: 'Post: destination',
+    f13: 'Owner',
+    f14: 'Retirement criteria',
+  };
+
+  // Load saved state
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    for (const [name, value] of Object.entries(saved)) {
+      const el = form.querySelector('[name="' + name + '"]');
+      if (el) el.value = value;
+    }
+    updateSaveState();
+  } catch (e) {
+    console.warn('Could not load saved spec', e);
+  }
+
+  // Auto-save on input
+  form.addEventListener('input', () => {
+    const data = {};
+    for (const el of form.querySelectorAll('input, textarea')) {
+      if (el.value) data[el.name] = el.value;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    updateSaveState();
+  });
+
+  function updateSaveState() {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const filled = Object.values(data).filter(v => v && v.trim()).length;
+    if (filled === 0) {
+      saveState.textContent = 'Your answers will save here automatically.';
+    } else {
+      saveState.textContent = filled + ' of 14 fields saved · ' + new Date().toLocaleTimeString();
+    }
+  }
+
+  function buildMarkdown() {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const name = data.f01 || '[Unnamed agent]';
+    let md = '# Agent Specification: ' + name + '\n\n';
+    md += '*Generated from the Agent Workshop · Studio 07*\n\n';
+    md += '---\n\n## Part A — The Why\n\n';
+    for (const k of ['f01','f02','f03','f04']) {
+      md += '### ' + fieldLabels[k] + '\n\n' + (data[k] || '_(not yet answered)_') + '\n\n';
+    }
+    md += '---\n\n## Part B — The Five Parts\n\n';
+    for (const k of ['f05','f06','f07','f08','f09','f10','f11','f12']) {
+      md += '### ' + fieldLabels[k] + '\n\n' + (data[k] || '_(not yet answered)_') + '\n\n';
+    }
+    md += '---\n\n## Part C — Lifecycle\n\n';
+    for (const k of ['f13','f14']) {
+      md += '### ' + fieldLabels[k] + '\n\n' + (data[k] || '_(not yet answered)_') + '\n\n';
+    }
+    return md;
+  }
+
+  document.getElementById('export-md').addEventListener('click', async () => {
+    const md = buildMarkdown();
+    try {
+      await navigator.clipboard.writeText(md);
+      saveState.textContent = '✓ Copied to clipboard · ' + new Date().toLocaleTimeString();
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = md; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      saveState.textContent = '✓ Copied to clipboard';
+    }
+  });
+
+  document.getElementById('download-md').addEventListener('click', () => {
+    const md = buildMarkdown();
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const name = (data.f01 || 'agent-spec').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name + '.md';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    saveState.textContent = '✓ Downloaded ' + name + '.md';
+  });
+
+  document.getElementById('clear-form').addEventListener('click', () => {
+    if (!confirm('Clear all 14 fields? This cannot be undone.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    for (const el of form.querySelectorAll('input, textarea')) el.value = '';
+    updateSaveState();
+  });
+})();
+</script>
+
+</body>
+</html>
