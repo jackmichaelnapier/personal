@@ -179,6 +179,9 @@ a.underline:hover { border-bottom-color: var(--ink); }
 
 .stream { display: flex; flex-direction: column; gap: 28px; margin: 32px 0; }
 
+/* Studio forms — apply the same vertical gap to fillable field cards */
+.stream form { display: flex; flex-direction: column; gap: 28px; }
+
 /* Banner card (wide section illustration) */
 .card.banner {
   margin: 0;
