@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Studio 08 · The Instruction Desk — The Agent Workshop</title>
+<meta name="description" content="Write the actual rules, persona, and examples your agent will follow. Five small writing exercises, with auto-save and Markdown export.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Agent Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span><span class="sep"></span>
+    <span class="step done">2</span><span class="sep"></span>
+    <span class="step done">3</span><span class="sep"></span>
+    <span class="step done">4</span><span class="sep"></span>
+    <span class="step done">5</span><span class="sep"></span>
+    <span class="step done">6</span><span class="sep"></span>
+    <span class="step studio done">7</span><span class="sep"></span>
+    <span class="step studio current">8</span><span class="sep"></span>
+    <span class="step studio">9</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Studio 08 · The Instruction Desk</span>
+    <h1>Write the <em>actual rules</em>.</h1>
+    <p class="sub">
+      A spec describes WHAT the agent does. The instructions describe HOW it does it.
+      Five small writing exercises. Each takes a few minutes. Your answers save automatically.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <figure class="card banner">
+      <img src="../media/s8-banner.png" alt="Pip at an old-fashioned writing desk with an inkwell and a quill pencil, a neat blank page in front, looking thoughtful.">
+    </figure>
+
+    <div class="aside-pip">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip thinks…</div>
+        <p>
+          Think of the instructions as the agent's <em>training manual</em>. Write them as if explaining
+          to a new junior colleague who's smart but doesn't know your business yet. Short sentences. Real examples.
+        </p>
+      </div>
+    </div>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s8-persona.png" alt="Pip beside a small reflection of itself drawn on a mirror."></div>
+      <div>
+        <h3>The four ingredients</h3>
+        <p>Every good set of instructions has four things: a <strong>persona</strong>, the <strong>hard rules</strong>, a few <strong>worked examples</strong>, and a <strong>"when unsure" clause</strong>.</p>
+        <p class="ex">→ Three worked examples are worth more than three pages of prose.</p>
+      </div>
+    </div>
+
+    <div class="card quote">
+      Three good examples beat <em>three pages of prose</em>.
+    </div>
+
+    <figure class="card banner">
+      <img src="../media/s8-compare.png" alt="Two writing pads side by side. Left: messy scribbles, eraser shavings. Right: neat clean lines.">
+    </figure>
+
+    <div class="aside-pip warm">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip thinks…</div>
+        <p>
+          The most common mistake is being <em>too vague</em>. "Be friendly" is not an instruction.
+          "Use the customer's name. Acknowledge their issue in one sentence. Offer one specific next step." Those are instructions.
+        </p>
+      </div>
+    </div>
+
+    <div class="sign" style="margin: 24px auto 16px;">
+      <span class="chip">The four exercises</span>
+      <h2>Write the instructions for <em>your</em> agent.</h2>
+      <p class="sub">Continue from the spec you wrote in Studio 07. Fill in each of these four short fields.</p>
+    </div>
+
+    <form id="instructions-form">
+
+      <!-- PERSONA -->
+      <div class="field">
+        <div class="icon"><img src="../media/s8-persona.png" alt="Pip beside its own reflection."></div>
+        <div>
+          <div class="head"><span class="num">Exercise 01</span><h4>The persona</h4></div>
+          <p class="prompt">Who is the agent? Describe its voice, role, and seniority in one short paragraph.</p>
+          <div class="why"><strong>Why it matters →</strong> The persona shapes every word the agent writes. A "calm CFO" sounds different from a "helpful customer-success rep."</div>
+          <div class="example"><span class="lbl">Example</span>You are a calm, factual reporting assistant for the operations team. You speak like a careful analyst, not a salesperson. You never speculate about causes. You never use emojis or exclamation points.</div>
+          <textarea name="persona" placeholder="Describe the persona…"></textarea>
+          <div class="pip-tip"><em>If you can't picture the persona as a real person, the instructions won't land.</em></div>
+        </div>
+      </div>
+
+      <!-- HARD RULES -->
+      <div class="field">
+        <div class="icon"><img src="../media/s8-hard-rules.png" alt="Pip holding a small stone tablet with three carved lines."></div>
+        <div>
+          <div class="head"><span class="num">Exercise 02</span><h4>The hard rules</h4></div>
+          <p class="prompt">Things this agent must never do. List them as short imperatives.</p>
+          <div class="why"><strong>Why it matters →</strong> Hard rules are non-negotiable. They protect you from the worst-case output.</div>
+          <div class="example"><span class="lbl">Example</span>1. Never speculate about causes of changes.
+2. Never claim a number you didn't compute from the data.
+3. Never use the words "absolutely" or "definitely."
+4. Never mention competitor names.
+5. If a number is missing, refuse to post and escalate.</div>
+          <textarea name="rules" placeholder="List the hard rules, one per line…"></textarea>
+          <div class="pip-tip"><em>Hard rules should be things you'd fire a human for doing. Make them count.</em></div>
+        </div>
+      </div>
+
+      <!-- WORKED EXAMPLES -->
+      <div class="field">
+        <div class="icon"><img src="../media/s8-examples.png" alt="Pip arranging three small specimen cards on a tabletop."></div>
+        <div>
+          <div class="head"><span class="num">Exercise 03</span><h4>Three worked examples</h4></div>
+          <p class="prompt">Write three "input → ideal output" pairs. Use real data shapes from your business.</p>
+          <div class="why"><strong>Why it matters →</strong> Examples teach the agent your style faster than any rule. The agent learns by imitating these.</div>
+          <div class="example"><span class="lbl">Example</span>Example 1
+Input: Yesterday revenue €12,400, orders 87, AOV €142. LY same weekday: €11,200, 92 orders, €121.
+Output: "Yesterday: €12,400 revenue (+10.7% vs LY), 87 orders (-5.4%), AOV €142 (+17.4%). AOV did most of the lifting."
+
+(Add two more in the same shape.)</div>
+          <textarea name="examples" placeholder="Three input-output pairs, in your own data…" style="min-height: 160px;"></textarea>
+          <div class="pip-tip"><em>If your examples are vague, the agent's output will be vague too. Real numbers, real wording.</em></div>
+        </div>
+      </div>
+
+      <!-- WHEN UNSURE -->
+      <div class="field">
+        <div class="icon"><img src="../media/s8-when-unsure.png" alt="Pip at a small fork in a path holding a question-mark flag."></div>
+        <div>
+          <div class="head"><span class="num">Exercise 04</span><h4>The "when unsure" clause</h4></div>
+          <p class="prompt">What does the agent do when it doesn't know the answer? Write the exact rule.</p>
+          <div class="why"><strong>Why it matters →</strong> This is the most important line in the whole instructions block. An agent that fakes confidence will hurt you.</div>
+          <div class="example"><span class="lbl">Example</span>When unsure about any number, refuse to post and instead send: "Data looks unusual today (specific reason). Skipping the briefing. Please check the pipeline." Never guess. Never round up. Never paper over gaps.</div>
+          <textarea name="unsure" placeholder="The exact 'when unsure' rule…"></textarea>
+          <div class="pip-tip"><em>Pip's rule: every good agent has an "I don't know" button. Write yours explicitly.</em></div>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="export-panel">
+      <h3>Your instructions block</h3>
+      <p>
+        Saved automatically in this browser. Export it as Markdown and paste it into your agent's system prompt
+        or hand it to whoever's building.
+      </p>
+      <div class="actions">
+        <button type="button" id="export-md">Copy as Markdown</button>
+        <button type="button" class="secondary" id="download-md">Download .md file</button>
+        <button type="button" class="secondary" id="clear-form">Clear all fields</button>
+      </div>
+      <div class="save-state" id="save-state">Loading…</div>
+    </div>
+
+    <div class="souvenir">
+      <span class="label">You finished Studio 08</span>
+      <div class="badge">
+        <img src="../media/sticker-voice-coach.png" alt="Voice Coach sticker — Pip holding a small speech bubble icon in a periwinkle ring.">
+      </div>
+      <h3>Voice Coach</h3>
+      <p>Eighth sticker. One studio left. The Final Test Bench.</p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../spec-bench/">
+      <span class="dir">← Previous</span>
+      <span class="label">Studio 07 · The Spec Bench</span>
+    </a>
+    <a class="nav-card next" href="../test-bench/">
+      <span class="dir">Next →</span>
+      <span class="label">Studio 09 · The Final Test Bench</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Agent Workshop</strong> · Studio 08</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'workshop_instructions_v1';
+  const form = document.getElementById('instructions-form');
+  const saveState = document.getElementById('save-state');
+  const labels = {
+    persona: 'The persona',
+    rules: 'Hard rules',
+    examples: 'Worked examples',
+    unsure: 'When unsure',
+  };
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    for (const [name, value] of Object.entries(saved)) {
+      const el = form.querySelector('[name="' + name + '"]');
+      if (el) el.value = value;
+    }
+    updateSaveState();
+  } catch (e) {}
+
+  form.addEventListener('input', () => {
+    const data = {};
+    for (const el of form.querySelectorAll('input, textarea')) {
+      if (el.value) data[el.name] = el.value;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    updateSaveState();
+  });
+
+  function updateSaveState() {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const filled = Object.values(data).filter(v => v && v.trim()).length;
+    saveState.textContent = filled === 0
+      ? 'Your answers will save here automatically.'
+      : filled + ' of 4 fields saved · ' + new Date().toLocaleTimeString();
+  }
+
+  function buildMarkdown() {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    let spec = '';
+    try {
+      const spec_data = JSON.parse(localStorage.getItem('workshop_spec_v1') || '{}');
+      if (spec_data.f01) spec = spec_data.f01;
+    } catch (e) {}
+    const name = spec || 'Agent';
+    let md = '# Instructions: ' + name + '\n\n';
+    md += '*Generated from the Agent Workshop · Studio 08*\n\n';
+    md += '---\n\n## Persona\n\n' + (data.persona || '_(not yet answered)_') + '\n\n';
+    md += '## Hard rules\n\n' + (data.rules || '_(not yet answered)_') + '\n\n';
+    md += '## Worked examples\n\n' + (data.examples || '_(not yet answered)_') + '\n\n';
+    md += '## When unsure\n\n' + (data.unsure || '_(not yet answered)_') + '\n\n';
+    return md;
+  }
+
+  document.getElementById('export-md').addEventListener('click', async () => {
+    const md = buildMarkdown();
+    try {
+      await navigator.clipboard.writeText(md);
+      saveState.textContent = '✓ Copied to clipboard · ' + new Date().toLocaleTimeString();
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = md; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      saveState.textContent = '✓ Copied to clipboard';
+    }
+  });
+
+  document.getElementById('download-md').addEventListener('click', () => {
+    const md = buildMarkdown();
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'agent-instructions.md';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    saveState.textContent = '✓ Downloaded agent-instructions.md';
+  });
+
+  document.getElementById('clear-form').addEventListener('click', () => {
+    if (!confirm('Clear all fields? This cannot be undone.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    for (const el of form.querySelectorAll('input, textarea')) el.value = '';
+    updateSaveState();
+  });
+})();
+</script>
+
+</body>
+</html>
