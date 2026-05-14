@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Studio 09 · The Final Test Bench — The Agent Workshop</title>
+<meta name="description" content="Stress-test your agent design before letting it run. Write golden examples, evil-twin inputs, and your first-week check ritual. Earn the final sticker.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Agent Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span><span class="sep"></span>
+    <span class="step done">2</span><span class="sep"></span>
+    <span class="step done">3</span><span class="sep"></span>
+    <span class="step done">4</span><span class="sep"></span>
+    <span class="step done">5</span><span class="sep"></span>
+    <span class="step done">6</span><span class="sep"></span>
+    <span class="step studio done">7</span><span class="sep"></span>
+    <span class="step studio done">8</span><span class="sep"></span>
+    <span class="step studio current">9</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Studio 09 · The Final Test Bench</span>
+    <h1>Stress-test it <em>before</em> you ship.</h1>
+    <p class="sub">
+      The last studio. You'll write a few inputs the agent must handle correctly, a few it must refuse,
+      and a small first-week ritual to catch surprises. Then you'll earn the last sticker.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <figure class="card banner">
+      <img src="../media/s9-banner.png" alt="Pip at a final test bench with five small sample inputs on the left, an arrow, and five output cards on the right, with one approval stamp.">
+    </figure>
+
+    <div class="aside-pip">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip thinks…</div>
+        <p>
+          Testing is the unglamorous part. Almost nobody does it. The agents that survive past month 3 are the ones whose authors spent a calm hour writing tests <em>before</em> wiring anything live.
+        </p>
+      </div>
+    </div>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s9-golden.png" alt="Pip holding three small gold-trimmed cards with soft yellow stars."></div>
+      <div>
+        <h3>Golden examples</h3>
+        <p>3-5 real input cases where you already know the correct output. These are the agent's exam. If it passes them, it earns the right to run.</p>
+        <p class="ex">→ Use real data shapes from your business, not invented ones.</p>
+      </div>
+    </div>
+
+    <div class="card concept flip">
+      <div>
+        <h3>The evil twin test</h3>
+        <p>Try to break it on purpose. Missing fields, corrupted data, weird edge cases, holidays. If the agent doesn't refuse cleanly, your guard isn't strong enough.</p>
+        <p class="ex">→ The goal isn't to pass these. The goal is to fail correctly.</p>
+      </div>
+      <div class="illo"><img src="../media/s9-evil-twin.png" alt="Pip carefully presenting a torn input card with a curious expression."></div>
+    </div>
+
+    <div class="card concept">
+      <div class="illo"><img src="../media/s9-dry-run.png" alt="Pip releasing a paper airplane that lands in a small sandbox tray."></div>
+      <div>
+        <h3>The dry-run</h3>
+        <p>Run the agent for a week with the "post" step pointing at a private channel only you can see. Check every output. Don't go live until you've sampled at least 5 in a row that you'd have sent yourself.</p>
+        <p class="ex">→ A week of dry-run saves a month of cleanup.</p>
+      </div>
+    </div>
+
+    <div class="card concept flip">
+      <div>
+        <h3>The first-week ritual</h3>
+        <p>For the first 5 working days after launch: read every output. Note anything that surprised you. After day 5, decide: keep, fix, or kill.</p>
+        <p class="ex">→ Most "the agent went rogue" stories happen because nobody read week 1.</p>
+      </div>
+      <div class="illo"><img src="../media/s9-first-week.png" alt="Pip with a small daily checklist marking off 5 boxes."></div>
+    </div>
+
+    <div class="card quote">
+      A week of dry-run saves <em>a month of cleanup</em>.
+    </div>
+
+    <div class="sign" style="margin: 24px auto 16px;">
+      <span class="chip">Write your tests</span>
+      <h2>Three small exercises, <em>and you're done</em>.</h2>
+      <p class="sub">Auto-saved. Exportable. Pair it with your spec and instructions to hand off a complete build packet.</p>
+    </div>
+
+    <form id="tests-form">
+
+      <div class="field">
+        <div class="icon"><img src="../media/s9-golden.png" alt="Pip with three gold-trimmed cards."></div>
+        <div>
+          <div class="head"><span class="num">Exercise 01</span><h4>Three golden examples</h4></div>
+          <p class="prompt">Write 3 real input cases where you know the correct output. Be specific. Use real data shapes.</p>
+          <div class="why"><strong>Why it matters →</strong> These are your regression tests. Re-run them every time you change the instructions.</div>
+          <div class="example"><span class="lbl">Example</span>Golden 1
+Input: yesterday €12,400 / 87 orders / AOV €142. LY same day €11,200 / 92 / €121.
+Expected output: "Yesterday: €12,400 revenue (+10.7% vs LY)..."
+
+(Add two more, same shape.)</div>
+          <textarea name="golden" placeholder="Three input → expected output pairs…" style="min-height: 180px;"></textarea>
+          <div class="pip-tip"><em>If you can't write three real ones, you don't know the task yet. That's a finding, not a failure.</em></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon"><img src="../media/s9-evil-twin.png" alt="Pip with a torn input card."></div>
+        <div>
+          <div class="head"><span class="num">Exercise 02</span><h4>Three evil-twin inputs</h4></div>
+          <p class="prompt">Write 3 inputs the agent should refuse cleanly. For each, write the exact refusal message you'd want to see.</p>
+          <div class="why"><strong>Why it matters →</strong> This is how you make sure the guard works. Without these, the guard is theoretical.</div>
+          <div class="example"><span class="lbl">Example</span>Evil 1
+Input: yesterday row count is 12% of normal (data load failed).
+Expected output: "Data incomplete (only 12% of usual rows). Skipping today, will retry at 09:00. Please check pipeline."
+
+(Add two more, e.g. holiday, null revenue.)</div>
+          <textarea name="evil" placeholder="Three failure cases + the right refusal each time…" style="min-height: 160px;"></textarea>
+          <div class="pip-tip"><em>The right number of refusal cases is "a couple more than you think." Add one weird one.</em></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon"><img src="../media/s9-first-week.png" alt="Pip with a daily checklist."></div>
+        <div>
+          <div class="head"><span class="num">Exercise 03</span><h4>Your first-week ritual</h4></div>
+          <p class="prompt">For the first 5 working days after launch, what will you check? Write it as a daily checklist.</p>
+          <div class="why"><strong>Why it matters →</strong> Most "the agent went rogue" stories happen because nobody read week 1. Make the ritual concrete, calendar it.</div>
+          <div class="example"><span class="lbl">Example</span>Day 1: read the output within 30 min of it posting. Note anything that surprised me.
+Day 2-5: same. Compare today's output to yesterday's.
+End of day 5: decide keep/fix/kill. Write a one-paragraph review.</div>
+          <textarea name="firstweek" placeholder="Your day-by-day check ritual…"></textarea>
+          <div class="pip-tip"><em>Block 10 minutes a day in your calendar for week 1. After that, weekly is plenty.</em></div>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="export-panel">
+      <h3>Your test plan</h3>
+      <p>
+        Saved automatically. Combined with your spec (Studio 07) and your instructions (Studio 08),
+        you now have a complete build packet for one real agent.
+      </p>
+      <div class="actions">
+        <button type="button" id="export-md">Copy test plan as Markdown</button>
+        <button type="button" class="secondary" id="download-all">Download FULL packet (spec + instructions + tests)</button>
+        <button type="button" class="secondary" id="clear-form">Clear test fields</button>
+      </div>
+      <div class="save-state" id="save-state">Loading…</div>
+    </div>
+
+    <div class="sign" style="margin: 32px auto 16px;">
+      <span class="chip">The closing letter</span>
+      <h2>You've designed <em>an agent</em>.</h2>
+      <p class="sub">Most people who start a guide like this never finish it. You did. Here's the only thing left to say.</p>
+    </div>
+
+    <figure class="card banner">
+      <img src="../media/s9-closing.png" alt="Pip standing at the workshop's open back door, gesturing the reader out into a soft sunrise.">
+    </figure>
+
+    <div class="card quote">
+      A working agent is a <em>scheduled task</em> with a clear input, a guard, and one output channel. Everything else is decoration.
+    </div>
+
+    <div class="aside-pip">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip's final note…</div>
+        <p>
+          You walked through the whole workshop. You have a spec, instructions, and tests for one real agent.
+          Now go build it. Start small. Run it in draft mode. Read every output for a week. The boring ones win.
+          <em>I'll be at the bench when you're ready for the next one.</em>
+        </p>
+      </div>
+    </div>
+
+    <div class="souvenir">
+      <span class="label">You finished the whole workshop</span>
+      <div class="badge" style="width: 240px; height: 240px;">
+        <img src="../media/sticker-agent-builder.png" alt="Agent Builder sticker — Pip with arms raised in quiet triumph, gold double-ring border, the final and grandest sticker.">
+      </div>
+      <h3>Agent Builder</h3>
+      <p>The final sticker. The whole set.</p>
+    </div>
+
+    <figure class="card banner" style="aspect-ratio: 4 / 3; max-width: 640px; margin: 24px auto 0;">
+      <img src="../media/s9-sticker-board.png" alt="A small wooden souvenir board with all 9 stickers mounted in a 3x3 grid. Pip stands beside it admiring the set.">
+    </figure>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../instructions/">
+      <span class="dir">← Previous</span>
+      <span class="label">Studio 08 · The Instruction Desk</span>
+    </a>
+    <a class="nav-card next" href="../">
+      <span class="dir">↩ Back to the workshop door</span>
+      <span class="label">The Welcome page</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Agent Workshop</strong> · Studio 09 · the end</span>
+    <span class="right">Walk slow. Sip coffee. Build small.</span>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'workshop_tests_v1';
+  const form = document.getElementById('tests-form');
+  const saveState = document.getElementById('save-state');
+  const labels = {
+    golden: 'Golden examples',
+    evil: 'Evil-twin inputs',
+    firstweek: 'First-week ritual',
+  };
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    for (const [name, value] of Object.entries(saved)) {
+      const el = form.querySelector('[name="' + name + '"]');
+      if (el) el.value = value;
+    }
+    updateSaveState();
+  } catch (e) {}
+
+  form.addEventListener('input', () => {
+    const data = {};
+    for (const el of form.querySelectorAll('input, textarea')) {
+      if (el.value) data[el.name] = el.value;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    updateSaveState();
+  });
+
+  function updateSaveState() {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const filled = Object.values(data).filter(v => v && v.trim()).length;
+    saveState.textContent = filled === 0
+      ? 'Your answers will save here automatically.'
+      : filled + ' of 3 fields saved · ' + new Date().toLocaleTimeString();
+  }
+
+  function buildTestPlanMd() {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    let md = '# Test plan\n\n*Generated from the Agent Workshop · Studio 09*\n\n---\n\n';
+    md += '## Golden examples\n\n' + (data.golden || '_(not yet answered)_') + '\n\n';
+    md += '## Evil-twin inputs\n\n' + (data.evil || '_(not yet answered)_') + '\n\n';
+    md += '## First-week ritual\n\n' + (data.firstweek || '_(not yet answered)_') + '\n\n';
+    return md;
+  }
+
+  function buildFullPacket() {
+    const spec = JSON.parse(localStorage.getItem('workshop_spec_v1') || '{}');
+    const instructions = JSON.parse(localStorage.getItem('workshop_instructions_v1') || '{}');
+    const tests = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const name = spec.f01 || '[Unnamed agent]';
+
+    let md = '# Build packet: ' + name + '\n\n';
+    md += '*Generated from the Agent Workshop (napier.me/agent-workshop)*\n\n';
+    md += '---\n\n# 1. Specification (Studio 07)\n\n';
+
+    const specLabels = {
+      f01:'Name', f02:'One-sentence job', f03:'Problem', f04:'Success in numbers',
+      f05:'Trigger', f06:'Read', f07:'Context per run',
+      f08:'Guard: refuse', f09:'Guard: I-don\'t-know path',
+      f10:'Compute: instructions', f11:'Compute: output format', f12:'Post',
+      f13:'Owner', f14:'Retirement criteria',
+    };
+    for (const k of Object.keys(specLabels)) {
+      md += '## ' + specLabels[k] + '\n\n' + (spec[k] || '_(not yet answered)_') + '\n\n';
+    }
+
+    md += '---\n\n# 2. Instructions (Studio 08)\n\n';
+    md += '## Persona\n\n' + (instructions.persona || '_(not yet answered)_') + '\n\n';
+    md += '## Hard rules\n\n' + (instructions.rules || '_(not yet answered)_') + '\n\n';
+    md += '## Worked examples\n\n' + (instructions.examples || '_(not yet answered)_') + '\n\n';
+    md += '## When unsure\n\n' + (instructions.unsure || '_(not yet answered)_') + '\n\n';
+
+    md += '---\n\n# 3. Test plan (Studio 09)\n\n';
+    md += '## Golden examples\n\n' + (tests.golden || '_(not yet answered)_') + '\n\n';
+    md += '## Evil-twin inputs\n\n' + (tests.evil || '_(not yet answered)_') + '\n\n';
+    md += '## First-week ritual\n\n' + (tests.firstweek || '_(not yet answered)_') + '\n\n';
+
+    return md;
+  }
+
+  document.getElementById('export-md').addEventListener('click', async () => {
+    const md = buildTestPlanMd();
+    try {
+      await navigator.clipboard.writeText(md);
+      saveState.textContent = '✓ Test plan copied · ' + new Date().toLocaleTimeString();
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = md; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      saveState.textContent = '✓ Test plan copied';
+    }
+  });
+
+  document.getElementById('download-all').addEventListener('click', () => {
+    const md = buildFullPacket();
+    const spec = JSON.parse(localStorage.getItem('workshop_spec_v1') || '{}');
+    const name = (spec.f01 || 'agent-packet').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = name + '-build-packet.md';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    saveState.textContent = '✓ Downloaded full packet';
+  });
+
+  document.getElementById('clear-form').addEventListener('click', () => {
+    if (!confirm('Clear test plan fields? (Spec and instructions are kept.)')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    for (const el of form.querySelectorAll('input, textarea')) el.value = '';
+    updateSaveState();
+  });
+})();
+</script>
+
+</body>
+</html>
