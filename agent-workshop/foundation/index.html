@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Station 01 · What's an agent, anyway? — The Agent Workshop</title>
+<meta name="description" content="Station 1 of the Agent Workshop field guide. The concept of an AI agent in plain English, what it is and isn't, plus a comic strip showing one in action.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <a class="name" href="../">← The Agent Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <!-- PROGRESS STRIP -->
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step current">1</span>
+    <span class="sep"></span><span class="step">2</span>
+    <span class="sep"></span><span class="step">3</span>
+    <span class="sep"></span><span class="step">4</span>
+    <span class="sep"></span><span class="step">5</span>
+    <span class="sep"></span><span class="step">6</span>
+    <span class="sep"></span><span class="step studio">7</span>
+    <span class="sep"></span><span class="step studio">8</span>
+    <span class="sep"></span><span class="step studio">9</span>
+  </nav>
+
+  <!-- WORKSHOP SIGN -->
+  <div class="sign">
+    <span class="chip">Station 01 · The Foundation Bench</span>
+    <h1>What's an agent, <em>anyway</em>?</h1>
+    <p class="sub">
+      Let's start with the simplest version. By the end of this station, you'll have one
+      clean sentence in your head that explains what an agent is, and you'll be able to spot
+      one in the wild.
+    </p>
+  </div>
+
+  <!-- CARD STREAM -->
+  <div class="stream">
+
+    <!-- BANNER -->
+    <figure class="card banner">
+      <img src="../media/s1-banner.png" alt="Pip the friendly round robot stands at a tidy wooden workbench in a small leather apron, smiling and welcoming the reader. On the bench: a clipboard, a magnifying glass, a small mint envelope, a pencil.">
+    </figure>
+
+    <!-- BIG QUOTE: THE DEFINITION -->
+    <div class="card quote">
+      An agent is a <em>small piece of software</em> that watches one thing, decides something, and posts one answer.
+    </div>
+
+    <!-- THE THREE THINGS IT DOES -->
+    <div class="card spotlights">
+      <div class="row">
+        <div class="spot">
+          <div class="ring"><img src="../media/s1-spot-reads.png" alt="Pip reading a small piece of paper, in a soft blue circular badge."></div>
+          <h4>It reads.</h4>
+          <p>Looks at one specific thing on a schedule. Your inbox. Yesterday's sales. A folder.</p>
+        </div>
+        <div class="spot">
+          <div class="ring"><img src="../media/s1-spot-decides.png" alt="Pip with a small lightbulb floating above its head in a soft mint circular badge."></div>
+          <h4>It decides.</h4>
+          <p>Applies simple rules to what it found. Sort. Compare. Summarise. Flag.</p>
+        </div>
+        <div class="spot">
+          <div class="ring"><img src="../media/s1-spot-posts.png" alt="Pip releasing a small paper airplane in a soft purple circular badge."></div>
+          <h4>It posts.</h4>
+          <p>Sends one short answer somewhere a human will see it. Slack. Email. A doc.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIP THINKS -->
+    <div class="aside-pip">
+      <div class="face">🤖</div>
+      <div>
+        <div class="label">Pip thinks…</div>
+        <p>
+          The best agents are the boring ones. The ones you stop noticing because they just work,
+          quietly, in the background. If your agent is dramatic or surprising, something is wrong.
+        </p>
+      </div>
+    </div>
+
+    <!-- COMPARE: NOT A CHATBOT -->
+    <div class="card compare">
+      <h3>An agent is <em>not</em> a chatbot.</h3>
+      <div class="pair">
+        <img src="../media/s1-compare-chatbot.png" alt="Side by side: Pip working calmly alone at a small monitor with a single output, contrasted with a chat-bubble-headed character surrounded by many overlapping chat bubbles, looking overwhelmed.">
+      </div>
+      <div class="legends">
+        <div class="legend left">
+          <span class="label">Agent</span>
+          <h4>Calm and focused</h4>
+          <p>Wakes up, does one job, posts one answer, goes back to sleep. You don't talk to it.</p>
+        </div>
+        <div class="legend right">
+          <span class="label">Chatbot</span>
+          <h4>Busy and reactive</h4>
+          <p>Waits for someone to message it. Has to handle whatever comes in, in real-time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARE: NOT A SCRIPT -->
+    <div class="card compare">
+      <h3>An agent is <em>not</em> a script either.</h3>
+      <div class="pair">
+        <img src="../media/s1-compare-script.png" alt="Side by side: Pip thoughtfully considering a single envelope on its workbench, contrasted with a faceless gear-robot mechanically stamping documents on a conveyor belt.">
+      </div>
+      <div class="legends">
+        <div class="legend left">
+          <span class="label">Agent</span>
+          <h4>Thinks about it</h4>
+          <p>Looks at the input, makes a small judgement, can refuse if something looks wrong.</p>
+        </div>
+        <div class="legend right">
+          <span class="label">Script</span>
+          <h4>Just runs</h4>
+          <p>Does the same thing every time, no matter what comes in. No judgement, no refusal.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKSHOP SIGN: A DAY IN THE LIFE -->
+    <div class="sign" style="margin: 24px auto 0;">
+      <span class="chip">A day in Pip's life</span>
+      <h2>What it <em>actually looks like</em>.</h2>
+      <p class="sub">
+        Here's one whole working day for one small agent. Four panels. Five minutes of actual computer time, total.
+      </p>
+    </div>
+
+    <!-- COMIC STRIP -->
+    <figure class="card banner">
+      <img src="../media/s1-comic-strip.png" alt="A four-panel comic strip. Panel 1: Pip wakes next to an alarm clock at dawn. Panel 2: Pip reads a stack of envelopes with a magnifying glass. Panel 3: Pip selects three envelopes with a clipboard. Panel 4: Pip sends a paper airplane toward a chat-bubble, looking satisfied.">
+    </figure>
+
+    <!-- BIG QUOTE: STICKY PHRASE -->
+    <div class="card quote">
+      One agent, <em>one job</em>.
+    </div>
+
+    <!-- TRY IT STICKY -->
+    <div class="try">
+      <span class="label">Try this, before you scroll on</span>
+      <h4>What's one repetitive task in your week?</h4>
+      <p>
+        It doesn't have to be glamorous. It should be the boring 5-minute thing you do 50 times.
+        Hold it in your head. We'll come back to it at every station.
+      </p>
+    </div>
+
+    <!-- SOUVENIR -->
+    <div class="souvenir">
+      <span class="label">You finished Station 01</span>
+      <div class="badge">
+        <img src="../media/sticker-foundation-friend.png" alt="A circular souvenir sticker showing Pip reading an open book, in a soft blue ring with a small white star at the top.">
+      </div>
+      <h3>Foundation Friend</h3>
+      <p>Your first sticker. Eight more to collect.</p>
+    </div>
+
+  </div>
+
+  <!-- STATION NAV -->
+  <nav class="station-nav">
+    <a class="nav-card disabled">
+      <span class="dir">← The Workshop Door</span>
+      <span class="label">Welcome</span>
+    </a>
+    <a class="nav-card next disabled">
+      <span class="dir">Next →</span>
+      <span class="label">Station 02 · The five parts (coming next)</span>
+    </a>
+  </nav>
+
+  <!-- FOOTER -->
+  <footer class="colophon">
+    <span class="left"><strong>The Agent Workshop</strong> · Station 01</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
