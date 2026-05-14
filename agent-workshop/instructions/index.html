@@ -101,7 +101,7 @@
           <div class="head"><span class="num">Exercise 01</span><h4>The persona</h4></div>
           <p class="prompt">Who is the agent? Describe its voice, role, and seniority in one short paragraph.</p>
           <div class="why"><strong>Why it matters →</strong> The persona shapes every word the agent writes. A "calm CFO" sounds different from a "helpful customer-success rep."</div>
-          <div class="example"><span class="lbl">Example</span>You are a calm, factual reporting assistant for the operations team. You speak like a careful analyst, not a salesperson. You never speculate about causes. You never use emojis or exclamation points.</div>
+          <div class="example"><span class="lbl">Example</span>You are a calm, factual purchasing assistant for the buying team. You speak like a careful warehouse manager, not a salesperson. You never speculate about causes. You never use emojis or exclamation points.</div>
           <textarea name="persona" placeholder="Describe the persona…"></textarea>
           <div class="pip-tip"><em>If you can't picture the persona as a real person, the instructions won't land.</em></div>
         </div>
@@ -114,11 +114,11 @@
           <div class="head"><span class="num">Exercise 02</span><h4>The hard rules</h4></div>
           <p class="prompt">Things this agent must never do. List them as short imperatives.</p>
           <div class="why"><strong>Why it matters →</strong> Hard rules are non-negotiable. They protect you from the worst-case output.</div>
-          <div class="example"><span class="lbl">Example</span>1. Never speculate about causes of changes.
-2. Never claim a number you didn't compute from the data.
+          <div class="example"><span class="lbl">Example</span>1. Never recommend an order quantity. Only flag risk and suggest "reorder / rush / substitute."
+2. Never claim a stock number you didn't read directly from the source table.
 3. Never use the words "absolutely" or "definitely."
-4. Never mention competitor names.
-5. If a number is missing, refuse to post and escalate.</div>
+4. Never include a SKU that's already on yesterday's shortlist if its status hasn't worsened.
+5. If any required field is missing for a SKU, exclude that SKU and note the gap at the bottom.</div>
           <textarea name="rules" placeholder="List the hard rules, one per line…"></textarea>
           <div class="pip-tip"><em>Hard rules should be things you'd fire a human for doing. Make them count.</em></div>
         </div>
@@ -132,10 +132,11 @@
           <p class="prompt">Write three "input → ideal output" pairs. Use real data shapes from your business.</p>
           <div class="why"><strong>Why it matters →</strong> Examples teach the agent your style faster than any rule. The agent learns by imitating these.</div>
           <div class="example"><span class="lbl">Example</span>Example 1
-Input: Yesterday revenue €12,400, orders 87, AOV €142. LY same weekday: €11,200, 92 orders, €121.
-Output: "Yesterday: €12,400 revenue (+10.7% vs LY), 87 orders (-5.4%), AOV €142 (+17.4%). AOV did most of the lifting."
+Input: SKU PWR-001. Stock 42 units. 14-day velocity 8 units/day. Lead time 7 days. Revenue rank #14.
+Days-of-cover: 5.25.
+Output row: "PWR-001 | 42 | 5.3 days | 7-day lead | Rush (cover &lt; lead)"
 
-(Add two more in the same shape.)</div>
+(Add two more in the same shape: one borderline, one "still safe.")</div>
           <textarea name="examples" placeholder="Three input-output pairs, in your own data…" style="min-height: 160px;"></textarea>
           <div class="pip-tip"><em>If your examples are vague, the agent's output will be vague too. Real numbers, real wording.</em></div>
         </div>
@@ -148,7 +149,7 @@ Output: "Yesterday: €12,400 revenue (+10.7% vs LY), 87 orders (-5.4%), AOV €
           <div class="head"><span class="num">Exercise 04</span><h4>The "when unsure" clause</h4></div>
           <p class="prompt">What does the agent do when it doesn't know the answer? Write the exact rule.</p>
           <div class="why"><strong>Why it matters →</strong> This is the most important line in the whole instructions block. An agent that fakes confidence will hurt you.</div>
-          <div class="example"><span class="lbl">Example</span>When unsure about any number, refuse to post and instead send: "Data looks unusual today (specific reason). Skipping the briefing. Please check the pipeline." Never guess. Never round up. Never paper over gaps.</div>
+          <div class="example"><span class="lbl">Example</span>When the stock or velocity number for a SKU is missing, exclude that SKU and add a footer line: "N SKUs skipped due to missing data, please check warehouse sync." Never guess a quantity. Never round up. Never paper over gaps.</div>
           <textarea name="unsure" placeholder="The exact 'when unsure' rule…"></textarea>
           <div class="pip-tip"><em>Pip's rule: every good agent has an "I don't know" button. Write yours explicitly.</em></div>
         </div>
