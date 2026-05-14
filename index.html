@@ -211,6 +211,67 @@
   }
   .now .project a.project-aside:hover{color:var(--terracotta);border-bottom-color:var(--terracotta);}
 
+  /* ========== CREATIONS ========== */
+  .creations{
+    padding:140px 7vw;background:var(--paper);
+    border-top:1px solid var(--hairline);
+  }
+  .creations .preface{
+    font-family:'Newsreader',serif;font-style:italic;
+    color:var(--terracotta);font-size:16px;margin-bottom:8px;
+  }
+  .creations h2{
+    font-family:'Anton',sans-serif;text-transform:uppercase;
+    font-size:clamp(56px,8vw,96px);line-height:0.92;letter-spacing:-0.02em;
+    margin-bottom:56px;color:var(--ink);
+  }
+  .creations h2 em{color:var(--terracotta);font-style:normal;}
+  .creations .works{display:grid;gap:80px;}
+  .creations .work{
+    display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center;
+  }
+  @media (max-width:880px){.creations .work{grid-template-columns:1fr;gap:32px;}}
+  .creations .work-cover{
+    display:block;overflow:hidden;background:#fafafa;
+    box-shadow:0 1px 2px rgba(10,8,7,0.04),0 18px 44px -22px rgba(10,8,7,0.22);
+    transition:transform 200ms ease,box-shadow 200ms ease;
+  }
+  .creations .work-cover:hover{
+    transform:translateY(-3px);
+    box-shadow:0 1px 2px rgba(10,8,7,0.04),0 24px 52px -22px rgba(10,8,7,0.28);
+  }
+  .creations .work-cover img{width:100%;height:auto;display:block;}
+  .creations .work-meta{
+    font-family:'Newsreader',serif;font-style:italic;font-size:14px;
+    color:var(--muted);margin-bottom:10px;letter-spacing:0.02em;
+  }
+  .creations .work h3{
+    font-family:'Anton',sans-serif;text-transform:uppercase;
+    font-size:clamp(32px,4.4vw,52px);line-height:0.96;letter-spacing:-0.01em;
+    margin-bottom:16px;color:var(--ink);
+  }
+  .creations .work-desc{
+    font-family:'Newsreader',serif;font-size:19px;line-height:1.55;
+    color:var(--ink-soft);margin-bottom:18px;max-width:54ch;
+  }
+  .creations .work-tags{
+    display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;
+  }
+  .creations .work-tag{
+    font-family:'Newsreader',serif;font-style:italic;font-size:13.5px;
+    color:var(--muted);padding:3px 12px;border:1px solid var(--hairline);
+    border-radius:999px;
+  }
+  .creations .work-link{
+    display:inline-block;
+    font-family:'Anton',sans-serif;text-transform:uppercase;
+    font-size:14px;letter-spacing:0.08em;
+    color:var(--terracotta);border-bottom:1px solid var(--terracotta);
+    padding-bottom:2px;text-decoration:none;
+    transition:color 0.15s,border-color 0.15s;
+  }
+  .creations .work-link:hover{color:var(--ink);border-bottom-color:var(--ink);}
+
   /* ========== TRAIL ========== */
   .trail{
     padding:140px 7vw;
@@ -586,6 +647,37 @@
         <a class="project-link" href="https://www.wildbreeze.io" target="_blank" rel="noopener">wildbreeze.io →</a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ========== CREATIONS ========== -->
+<section class="creations" id="creations">
+  <div class="preface">Things I made by hand and put on the internet.</div>
+  <h2>Creations, <em>in the wild.</em></h2>
+
+  <div class="works">
+
+    <article class="work">
+      <a class="work-cover" href="/agent-workshop/" aria-label="Open The Agent Workshop">
+        <img src="/agent-workshop/media/workshop-cover.png" alt="The Agent Workshop, illustrated cover with a small round robot named Pip reading a field guide, surrounded by six floating pastel pattern cards.">
+      </a>
+      <div class="work-body">
+        <div class="work-meta">Published 2026 · ~25 min read · interactive</div>
+        <h3>The Agent Workshop</h3>
+        <p class="work-desc">
+          An illustrated nine-station field guide to AI agents for the people who run small businesses.
+          Six short stations get you familiar with how agents work. Three workshop benches at the end let you
+          actually design one for yourself, with auto-saved forms that export to a build-ready Markdown packet.
+        </p>
+        <div class="work-tags">
+          <span class="work-tag">Illustrated guide</span>
+          <span class="work-tag">94 hand-prompted illustrations</span>
+          <span class="work-tag">Interactive studios</span>
+        </div>
+        <a class="work-link" href="/agent-workshop/">Take the tour →</a>
+      </div>
+    </article>
+
   </div>
 </section>
 
