@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>The Saga of Honest Pricing — Nordhall</title>
+<title>Pricing Reset — Nordhall</title>
 <style>
   :root {
     --bg: #f6f7f9;
@@ -838,109 +838,37 @@
   .footer { text-align: center; color: var(--text-faint); font-size: 12px; padding-top: 16px; }
 
   /* ============================================================
-     VIKING ADDITIONS
+     VIKING IMAGES — soft-edge fade so they dissolve into the page
      ============================================================ */
-  .hero { display: grid; grid-template-columns: 1fr 260px; gap: 28px; align-items: center; }
+  .viking-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 45%, transparent 88%);
+            mask-image: radial-gradient(ellipse at 50% 50%, black 45%, transparent 88%);
+    mix-blend-mode: multiply;
+  }
+
+  /* Hero layout — image on the right, content on the left */
+  .hero { display: grid; grid-template-columns: 1fr 280px; gap: 24px; align-items: center; }
   @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .hero-img-wrap { display: none; } }
   .hero-img-wrap { display: flex; align-items: center; justify-content: center; }
-  .hero-img-wrap img { width: 100%; max-width: 260px; height: auto; display: block; }
+  .hero-img-wrap .viking-img { max-width: 280px; }
 
-  /* Viking banner inside section bodies */
-  .viking-banner {
-    display: grid;
-    grid-template-columns: 132px 1fr;
-    gap: 18px;
-    align-items: center;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, #fffaf2 0%, #fff 100%);
-    border: 1px solid var(--orange-border);
-    border-radius: 10px;
-  }
-  @media (max-width: 600px) { .viking-banner { grid-template-columns: 1fr; text-align: center; } .viking-banner img { margin: 0 auto; } }
-  .viking-banner img { width: 132px; height: 132px; border-radius: 8px; display: block; }
-  .viking-banner .vb-eyebrow {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--orange);
-    margin-bottom: 6px;
-  }
-  .viking-banner .vb-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-  .viking-banner .vb-body { font-size: 13.5px; color: var(--text-soft); line-height: 1.6; }
-  .viking-banner .vb-body strong { color: var(--text); font-weight: 700; }
-
-  /* Saga lesson — small wisdom callout */
-  .saga {
+  /* Section-head — image sits to the right of the title content, badge floats above */
+  .section-head-right {
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     gap: 14px;
-    padding: 14px 16px;
-    background: #fffbeb;
-    border: 1px solid var(--warn-border);
-    border-radius: 8px;
-    font-size: 13px;
-    color: var(--warn-text);
-    line-height: 1.6;
-  }
-  .saga .rune {
     flex-shrink: 0;
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--warn-border);
-    color: var(--warn-text);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800;
-    font-family: "SF Mono", Menlo, Consolas, monospace;
-    font-size: 14px;
   }
-  .saga .saga-eyebrow {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--warn-text);
-    margin-bottom: 3px;
-  }
-  .saga strong { color: var(--warn-text); font-weight: 700; }
+  .section-head-right .viking-img { width: 150px; }
+  @media (max-width: 600px) { .section-head-right .viking-img { width: 110px; } }
 
-  /* Section-head viking avatar */
-  .section-head-row { display: flex; gap: 18px; align-items: flex-start; flex: 1; }
-  .section-head-avatar {
-    width: 72px; height: 72px;
-    border-radius: 12px;
-    background: var(--orange-bg);
-    border: 1px solid var(--orange-border);
-    flex-shrink: 0;
-    overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .section-head-avatar img { width: 100%; height: 100%; object-fit: contain; }
-  @media (max-width: 600px) { .section-head-avatar { width: 56px; height: 56px; } }
-
-  /* Closing viking illustration banner */
-  .closing-viking {
-    display: flex; align-items: center; gap: 18px;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid var(--good-border);
-    margin-bottom: 18px;
-  }
-  .closing-viking img { width: 110px; height: 110px; flex-shrink: 0; border-radius: 8px; }
-  .closing-viking p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
-  .closing-viking p strong { color: var(--text); font-weight: 700; }
-
-  .rules-viking {
-    display: flex; align-items: center; gap: 18px;
-    padding: 18px;
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid var(--warn-border);
-    margin-bottom: 18px;
-  }
-  .rules-viking img { width: 110px; height: 110px; flex-shrink: 0; border-radius: 8px; }
-  .rules-viking p { font-size: 14px; color: var(--warn-text); line-height: 1.6; }
-  .rules-viking p strong { color: var(--warn-text); font-weight: 700; }
+  /* Finish + rules header decorations — small inline image */
+  .head-deco { width: 96px; flex-shrink: 0; margin-left: auto; }
+  .head-deco .viking-img { width: 100%; }
 </style>
 </head>
 <body>
@@ -949,9 +877,9 @@
   <!-- HERO -->
   <div class="hero">
     <div>
-      <div class="hero-tag"><span class="dot"></span>Skál! · The longship has set sail</div>
-      <h1>The Saga of Honest Pricing</h1>
-      <div class="tagline">Four days. Three crews. One honest price tag. <strong>By Tyr's hand, no Loki tricks.</strong></div>
+      <div class="hero-tag"><span class="dot"></span>Live · in flight</div>
+      <h1>Pricing Reset</h1>
+      <div class="tagline">Four days. Three teams. One honest price tag.</div>
       <div class="hero-meta">
         <span class="meta-chip"><span class="dot-o"></span><strong>Due Tue 19 May 2026</strong></span>
         <span class="meta-chip"><span class="dot-b"></span><strong>Catalog</strong> + <strong>Tech</strong></span>
@@ -959,37 +887,34 @@
       </div>
     </div>
     <div class="hero-img-wrap">
-      <img src="media/01-hero-viking-scales.png" alt="A friendly Viking holding balanced scales of gold">
+      <img class="viking-img" src="media/01-hero-viking-scales.png" alt="A friendly Viking holding balanced scales of gold">
     </div>
   </div>
 
   <!-- WHY -->
   <div class="why">
-    <div class="why-lead">Why we're doing this · The shieldmaiden's question</div>
+    <div class="why-lead">Why we're doing this</div>
     Too many products on the site are wearing a fake discount: a "regular" price we never actually charged,
     a "SPAR X%" badge that's been there for months. Customers see through it eventually, and the rules in
-    Denmark (and most of the Nordic kingdoms) are clear about it. The good news: <strong>honest pricing
-    makes our value story stronger, not weaker.</strong> A real low price beats a fake discount every time.
-    <br><br>
-    <em>Old viking wisdom:</em> a sword that says "the sharpest in the realm" had better cut. A price that says
-    "save 40%" had better save you 40%. Anything else, and word travels fast in the longhouse.
+    Denmark are clear about it. The good news: <strong>honest pricing makes our value story stronger, not weaker.</strong>
+    A real low price beats a fake discount every time.
   </div>
 
   <!-- TLDR -->
   <div class="tldr">
     <div class="tldr-head">
       <div class="tldr-icon">⚡</div>
-      <h2>The skald's 30-second telling</h2>
-      <span class="sub">If you only read one thing before the feast</span>
+      <h2>The 30-second version</h2>
+      <span class="sub">If you only read one thing</span>
     </div>
     <div class="tldr-list">
       <div class="tldr-item">
         <div class="num">1</div>
-        <div><strong>Most products:</strong> drop the regular/sale/save framing. Single honest price wins.</div>
+        <div><strong>Most products:</strong> drop the regular/sale/save framing. Single price wins.</div>
       </div>
       <div class="tldr-item">
         <div class="num">2</div>
-        <div><strong>Bundles:</strong> keep the discount display. Just make sure the runes (the math) are true.</div>
+        <div><strong>Bundles:</strong> keep the discount display. Just make sure the math is real.</div>
       </div>
       <div class="tldr-item">
         <div class="num">3</div>
@@ -997,7 +922,7 @@
       </div>
       <div class="tldr-item">
         <div class="num">4</div>
-        <div><strong>Flash sale:</strong> keep it, but only for real short-term raids. Log everything in the ops sheet.</div>
+        <div><strong>Flash sale:</strong> keep it, but only for real short-term deals. Log everything in the ops sheet.</div>
       </div>
     </div>
   </div>
@@ -1005,17 +930,17 @@
   <!-- OVERVIEW -->
   <div class="overview">
     <div class="ov-card">
-      <div class="num">01 · THOR'S WORK</div>
+      <div class="num">01</div>
       <div class="title">Flash sale page</div>
-      <div class="desc">Lightning is brief. Clean up the page, tighten the rules, no more permanent yellow stickers.</div>
+      <div class="desc">Clean it up. Tighten the rules. No more permanent yellow stickers.</div>
     </div>
     <div class="ov-card">
-      <div class="num">02 · ROPE &amp; BARREL</div>
+      <div class="num">02</div>
       <div class="title">Bundles</div>
       <div class="desc">Easy win. Make regular price = real sum of components, sale = bundle price.</div>
     </div>
     <div class="ov-card">
-      <div class="num">03 · THE SCHOLAR'S SCROLL</div>
+      <div class="num">03</div>
       <div class="title">Process update</div>
       <div class="desc">Switch top 150 SKUs to honest comparative pricing with a quarterly review.</div>
     </div>
@@ -1033,19 +958,12 @@
           <span class="due-tag">Due 19 May 2026</span>
         </div>
       </div>
-      <span class="badge warn">Action required</span>
+      <div class="section-head-right">
+        <span class="badge warn">Action required</span>
+        <img class="viking-img" src="media/02-thor-flash.png" alt="A Viking with a lightning-charged hammer">
+      </div>
     </div>
     <div class="section-body">
-
-      <div class="viking-banner">
-        <img src="media/02-thor-flash.png" alt="A Viking raising a lightning-charged hammer">
-        <div>
-          <div class="vb-eyebrow">Saga lesson · Thor's hammer</div>
-          <div class="vb-title">Lightning that lingers is not lightning.</div>
-          <div class="vb-body">A flash sale is a strike of Mjölnir: short, loud, gone. If a "flash" sale has been hanging on the wall since the last solstice, it's not lightning, it's <strong>wallpaper</strong>. Customers stop seeing it, regulators do not.</div>
-        </div>
-      </div>
-
       <div class="steps">
         <div class="step">
           <div class="step-num">1</div>
@@ -1073,14 +991,6 @@
           <li>Permanent or long-running low prices belong on the Tilbud page with <strong>"fixed low price"</strong> framing, not on flash sale.</li>
         </ul>
       </div>
-
-      <div class="saga">
-        <div class="rune">ᚦ</div>
-        <div>
-          <div class="saga-eyebrow">Why this matters · the learning bit</div>
-          A discount only feels like a discount because it's <strong>scarce</strong>. Repeat it forever and the brain stops registering it as a deal, the regulators start registering it as a misleading price. Both bad. Keep flash genuinely flashy.
-        </div>
-      </div>
     </div>
   </div>
 
@@ -1096,19 +1006,12 @@
           <span class="due-tag">Due 19 May 2026</span>
         </div>
       </div>
-      <span class="badge info">Discount is real</span>
+      <div class="section-head-right">
+        <span class="badge info">Discount is real</span>
+        <img class="viking-img" src="media/03-bundle-viking.png" alt="A Viking carrying three barrels tied together">
+      </div>
     </div>
     <div class="section-body">
-
-      <div class="viking-banner">
-        <img src="media/03-bundle-viking.png" alt="A Viking carrying three barrels tied together">
-        <div>
-          <div class="vb-eyebrow">Saga lesson · Rope &amp; barrel</div>
-          <div class="vb-title">Three barrels for the price of two-and-a-half is a real bargain.</div>
-          <div class="vb-body">Buying three things at once <strong>actually does</strong> cost less than buying them one at a time, here. So the discount is real, no Loki at work. Show the customer the math honestly and the saving sells itself.</div>
-        </div>
-      </div>
-
       <div class="steps">
         <div class="step">
           <div class="step-num">1</div>
@@ -1144,14 +1047,6 @@
           Three Whey at €30 each = €90 if you buy them individually. The bundle is €75. The customer saves €15 for real. That's a discount we can stand behind.
         </div>
       </div>
-
-      <div class="saga">
-        <div class="rune">ᛒ</div>
-        <div>
-          <div class="saga-eyebrow">Why this matters · the learning bit</div>
-          The bundle discount is the <strong>only place</strong> in the catalog where "save 17%" is mathematically true by construction. If the regular price is the genuine sum of components, the percentage stops being a marketing trick and starts being a fact. Boring, but bullet-proof.
-        </div>
-      </div>
     </div>
   </div>
 
@@ -1167,18 +1062,12 @@
           <span class="due-tag">Due 19 May 2026</span>
         </div>
       </div>
-      <span class="badge good">New labelling</span>
+      <div class="section-head-right">
+        <span class="badge good">New labelling</span>
+        <img class="viking-img" src="media/04-scholar-scroll.png" alt="A wise Viking elder examining a rune scroll with a magnifying glass">
+      </div>
     </div>
     <div class="section-body">
-
-      <div class="viking-banner">
-        <img src="media/04-scholar-scroll.png" alt="A wise Viking elder examining a rune scroll with a magnifying glass">
-        <div>
-          <div class="vb-eyebrow">Saga lesson · The scholar's scroll</div>
-          <div class="vb-title">A price next to a real rival's price tells a story. A fake percentage tells a tale.</div>
-          <div class="vb-body">The old skalds knew the difference between a true account and a tall one. Sourced comparison: <strong>"BodyLab sells the same whey for €25, we sell it for €19,99"</strong>. That's a story a buyer can verify. "SPAR 33%" against a price nobody ever paid is just a tall tale, and tall tales get the storyteller in trouble.</div>
-        </div>
-      </div>
 
       <div class="sub-card">
         <div class="sub-card-title">Scope</div>
@@ -1260,14 +1149,6 @@
         <div>
           <strong>Quarterly review.</strong> Recurring ClickUp task: verify every comparable price still holds.
           Competitor product exists? Price still accurate? Update the record. If a comparable can't be justified, drop the label until a new source is found.
-        </div>
-      </div>
-
-      <div class="saga">
-        <div class="rune">ᛟ</div>
-        <div>
-          <div class="saga-eyebrow">Why this matters · the learning bit</div>
-          A sourced comparable price is something a customer can <strong>check themselves</strong>. That openness is the moat: anyone can claim "best price", almost no-one will show their working. We will. Every quarter.
         </div>
       </div>
 
@@ -1445,19 +1326,12 @@
         <h2>Do this. Not that.</h2>
         <div class="blurb">Quick reference for everyday calls. Stick this on your monitor.</div>
       </div>
-      <span class="badge neutral">Quick reference</span>
+      <div class="section-head-right">
+        <span class="badge neutral">Quick reference</span>
+        <img class="viking-img" src="media/05-do-dont-judge.png" alt="Two Vikings side by side, one honest, one sneaky">
+      </div>
     </div>
     <div class="section-body">
-
-      <div class="viking-banner">
-        <img src="media/05-do-dont-judge.png" alt="Two Vikings side by side, one honest, one sneaky">
-        <div>
-          <div class="vb-eyebrow">Saga lesson · Two warriors</div>
-          <div class="vb-title">One Viking earns their reputation. The other rents it.</div>
-          <div class="vb-body">When you're not sure which side a call falls on, ask: <strong>"If a customer screenshotted this, would it embarrass us in front of the longhouse?"</strong> If yes, it belongs in the right-hand "not this" column. If no, ship it.</div>
-        </div>
-      </div>
-
       <div class="dodont">
 
         <div>
@@ -1491,16 +1365,13 @@
     <div class="finish-head">
       <div class="finish-icon">✓</div>
       <div>
-        <h2>You'll know we're done when… (raise the horn)</h2>
-        <div class="sub">Tick these off and we sail home, mead waiting.</div>
+        <h2>You'll know we're done when…</h2>
+        <div class="sub">Tick these off and we ship.</div>
+      </div>
+      <div class="head-deco">
+        <img class="viking-img" src="media/06-victory-horn.png" alt="A triumphant Viking raising a drinking horn in celebration">
       </div>
     </div>
-
-    <div class="closing-viking">
-      <img src="media/06-victory-horn.png" alt="A triumphant Viking raising a drinking horn in celebration">
-      <p>When every box below is ticked, the saga is done and the catalog is honest. <strong>Then we drink.</strong> Until then, keep going.</p>
-    </div>
-
     <div class="finish-list">
       <div class="finish-item">
         <div class="finish-check"></div>
@@ -1532,18 +1403,15 @@
   <!-- KEY POINTS RULEBOOK -->
   <div class="rules">
     <div class="rules-head">
-      <div class="rules-icon">ᚱ</div>
+      <div class="rules-icon">!</div>
       <div>
-        <h2>The five runes · Key points to consider</h2>
-        <div class="sub">The principles carved on the standing stone. Memorise these and most edge-cases answer themselves.</div>
+        <h2>Key points to consider</h2>
+        <div class="sub">The principles behind the work above.</div>
+      </div>
+      <div class="head-deco">
+        <img class="viking-img" src="media/07-rune-elder.png" alt="A wise Viking elder teaching beside a tall rune stone">
       </div>
     </div>
-
-    <div class="rules-viking">
-      <img src="media/07-rune-elder.png" alt="A wise Viking elder teaching beside a tall rune stone">
-      <p>The work above changes <strong>this quarter</strong>. The five principles below are the standing stone: they outlast the project. When in doubt, walk back to the stone and read it again.</p>
-    </div>
-
     <div class="rules-grid">
       <div class="rule">
         <div class="n">1</div>
@@ -1573,7 +1441,7 @@
     </div>
   </div>
 
-  <div class="footer">Nordhall · The Saga of Honest Pricing · 15 May 2026 · Skál!</div>
+  <div class="footer">Nordhall · Pricing Reset · 15 May 2026</div>
 
 </div>
 </body>
