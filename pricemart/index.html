@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Hjælp &amp; kundeservice — FitnessNord (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fafaf7;
+    --card:#ffffff;
+    --ink:#101820;
+    --ink-soft:#5a6471;
+    --line:#e6e3da;
+    --line-soft:#f1ede2;
+    --brand:#d6402a;
+    --brand-deep:#a8311f;
+    --brand-soft:#fef0ed;
+    --good:#2f7a4d;
+    --good-soft:#e9f3ed;
+    --warn:#a26515;
+    --warn-soft:#fbf0d8;
+    --shadow:0 1px 2px rgba(16,24,32,.04), 0 4px 12px rgba(16,24,32,.04);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--brand);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;height:56px}
+  .logo{font-weight:700;letter-spacing:-.01em;font-size:18px}
+  .logo span{color:var(--brand)}
+  .topnav{display:flex;gap:22px;font-size:14px;color:var(--ink-soft)}
+  .topnav a{color:var(--ink-soft)}
+  .lang{font-size:13px;color:var(--ink-soft)}
+  .lang a{color:var(--ink-soft);padding:0 4px}
+  .lang a.on{color:var(--ink);font-weight:500}
+
+  .hero{padding:48px 0 32px}
+  .hero h1{font-size:40px;line-height:1.05;margin:0 0 10px;letter-spacing:-.02em;font-weight:600}
+  .hero p.lede{font-size:17px;color:var(--ink-soft);max-width:680px;margin:0 0 28px}
+
+  .lookup{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;box-shadow:var(--shadow);max-width:780px}
+  .lookup h2{font-size:16px;font-weight:600;margin:0 0 4px}
+  .lookup p{margin:0 0 16px;color:var(--ink-soft);font-size:13.5px}
+  .lookup form{display:grid;grid-template-columns:1.2fr 1.4fr auto;gap:10px}
+  .lookup input{font:inherit;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+  .lookup input:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
+  .btn{cursor:pointer;font:inherit;font-weight:500;padding:11px 18px;border-radius:8px;border:1px solid transparent;display:inline-flex;align-items:center;gap:8px;transition:transform .05s,background .15s,box-shadow .15s}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-primary:hover{background:var(--brand-deep)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{background:#fff}
+
+  .section-title{margin:48px 0 12px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;cursor:pointer;transition:border-color .15s, box-shadow .15s, transform .05s;text-align:left;font:inherit;color:var(--ink)}
+  .tile:hover{border-color:#d4cfbf;box-shadow:var(--shadow)}
+  .tile:active{transform:translateY(1px)}
+  .tile .ico{width:36px;height:36px;border-radius:8px;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:18px}
+  .tile h3{margin:0 0 4px;font-size:15px;font-weight:600;letter-spacing:-.005em}
+  .tile p{margin:0;color:var(--ink-soft);font-size:13.5px;line-height:1.45}
+  .tile .cta{margin-top:10px;color:var(--brand);font-size:13px;font-weight:500}
+
+  details.action{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:10px 0;padding:0;overflow:hidden;scroll-margin-top:80px}
+  details.action[open]{border-color:#d4cfbf;box-shadow:var(--shadow)}
+  details.action summary{cursor:pointer;list-style:none;padding:18px 20px;display:flex;align-items:center;gap:14px;user-select:none}
+  details.action summary::-webkit-details-marker{display:none}
+  details.action summary .ico{width:36px;height:36px;border-radius:8px;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  details.action summary .meta{flex:1}
+  details.action summary h3{margin:0 0 2px;font-size:15px;font-weight:600}
+  details.action summary p{margin:0;color:var(--ink-soft);font-size:13px}
+  details.action summary .chev{color:var(--ink-soft);font-size:14px;transition:transform .2s}
+  details.action[open] summary .chev{transform:rotate(180deg)}
+  details.action .body{padding:0 20px 22px;border-top:1px dashed var(--line)}
+  details.action .body-inner{padding-top:18px}
+
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:13px;font-weight:500;margin-bottom:4px;color:var(--ink)}
+  .field .help{font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .field input, .field textarea, .field select{
+    width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
+  .field textarea{min-height:84px;resize:vertical}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .radio-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+  .radio-row label{display:flex;align-items:center;gap:8px;background:#fafaf7;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;cursor:pointer}
+  .radio-row label:hover{border-color:#d4cfbf}
+  .radio-row input{accent-color:var(--brand)}
+
+  .submit-row{display:flex;gap:10px;align-items:center;margin-top:6px}
+  .note{font-size:12.5px;color:var(--ink-soft)}
+
+  .callout{padding:14px 16px;border-radius:8px;font-size:13.5px;margin-top:6px;border:1px solid transparent}
+  .callout.info{background:#f1f7fb;border-color:#dbe7ef;color:#27516e}
+  .callout.good{background:var(--good-soft);border-color:#cfe5d8;color:var(--good)}
+  .callout.warn{background:var(--warn-soft);border-color:#eddbb5;color:var(--warn)}
+
+  .faq{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .faq details{border-bottom:1px solid var(--line)}
+  .faq details:last-child{border-bottom:none}
+  .faq details summary{padding:16px 20px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;font-weight:500;font-size:14.5px}
+  .faq details summary::-webkit-details-marker{display:none}
+  .faq details summary::after{content:"+";color:var(--ink-soft);font-weight:400;font-size:18px}
+  .faq details[open] summary::after{content:"−"}
+  .faq details .ans{padding:0 20px 18px;color:var(--ink-soft);font-size:14px;line-height:1.6}
+  .faq details .ans p{margin:0 0 8px}
+  .faq details .ans p:last-child{margin-bottom:0}
+
+  .last-resort{margin-top:36px;background:#101820;color:#e7eaef;border-radius:12px;padding:28px}
+  .last-resort h2{margin:0 0 6px;font-size:20px;font-weight:600;color:#fff;letter-spacing:-.01em}
+  .last-resort p{margin:0 0 14px;color:#a5adba;font-size:14px}
+  .last-resort .channels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .channel{background:#1d2733;border:1px solid #2a3744;border-radius:10px;padding:14px;color:#e7eaef}
+  .channel h4{margin:0 0 4px;font-size:14px;font-weight:600;color:#fff}
+  .channel p{margin:0;font-size:13px;color:#9aa3b0}
+  .channel .small{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11.5px;color:#7a8392;margin-top:6px}
+
+  footer{padding:36px 0 60px;color:var(--ink-soft);font-size:12.5px;text-align:center}
+
+  .pill{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--good-soft);color:var(--good);font-weight:600;margin-left:8px;vertical-align:middle}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+
+  /* order-cta panel */
+  .panel-order-cta{background:linear-gradient(180deg,#fff,var(--brand-soft));border:1px solid #f3d6cf;border-radius:14px;padding:24px;box-shadow:var(--shadow)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-size:13.5px;color:var(--ink);text-decoration:none;transition:border-color .15s,transform .05s}
+  .chip:hover{border-color:var(--brand);text-decoration:none;color:var(--brand)}
+  .chip:active{transform:translateY(1px)}
+  .chip span{font-size:14px}
+
+  @media (max-width: 760px){
+    .tiles{grid-template-columns:1fr 1fr}
+    .lookup form{grid-template-columns:1fr}
+    .grid-2{grid-template-columns:1fr}
+    .last-resort .channels{grid-template-columns:1fr}
+    .hero h1{font-size:32px}
+  }
+  @media (max-width: 480px){
+    .tiles{grid-template-columns:1fr}
+    .topnav{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="logo">Fitness<span>Nord</span></div>
+    <nav class="topnav">
+      <a href="#">Shop</a>
+      <a href="#">Min konto</a>
+      <a href="#" aria-current="page" style="color:var(--ink);font-weight:500">Hjælp</a>
+      <span class="lang"><a class="on">DK</a> · <a href="https://www.fitnessnord.com/se/">SE</a> · <a>EN</a></span>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <h1>Hej 😊 — hvad kan vi hjælpe med?</h1>
+    <p class="lede">De fleste spørgsmål kan løses her — uden at vente på svar fra os. Indtast dit ordrenummer, så viser vi tracking, ændringer, retur og alt det andet med det samme.</p>
+
+    <div class="lookup" id="lookup">
+      <h2>Find din ordre</h2>
+      <p>Skriv dit ordrenummer (10 cifre, starter med 12 — fx <code>1200884356</code>) og e-mailen du brugte ved købet. Vi åbner din ordreside hvor du kan spore, ændre, annullere, downloade faktura eller starte en retur.</p>
+      <form id="lookup-form" action="order-status.html" method="get">
+        <input type="text" name="order" placeholder="Ordrenummer (1200…)" pattern="\s*1?2?0?0?\d{6,10}\s*" autocomplete="off" required>
+        <input type="email" name="email" placeholder="E-mail på ordren" autocomplete="email" required>
+        <button class="btn btn-primary" type="submit">Vis min ordre →</button>
+      </form>
+      <div class="callout info" style="margin-top:14px;font-size:12.5px">
+        På din ordreside kan du <b>annullere</b>, <b>ændre adresse</b>, <b>tilføje/fjerne varer</b>, <b>downloade faktura</b>, <b>genfremsende ordrebekræftelse</b>, <b>se live tracking</b> og <b>melde manglende eller ødelagte varer</b> — alt på ét sted.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ORDER-BASED ACTIONS POINT TO STATUS PAGE ===================== -->
+
+  <div class="section-title">Har du et ordrenummer? Alt ligger på din ordreside</div>
+
+  <div class="panel-order-cta">
+    <p class="lede" style="margin:0 0 14px;font-size:15px;color:var(--ink-soft)">
+      Når du har slået din ordre op, kan du gøre alt det her med ét klik — uden at vente på svar:
+    </p>
+    <div class="chips">
+      <a href="#lookup" class="chip"><span>📦</span> Spor pakke (DAO/GLS/Bring)</a>
+      <a href="#lookup" class="chip"><span>✕</span> Annullér ordre</a>
+      <a href="#lookup" class="chip"><span>✏️</span> Ret adresse / e-mail</a>
+      <a href="#lookup" class="chip"><span>➕</span> Tilføj eller fjern varer</a>
+      <a href="#lookup" class="chip"><span>↩︎</span> Start en retur</a>
+      <a href="#lookup" class="chip"><span>⚠️</span> Manglende eller ødelagt vare</a>
+      <a href="#lookup" class="chip"><span>✉</span> Genfremsend ordrebekræftelse</a>
+      <a href="#lookup" class="chip"><span>⬇</span> Download faktura</a>
+      <a href="#lookup" class="chip"><span>⭐</span> Trustpilot-anmeldelse → 100 kr</a>
+    </div>
+    <a href="#lookup" class="btn btn-primary" style="margin-top:18px">↑ Find min ordre øverst</a>
+  </div>
+
+  <div class="section-title" style="margin-top:48px">Hjælp uden ordrenummer</div>
+
+  <details class="action" id="account">
+    <summary>
+      <span class="ico" aria-hidden="true">🔑</span>
+      <span class="meta">
+        <h3>Login eller adgangskode</h3>
+        <p>Glemt kodeord? Eller skal du bare finde en gammel ordre uden at logge ind?</p>
+      </span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="callout info">
+        <b>Vidste du det?</b> Du behøver <b>ikke</b> en konto for at finde en ordre — brug ordresporing øverst på siden. Ordrenummer + e-mail er nok 🤗
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label for="a-email">E-mail på din konto</label>
+        <input id="a-email" type="email" placeholder="dig@eksempel.dk">
+      </div>
+      <div class="submit-row">
+        <button class="btn btn-primary" type="button">Send link til at nulstille →</button>
+        <a href="#track" class="btn btn-ghost">Find ordre uden login</a>
+      </div>
+    </div></div>
+  </details>
+
+  <details class="action" id="payment">
+    <summary>
+      <span class="ico" aria-hidden="true">💳</span>
+      <span class="meta">
+        <h3>Betalingen vil ikke gå igennem</h3>
+        <p>Klarna, MitID, Apple Pay, kort — typiske grunde og hvad du kan prøve.</p>
+      </span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="callout info">
+        <b>Tjek først disse fire ting</b> — de fleste betalingsproblemer skyldes et af dem:
+        <ol style="margin:10px 0 0 18px;padding:0">
+          <li>Både <b>fornavn og efternavn</b> i feltet &ldquo;kortholders navn&rdquo;</li>
+          <li>Hele kortnummeret + udløbsdato + de <b>3 cifre på bagsiden</b> (CVV/CVC)</li>
+          <li>Slå <b>autoudfyldning fra</b> — den glemmer ofte de sidste cifre</li>
+          <li>Når du sendes til <b>MitID</b>, så bekræft der — ellers afvises betalingen</li>
+        </ol>
+      </div>
+      <div class="callout warn" style="margin-top:10px">
+        <b>Pengene er reserveret men ordren gik ikke igennem?</b> Reservationen frigives automatisk inden for 1-5 hverdage. Hvis du vil have det undersøgt nu, så send et skærmbillede af trækningen via formularen længere nede — så får vi vores IT-team på sagen.
+      </div>
+    </div></div>
+  </details>
+
+  <details class="action" id="unsub">
+    <summary>
+      <span class="ico" aria-hidden="true">📬</span>
+      <span class="meta">
+        <h3>Afmeld nyhedsbreve <span class="pill warn">Vi arbejder på et problem</span></h3>
+        <p>Hvis afmeldingslinket i mailen ikke virkede — fjerner vi dig manuelt.</p>
+      </span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="callout warn">
+        Først: prøv at klikke &ldquo;<b>Afmeld</b>&rdquo; nederst i selve nyhedsbrevet. Det er den hurtigste vej. <br><br>
+        Hvis linket ikke virker (vi ved at det kan drille — vi er ved at fixe det), så indtast e-mailen nedenfor — så fjerner vi dig fra <i>alle</i> marketinglister inden for 5 minutter. Du modtager stadig kvitteringer for ordrer du selv afgiver.
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label for="u-email">E-mail der skal afmeldes</label>
+        <input id="u-email" type="email" required>
+      </div>
+      <div class="field">
+        <label>Hvilken liste? (valgfri)</label>
+        <div class="radio-row">
+          <label><input type="checkbox"> Nyhedsbrev / kampagner</label>
+          <label><input type="checkbox"> Tilbud &amp; flash sales</label>
+          <label><input type="checkbox"> Anbefalinger / produktnyheder</label>
+          <label><input type="checkbox"> Alle marketingmails</label>
+        </div>
+      </div>
+      <div class="submit-row">
+        <button class="btn btn-primary" type="button">Afmeld nu →</button>
+      </div>
+    </div></div>
+  </details>
+
+  <!-- ===================== SECONDARY GRID ===================== -->
+
+  <div class="section-title">Andet vi kan hjælpe med</div>
+
+  <div class="tiles">
+    <button class="tile" type="button" onclick="document.getElementById('stock').open=true; document.getElementById('stock').scrollIntoView({behavior:'smooth'})">
+      <div class="ico">🔔</div>
+      <h3>Få besked når en vare er tilbage</h3>
+      <p>Skriv din e-mail på produktet — så sender vi én mail når den er på lager igen.</p>
+      <div class="cta">Sæt notifikation op →</div>
+    </button>
+
+    <button class="tile" type="button" onclick="document.getElementById('discount').open=true; document.getElementById('discount').scrollIntoView({behavior:'smooth'})">
+      <div class="ico">%</div>
+      <h3>Rabatkode virker ikke</h3>
+      <p>Tjek om koden er udløbet, brugt, eller om ordren skal være over 1000 kr.</p>
+      <div class="cta">Diagnosticér →</div>
+    </button>
+
+    <button class="tile" type="button" onclick="document.getElementById('shipping').open=true; document.getElementById('shipping').scrollIntoView({behavior:'smooth'})">
+      <div class="ico">🚚</div>
+      <h3>Fragt &amp; gratis fragt</h3>
+      <p>Hvilke produkter giver gratis fragt? Hvor meget koster det til Sverige?</p>
+      <div class="cta">Se svar →</div>
+    </button>
+
+    <button class="tile" type="button" onclick="document.getElementById('ingredients').open=true; document.getElementById('ingredients').scrollIntoView({behavior:'smooth'})">
+      <div class="ico">🥄</div>
+      <h3>Indhold, allergener &amp; sundhed</h3>
+      <p>Gluten, laktose, vegan, dosering — find næringsindhold uden at skrive.</p>
+      <div class="cta">Find produktet →</div>
+    </button>
+
+    <button class="tile" type="button" onclick="document.getElementById('b2b').open=true; document.getElementById('b2b').scrollIntoView({behavior:'smooth'})">
+      <div class="ico">🤝</div>
+      <h3>Erhverv, B2B &amp; samarbejde</h3>
+      <p>Engros, atletsponsorater, affiliate, eller butik der vil føre vores produkter.</p>
+      <div class="cta">Erhvervshenvendelse →</div>
+    </button>
+
+    <button class="tile" type="button" onclick="document.getElementById('other').open=true; document.getElementById('other').scrollIntoView({behavior:'smooth'})">
+      <div class="ico">💬</div>
+      <h3>Noget helt andet</h3>
+      <p>Find os ikke ovenfor? Skriv til os — eller tjek FAQ nedenfor først.</p>
+      <div class="cta">Skriv til os →</div>
+    </button>
+  </div>
+
+  <details class="action" id="stock" style="margin-top:24px">
+    <summary>
+      <span class="ico">🔔</span>
+      <span class="meta"><h3>Få besked når varen er tilbage</h3><p>Vi sender én mail. Ingen spam.</p></span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="grid-2">
+        <div class="field"><label>Produkt eller variant</label><input type="text" placeholder="fx ISO-100 valleproteinisolat 2,2 kg — Chocolate"></div>
+        <div class="field"><label>Din e-mail</label><input type="email"></div>
+      </div>
+      <div class="submit-row"><button class="btn btn-primary" type="button">Aktivér notifikation →</button></div>
+      <div class="callout info" style="margin-top:10px">
+        På produktsiden viser vi <b>forventet genopfyldning</b> direkte under prisen, så du ved om det er &ldquo;få dage&rdquo; eller &ldquo;ingen ETA&rdquo;. Hvis varianten du leder efter er udsolgt, foreslår vi automatisk en alternativ størrelse eller smag som er på lager nu 💪
+      </div>
+    </div></div>
+  </details>
+
+  <details class="action" id="discount">
+    <summary>
+      <span class="ico">%</span>
+      <span class="meta"><h3>Rabatkode virker ikke</h3><p>Vi tjekker den live.</p></span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="field"><label>Rabatkode</label><input type="text" placeholder="fx PWO20 eller Anna-100-2034"></div>
+      <div class="submit-row"><button class="btn btn-primary" type="button">Tjek kode →</button></div>
+      <div class="callout info" style="margin-top:10px">
+        <b>Mest sandsynlige forklaringer</b> — systemet svarer øjeblikkeligt med præcis hvilken det er:
+        <ul style="margin:8px 0 0 18px;padding:0">
+          <li><b>Velkomst- / nyhedsbrevskoden (10 % / 15 %)</b> kræver en ordre på <b>1000 kr eller derover</b></li>
+          <li><b>Personlige Trustpilot-koder</b> (fx <code>Anna-100-2034</code>) har intet minimumsbeløb og udløber ikke</li>
+          <li>Kampagnekoder er typisk gyldige 24-72 timer fra de bliver sendt</li>
+          <li>Hver kode kan kun bruges én gang per kunde</li>
+        </ul>
+      </div>
+    </div></div>
+  </details>
+
+  <details class="action" id="shipping">
+    <summary>
+      <span class="ico">🚚</span>
+      <span class="meta"><h3>Fragt &amp; gratis fragt</h3></span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="faq" style="border:none">
+        <details open>
+          <summary>Hvordan får jeg gratis fragt?</summary>
+          <div class="ans">
+            <p>Vi har <b>ikke et fast minimumsbeløb</b> for gratis fragt — det fungerer i stedet sådan, at <b>specifikke produkter</b> udløser gratis fragt når du har dem i kurven (typisk bundles og kampagnevarer).</p>
+            <p>For at se hvilke produkter det gælder, skriv <b>&ldquo;gratis fragt&rdquo; i søgefeltet</b> øverst — så vises alle de produkter der trigger det. Vi kører også af og til kampagner med gratis fragt på alt.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Hvorfor får jeg ikke gratis fragt selvom produktet siger det?</summary>
+          <div class="ans">
+            <p>Hyppigste grund: din ordre er <b>for stor eller for tung til pakkeshoplevering</b>, så du har kun hjemmelevering som mulighed — og hjemmelevering er aldrig gratis.</p>
+            <p>Hvis det er tilfældet, så send et skærmbillede af din kurv via &ldquo;Skriv direkte&rdquo;-formularen længere nede, så refunderer vi fragten manuelt 🤗</p>
+          </div>
+        </details>
+        <details>
+          <summary>Hvilke fragtfirmaer bruger I?</summary>
+          <div class="ans"><p>I Danmark: <b>DAO</b> (pakkeshop) som standard, eller <b>GLS</b> (hjemmelevering). Til Sverige: <b>Bring</b>. Du vælger ved checkout — undtagen hvis pakken er for tung/stor til pakkeshop, så får du kun hjemmelevering.</p></div>
+        </details>
+        <details>
+          <summary>Hvor lang er leveringstiden?</summary>
+          <div class="ans"><p>I Danmark: typisk <b>1-2 hverdage</b> efter pakkemail. Til Sverige: <b>5-7 hverdage</b>. Bestilt før kl. 14 på en hverdag pakkes som regel samme dag.</p></div>
+        </details>
+        <details>
+          <summary>Bor jeg i Sverige — hvor bestiller jeg?</summary>
+          <div class="ans"><p>Brug den svenske side: <a href="https://www.fitnessnord.com/se/">fitnessnord.com/se/</a>. Den tager højde for at telefonnumre er svenske, så skriv ikke 0 eller landekode foran nummeret 🇸🇪</p></div>
+        </details>
+        <details>
+          <summary>Skal jeg betale told ved levering til Norge?</summary>
+          <div class="ans"><p>Ja, norsk told og moms tilkommer ved fortoldning — det er noget Posten Norge opkræver direkte hos dig ved levering. Det er ikke noget vi kan dække eller refundere.</p></div>
+        </details>
+      </div>
+    </div></div>
+  </details>
+
+  <details class="action" id="ingredients">
+    <summary>
+      <span class="ico">🥄</span>
+      <span class="meta"><h3>Indhold, allergener &amp; dosering</h3></span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="callout info">
+        Under de forskellige produkter kan du finde en nærmere beskrivelse af varen samt næringsinformationen, hvis du trykker på <b>&ldquo;læs mere&rdquo;</b> eller scroller længere ned på siden under det pågældende produkt.
+      </div>
+      <div class="field" style="margin-top:14px"><label>Søg produkt</label><input type="text" placeholder="fx Whey, kreatin, PWO, ISO-100…"></div>
+      <div style="margin-top:14px;font-size:13.5px;color:var(--ink-soft)">Mest stillede spørgsmål:
+        <a href="#">Hvilket proteinpulver indeholder mest protein?</a> ·
+        <a href="#">Hvilken gainer skal jeg vælge?</a> ·
+        <a href="#">Hvor meget kreatin skal jeg tage?</a>
+      </div>
+    </div></div>
+  </details>
+
+  <details class="action" id="b2b">
+    <summary>
+      <span class="ico">🤝</span>
+      <span class="meta"><h3>Erhverv, B2B &amp; samarbejde</h3><p>Den her går direkte til vores marketing-team.</p></span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="callout info">
+        Tak fordi du har lyst til at samarbejde med os 🤗 Vi står ikke altid og mangler nye samarbejder, men din henvendelse bliver gemt og videresendt — og vores team tager kontakt, hvis vi gerne vil høre nærmere.
+      </div>
+      <div class="grid-2" style="margin-top:14px">
+        <div class="field"><label>Virksomhed / atletprofil</label><input type="text"></div>
+        <div class="field"><label>CVR / Org.nr. (hvis erhverv)</label><input type="text"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Kontaktperson</label><input type="text"></div>
+        <div class="field"><label>E-mail</label><input type="email"></div>
+      </div>
+      <div class="field">
+        <label>Type henvendelse</label>
+        <div class="radio-row">
+          <label><input type="radio" name="b2b"> Engros / forhandler</label>
+          <label><input type="radio" name="b2b"> Sponsorat / atlet</label>
+          <label><input type="radio" name="b2b"> Affiliate / influencer</label>
+          <label><input type="radio" name="b2b"> Studieprojekt / interview</label>
+          <label><input type="radio" name="b2b"> Andet</label>
+        </div>
+      </div>
+      <div class="field"><label>Beskrivelse</label><textarea placeholder="Ønske for samarbejde, personlig beskrivelse om dig selv, målgruppe på profil/event, social-profil etc."></textarea></div>
+      <div class="submit-row"><button class="btn btn-primary" type="button">Send til marketing →</button></div>
+    </div></div>
+  </details>
+
+  <!-- ===================== FAQ ===================== -->
+
+  <div class="section-title">Ofte stillede spørgsmål</div>
+  <div class="faq">
+    <details>
+      <summary>Hvor lang behandlingstid er der på ordrer?</summary>
+      <div class="ans">
+        <p>De fleste ordrer bearbejdes inden for <b>1-2 hverdage</b> det meste af året (højtider, lønningsdag, helligdage mm. kan forårsage længere behandlingstid).</p>
+        <p>Nogle produkter skal dog bestilles hjem først og bliver derfor bearbejdet inden for <b>2-5 hverdage</b> afhængigt af det pågældende produkts leveringstid.</p>
+        <p>Har du allerede lagt en ordre, kan du bruge vores <a href="#lookup">ordresporing øverst</a>, hvor du kan se en aktuel status på din ordre (modtaget, pakkekø, afventer produkt, pakket, afsendt).</p>
+      </div>
+    </details>
+    <details>
+      <summary>Kan der være længere leveringstid på min ordre, end de normale 2-5 hverdage?</summary>
+      <div class="ans">
+        <p>Ja, nogle gange er det svært at behandle og levere din pakke inden for dette tidsrum — særligt ved helligdage og omkring lønningsdag — selvom vi gør vores bedste for at overholde denne forventede estimering.</p>
+        <p><b>Helligdage:</b> Der bliver ikke afhentet/leveret pakker på tyske og danske helligdage. Derfor kan der være længere leveringstid omkring disse tidspunkter.</p>
+        <p><b>Lønningsdag:</b> Der kan forekomme længere leveringstid end forventet omkring lønningsdag, da der typisk er mange ordrer på dette tidspunkt. Der er dog ofte ekstra bemanding på, så vi kan imødekomme den større ordremængde bedst muligt.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Hvorfor er min pakke omdirigeret til pakkeshop, når jeg har bestilt hjemmelevering?</summary>
+      <div class="ans">
+        <p>Hvis din pakke ikke er leveret på adressen, kan det skyldes, at pakken ikke kan stilles forsvarligt uden risiko for tyveri, der er fejl i adresseoplysningerne eller der ikke er adgang til adressen/opgangen til lejligheden. Kontakt leveringsselskabet for yderligere information.</p>
+        <p>Vær opmærksom på, at pakker bestilt til <b>erhvervsadresser</b> ofte omdirigeres til pakkeshop, da risikoen for tyveri af pakken er langt større end levering til hjemmeadresser.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Hvordan kan jeg kontakte fragtselskabet, der står for at levere min pakke?</summary>
+      <div class="ans">
+        <p>Du kan finde fragtselskabernes kontaktoplysninger lige her 🙂</p>
+        <p><b>GLS Danmark</b><br>Tel: 76 33 11 11<br>Kokmose 3, 6000 Kolding, Danmark</p>
+        <p><b>Bring Danmark</b><br>Tel: 70 28 60 70<br>Fuglebækvej 5,9, DK-2770 Kastrup, Danmark</p>
+        <p><b>DAO Danmark</b><br>Tel: 72 33 08 50<br>Kingosgade 17, 1818 Frederiksberg, Danmark</p>
+      </div>
+    </details>
+    <details>
+      <summary>Hvor lang er fortrydelsesretten/ret til retur?</summary>
+      <div class="ans"><p><b>30 dage</b> fra du har modtaget pakken, så længe varen er <b>uåbnet</b>. Datovarer (varer med kort holdbarhed) tager vi normalt ikke retur — men skriv til os, hvis datoen viste sig at være kortere end forventet/anvist.</p></div>
+    </details>
+    <details>
+      <summary>Hvor lang tid tager det, før pengene er tilbage på min konto?</summary>
+      <div class="ans">
+        <p>Har vi refunderet din ordre/vare, skulle dine penge gerne være tilbage på din konto inden for <b>1-5 hverdage</b>.</p>
+        <p>Husk at tjekke samme konto, som du betalte din ordre med.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Hvad sker der, hvis et produkt har ændret pris på siden, efter jeg har lagt min ordre?</summary>
+      <div class="ans"><p>Køber du en vare, som senere sættes op eller ned, er prisen på varen på <b>købstidspunktet</b> den gældende pris. Du opkræves derfor hverken mere eller mindre, også selvom din ordre endnu ikke er bearbejdet.</p></div>
+    </details>
+    <details>
+      <summary>Hvorfor er der kort dato på nogle varer?</summary>
+      <div class="ans"><p>Vi synes, at det er super ærgerligt at smide varer ud, der ikke fejler noget. Derfor sælger vi <b>datovarer til en skarp pris</b>, så du og vi kan hjælpe med at undgå madspild — hvis du har lyst og er interesseret i denne slags varer selvfølgelig 🙂</p></div>
+    </details>
+    <details>
+      <summary>Hvordan kan jeg få en rabatkode?</summary>
+      <div class="ans"><p>Vi gør os ikke så meget i rabatkoder, foruden en måde at kompensere for fejl/mangler, da vi bestræber os på at kunne tilbyde vores produkter til så skarp en pris som muligt — uden brug af koder for at få en god pris. Tilmelder du dig vores nyhedsbrev, vil du dog modtage en <b>velkomstkode</b>, der vil give dig <b>10 % rabat på én ordre over 1000 kr</b>.</p></div>
+    </details>
+    <details>
+      <summary>Kan jeg betale med MobilePay?</summary>
+      <div class="ans"><p>Nej — det er ikke muligt at betale med MobilePay, men du kan bruge <b>Google Pay, Apple Pay, Revolut og almindelig kortbetaling</b>.</p></div>
+    </details>
+    <details>
+      <summary>Skal jeg betale told til Sverige eller Norge?</summary>
+      <div class="ans"><p>Til Sverige: <b>Nej</b>, alt er afregnet ved checkout. Til Norge: <b>Ja</b>, told og moms tillægges ved levering — det er Posten Norge, der opkræver det direkte ved levering.</p></div>
+    </details>
+    <details>
+      <summary>Mit ordrenummer findes ikke i jeres system — hvad nu?</summary>
+      <div class="ans">
+        <p>Tjek først at du har skrevet de rigtige 10 cifre (starter altid med <code>12</code>). Hvis du har <b>betalt</b>, men der ikke er nogen ordrebekræftelse på din mail, kan det være at:</p>
+        <p>1) Der er en tastefejl i din e-mail.<br>2) Betalingen blev reserveret, men ikke gennemført — pengene frigives automatisk af banken inden for 5 hverdage.<br>3) Der opstod en teknisk fejl.</p>
+        <p>I alle tre tilfælde: brug &ldquo;Skriv direkte&rdquo;-formularen og vedhæft et skærmbillede af reservationen/trækningen — så skal vi nok tjekke op på dette 🙏</p>
+      </div>
+    </details>
+    <details>
+      <summary>Hvordan fjerner jeg mig fra nyhedsbrevet, hvis &ldquo;Afmeld&rdquo;-linket ikke virker?</summary>
+      <div class="ans"><p>Brug <a href="#unsub">afmeldingsformularen ovenfor</a>, så fjerner vi dig manuelt inden for 5 minutter.</p></div>
+    </details>
+  </div>
+
+  <!-- ===================== LAST RESORT ===================== -->
+
+  <details class="action" id="other" style="margin-top:24px">
+    <summary>
+      <span class="ico">💬</span>
+      <span class="meta"><h3>Skriv direkte til os</h3><p>Hvis du ikke fik den nødvendige hjælp ovenfor.</p></span>
+      <span class="chev">▾</span>
+    </summary>
+    <div class="body"><div class="body-inner">
+      <div class="grid-2">
+        <div class="field"><label>Navn</label><input type="text"></div>
+        <div class="field"><label>E-mail</label><input type="email"></div>
+      </div>
+      <div class="field"><label>Ordrenummer (hvis relevant)</label><input type="text"></div>
+      <div class="field"><label>Hvad handler det om?</label><textarea placeholder="Beskriv så detaljeret, du kan, hvad din henvendelse drejer sig om — vedhæft gerne skærmbillede af problemer, fotos af produkter/forsendelser, bankreservation/-trækning etc., hvis det er relevant for din henvendelse" rows="5"></textarea></div>
+      <div class="field"><label>Vedhæft (valgfri)</label><input type="file" multiple accept="image/*,application/pdf"></div>
+      <div class="submit-row">
+        <button class="btn btn-primary" type="button">Send besked →</button>
+        <span class="note">Vi svarer typisk inden for 1 hverdag.</span>
+      </div>
+    </div></div>
+  </details>
+
+  <div class="last-resort">
+    <h2>Fik du ikke hjælp her på siden?</h2>
+    <p>Vi gør vores bedste for, at du kan få hjælp hurtigt og uden ventetid — lige her på siden — men nogle gange skal der bare et menneske til 🤗</p>
+    <div class="channels">
+      <div class="channel">
+        <h4>Live chat</h4>
+        <p>Hverdage 10:00-14</p>
+        <div class="small">Hurtigste svar — typisk &lt;5 min.</div>
+      </div>
+      <div class="channel">
+        <h4>E-mail</h4>
+        <p>salg@fitnessnord.com</p>
+        <div class="small">Hverdage 10:30-14</div>
+      </div>
+      <div class="channel">
+        <h4>Telefon</h4>
+        <p>71 99 83 99</p>
+        <div class="small">Hverdage 10:30-14</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    FitnessNord · Hjælp &amp; kundeservice
+  </footer>
+
+</div>
+
+</body>
+</html>
