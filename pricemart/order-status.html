@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Ordrestatus — FitnessNord (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fafaf7;
+    --card:#ffffff;
+    --ink:#101820;
+    --ink-soft:#5a6471;
+    --line:#e6e3da;
+    --line-soft:#f1ede2;
+    --brand:#d6402a;
+    --brand-deep:#a8311f;
+    --brand-soft:#fef0ed;
+    --good:#2f7a4d;
+    --good-soft:#e9f3ed;
+    --warn:#a26515;
+    --warn-soft:#fbf0d8;
+    --bad:#9c2f1f;
+    --bad-soft:#fae9e6;
+    --info:#27516e;
+    --info-soft:#e9f0f6;
+    --shadow:0 1px 2px rgba(16,24,32,.04), 0 4px 12px rgba(16,24,32,.04);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--brand);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.92em}
+
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;height:56px}
+  .logo{font-weight:700;letter-spacing:-.01em;font-size:18px}
+  .logo span{color:var(--brand)}
+  .back{font-size:13px;color:var(--ink-soft)}
+  .lookup-confirm{background:var(--good-soft);border-bottom:1px solid #cfe5d8;color:var(--good);font-size:12.5px;padding:8px 0}
+  .lookup-confirm code{background:#fff;padding:1px 6px;border-radius:4px;color:var(--ink);border:1px solid #cfe5d8}
+  .lookup-confirm a{color:var(--good);text-decoration:underline}
+
+  .demo-bar{background:#101820;color:#e7eaef;font-size:12px;padding:10px 0;border-bottom:1px solid #2a3744}
+  .demo-bar .wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .demo-bar b{color:#fff;font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:11px}
+  .demo-bar .pills{display:flex;gap:6px;flex-wrap:wrap}
+  .demo-bar button{background:#1d2733;border:1px solid #2a3744;color:#a5adba;font:inherit;font-size:12px;padding:5px 10px;border-radius:99px;cursor:pointer}
+  .demo-bar button:hover{background:#26313e;color:#fff}
+  .demo-bar button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+
+  main{padding:32px 0 60px}
+  .order-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+  .order-head .left .ordno{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-soft);letter-spacing:.04em}
+  .order-head .left h1{font-size:30px;line-height:1.1;margin:6px 0 4px;letter-spacing:-.02em;font-weight:600}
+  .order-head .left .meta{color:var(--ink-soft);font-size:13.5px}
+  .order-head .right{display:flex;gap:8px;align-items:flex-start}
+
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600;letter-spacing:.02em;border:1px solid transparent}
+  .badge.b-info{background:var(--info-soft);color:var(--info);border-color:#cfdee9}
+  .badge.b-good{background:var(--good-soft);color:var(--good);border-color:#cfe5d8}
+  .badge.b-warn{background:var(--warn-soft);color:var(--warn);border-color:#eddbb5}
+  .badge.b-bad{background:var(--bad-soft);color:var(--bad);border-color:#ebcfca}
+
+  .status-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-top:24px;box-shadow:var(--shadow)}
+  .status-card .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .status-card .hd h2{margin:0 0 4px;font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .status-card .hd p.sub{margin:0;color:var(--ink-soft);font-size:14px;max-width:580px}
+  .status-card .eta{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-soft);text-align:right}
+  .status-card .eta .when{color:var(--ink);font-size:18px;font-weight:500;font-family:"Inter",sans-serif;letter-spacing:-.01em}
+
+  .pri-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .btn{cursor:pointer;font:inherit;font-weight:500;padding:10px 16px;border-radius:8px;border:1px solid transparent;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:14px}
+  .btn-primary{background:var(--brand);color:#fff}
+  .btn-primary:hover{background:var(--brand-deep)}
+  .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:#d4cfbf}
+  .btn-warn{background:var(--warn-soft);color:var(--warn);border-color:#eddbb5}
+  .btn-warn:hover{background:#f6e6c1}
+  .btn-bad{background:var(--bad-soft);color:var(--bad);border-color:#ebcfca}
+  .btn-bad:hover{background:#f4d8d3}
+
+  /* 6-step timeline */
+  .timeline{margin-top:20px;padding-top:20px;border-top:1px solid var(--line-soft)}
+  .timeline-row{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative}
+  .timeline-row::before{content:"";position:absolute;left:8%;right:8%;top:8px;height:2px;background:var(--line)}
+  .timeline-row::after{content:"";position:absolute;left:8%;top:8px;height:2px;background:var(--good);transition:width .3s}
+  .ts0::after{width:0}
+  .ts1::after{width:17%}
+  .ts2::after{width:34%}
+  .ts3::after{width:51%}
+  .ts4::after{width:68%}
+  .ts5::after{width:84%}
+  .step{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;position:relative;padding:0 4px}
+  .step .dot{width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--line);position:relative;z-index:1}
+  .step.done .dot{background:var(--good);border-color:var(--good)}
+  .step.now .dot{background:var(--brand);border-color:var(--brand);box-shadow:0 0 0 4px var(--brand-soft)}
+  .step.alert .dot{background:var(--warn);border-color:var(--warn);box-shadow:0 0 0 4px var(--warn-soft)}
+  .step .lbl{font-size:12px;color:var(--ink-soft);font-weight:500;line-height:1.2}
+  .step.done .lbl, .step.now .lbl, .step.alert .lbl{color:var(--ink)}
+  .step .when{font-size:10.5px;color:var(--ink-soft);font-family:"JetBrains Mono",monospace}
+  .step .sub{font-size:10.5px;color:var(--warn);font-weight:500;margin-top:2px}
+
+  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-top:24px;align-items:flex-start}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .panel h3{margin:0;padding:16px 18px;font-size:14px;font-weight:600;letter-spacing:-.005em;border-bottom:1px solid var(--line)}
+  .panel .pad{padding:16px 18px}
+
+  .items{padding:0}
+  .item{display:grid;grid-template-columns:56px 1fr auto;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line-soft);align-items:center}
+  .item:last-child{border-bottom:0}
+  .item .thumb{width:56px;height:56px;border-radius:8px;background:#f3eedb;display:flex;align-items:center;justify-content:center;font-size:22px}
+  .item .name{font-weight:500;font-size:14px;line-height:1.3}
+  .item .name small{display:block;color:var(--ink-soft);font-weight:400;margin-top:2px;font-size:12.5px}
+  .item .price{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink);text-align:right;white-space:nowrap}
+  .item .price b{font-weight:500;font-size:14px}
+  .item .price small{display:block;color:var(--ink-soft);font-size:11px}
+  .item .price small.warn{color:var(--warn);font-weight:500}
+
+  .totals{padding:14px 18px;background:#fafaf7;border-top:1px solid var(--line)}
+  .totals .row{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:4px}
+  .totals .row.grand{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-weight:600;font-size:15px}
+  .totals .row.refunded{color:var(--good)}
+  .totals .row .v{font-family:"JetBrains Mono",monospace}
+
+  .tracking{padding:16px 18px}
+  .tracking .carrier{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .tracking .carrier .badge-c{font-family:"JetBrains Mono",monospace;font-size:11px;background:#101820;color:#fff;padding:3px 8px;border-radius:4px;font-weight:600}
+  .tracking .tn{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-soft)}
+  .tracking .tn b{color:var(--ink)}
+  .tracking .scans{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  .scan{display:grid;grid-template-columns:60px 1fr;gap:12px;font-size:13px;padding:6px 0}
+  .scan .when{font-family:"JetBrains Mono",monospace;color:var(--ink-soft);font-size:12px}
+  .scan.recent .what{font-weight:500}
+  .scan .what small{display:block;color:var(--ink-soft);font-size:12px}
+
+  .actions{padding:0}
+  .action-row{padding:14px 18px;border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:12px;cursor:pointer;background:transparent;border-left:0;border-right:0;border-top:0;width:100%;text-align:left;font:inherit;color:var(--ink)}
+  .action-row:last-child{border-bottom:0}
+  .action-row:hover{background:#fafaf7}
+  .action-row .ico{width:32px;height:32px;border-radius:8px;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .action-row .meta{flex:1}
+  .action-row h4{margin:0 0 2px;font-size:14px;font-weight:500}
+  .action-row p{margin:0;color:var(--ink-soft);font-size:12.5px;line-height:1.4}
+  .action-row .arr{color:var(--ink-soft);font-size:14px}
+
+  .callout{padding:14px 16px;border-radius:8px;font-size:13.5px;border:1px solid transparent;line-height:1.5}
+  .callout.info{background:var(--info-soft);border-color:#cfdee9;color:var(--info)}
+  .callout.good{background:var(--good-soft);border-color:#cfe5d8;color:var(--good)}
+  .callout.warn{background:var(--warn-soft);border-color:#eddbb5;color:var(--warn)}
+  .callout.bad{background:var(--bad-soft);border-color:#ebcfca;color:var(--bad)}
+  .callout b{font-weight:600}
+
+  .delay-banner{background:linear-gradient(180deg,var(--warn-soft),#fff);border:1px solid #eddbb5;border-radius:12px;padding:18px;margin-top:16px}
+  .delay-banner h4{margin:0 0 6px;color:var(--warn);font-size:15px;font-weight:600}
+  .delay-banner p{margin:0 0 10px;font-size:13.5px;color:var(--ink)}
+  .delay-banner .gift{background:#fff;border:1px dashed #eddbb5;border-radius:8px;padding:10px 14px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .delay-banner .gift .code{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:500}
+
+  .addr-box{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.5}
+  .addr-box .who{color:var(--ink)}
+  .addr-box .who b{display:block}
+  .addr-box .edit{font-size:12.5px}
+
+  .comms{padding:0}
+  .comm{padding:12px 18px;border-bottom:1px solid var(--line-soft);font-size:13px;display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:center}
+  .comm:last-child{border-bottom:0}
+  .comm .when{color:var(--ink-soft);font-family:"JetBrains Mono",monospace;font-size:12px}
+  .comm .what b{font-weight:500}
+  .comm .resend{font-size:12px}
+
+  .claim-cta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 18px}
+  .claim-cta button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;cursor:pointer;font:inherit;font-size:13px;text-align:center;color:var(--ink);line-height:1.3}
+  .claim-cta button:hover{border-color:var(--brand);color:var(--brand)}
+  .claim-cta button .ico{display:block;font-size:18px;margin-bottom:4px}
+
+  /* state visibility — exclude body itself */
+  [data-state]:not(body){display:none}
+  body[data-state="modtaget"] [data-state="modtaget"],
+  body[data-state="backorder"] [data-state="backorder"],
+  body[data-state="pakket"] [data-state="pakket"],
+  body[data-state="afhentet"] [data-state="afhentet"],
+  body[data-state="sorteret"] [data-state="sorteret"],
+  body[data-state="undervejs"] [data-state="undervejs"],
+  body[data-state="forsinket"] [data-state="forsinket"],
+  body[data-state="leveret"] [data-state="leveret"],
+  body[data-state="annulleret"] [data-state="annulleret"]{display:block}
+  body[data-state] .timeline-row[data-state]{display:grid}
+  body[data-state] .pri-actions[data-state]{display:flex}
+  body[data-state] .badge[data-state]{display:inline-flex}
+  body[data-state] .claim-cta[data-state]{display:grid}
+  body[data-state] .addr-box[data-state]{display:flex}
+  body[data-state] .delay-banner[data-state]{display:block}
+  body[data-state] .item .price small[data-state]{display:block}
+
+  @media (max-width: 760px){
+    .grid{grid-template-columns:1fr}
+    .order-head{flex-direction:column;align-items:flex-start}
+    .timeline-row{font-size:11px}
+    .step .lbl{font-size:10.5px}
+    .step .when{display:none}
+    .claim-cta{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body data-state="undervejs">
+
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="logo">Fitness<span>Nord</span></div>
+    <a href="index.html" class="back">← Tilbage til hjælp</a>
+  </div>
+</div>
+
+<div class="lookup-confirm" id="lookup-confirm" hidden>
+  <div class="wrap">
+    <span>Slog op: ordre <code id="lc-order">1200884356</code> · e-mail <code id="lc-email">jesper@…</code> · <a href="index.html#lookup">Slå en anden ordre op</a></span>
+  </div>
+</div>
+
+<div class="demo-bar">
+  <div class="wrap">
+    <b>Demo · skift status</b>
+    <div class="pills">
+      <button data-set="modtaget">1. Modtaget (pakkekø)</button>
+      <button data-set="backorder">1b. Afventer produkt</button>
+      <button data-set="pakket">2. Pakket</button>
+      <button data-set="afhentet">3. Afhentet af fragt</button>
+      <button data-set="sorteret">4. Sorteret</button>
+      <button data-set="undervejs" class="on">5. Undervejs</button>
+      <button data-set="leveret">6. Leveret</button>
+      <button data-set="forsinket">⚠ Forsinket</button>
+      <button data-set="annulleret">✕ Annulleret</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <div class="order-head">
+    <div class="left">
+      <div class="ordno">Ordre <code id="ord-no">#1200884356</code> · bestilt 12. nov 2025 kl. 10:14</div>
+      <h1>Hej <span id="cust-name">Jesper</span> 🙂</h1>
+      <div class="meta">
+        <span data-state="modtaget">Vi har modtaget din ordre — den ligger i pakkekøen.</span>
+        <span data-state="backorder">Vi afventer en vare fra vores leverandør, før vi kan sende din pakke afsted.</span>
+        <span data-state="pakket">Din ordre er pakket og venter på at blive afhentet af fragtfirmaet.</span>
+        <span data-state="afhentet">Fragtfirmaet har afhentet din pakke hos lageret.</span>
+        <span data-state="sorteret">Din pakke er sorteret og videresendt til det lokale depot.</span>
+        <span data-state="undervejs">Din pakke er undervejs til leveringsstedet.</span>
+        <span data-state="forsinket">Din pakke er undervejs, men har en forsinkelse, vi følger med på.</span>
+        <span data-state="leveret">Din pakke er leveret — håber du bliver glad for dine ting 💪</span>
+        <span data-state="annulleret">Ordren er annulleret. Pengene er på vej tilbage.</span>
+      </div>
+    </div>
+    <div class="right">
+      <span class="badge b-info" data-state="modtaget">● Modtaget — i pakkekø</span>
+      <span class="badge b-warn" data-state="backorder">● Afventer produkt</span>
+      <span class="badge b-info" data-state="pakket">● Pakket</span>
+      <span class="badge b-info" data-state="afhentet">● Afhentet af fragt</span>
+      <span class="badge b-info" data-state="sorteret">● Sorteret</span>
+      <span class="badge b-info" data-state="undervejs">● Undervejs</span>
+      <span class="badge b-warn" data-state="forsinket">● Forsinket</span>
+      <span class="badge b-good" data-state="leveret">● Leveret</span>
+      <span class="badge b-bad" data-state="annulleret">● Annulleret</span>
+    </div>
+  </div>
+
+  <div class="status-card">
+    <div class="hd">
+      <div>
+        <h2 data-state="modtaget">Modtaget — ligger i pakkekøen</h2>
+        <h2 data-state="backorder">Afventer din PEAK Vitamin D 180 stk</h2>
+        <h2 data-state="pakket">Pakket — afhentes af DAO i dag</h2>
+        <h2 data-state="afhentet">Afhentet af DAO</h2>
+        <h2 data-state="sorteret">Sorteret hos DAO Brøndby</h2>
+        <h2 data-state="undervejs">Undervejs til pakkeshop Børkop</h2>
+        <h2 data-state="forsinket">Pakken har ikke scannet siden 18. nov</h2>
+        <h2 data-state="leveret">Leveret 14. nov kl. 14:23</h2>
+        <h2 data-state="annulleret">Annulleret 12. nov kl. 11:42</h2>
+
+        <p class="sub" data-state="modtaget">Du kan stadig <b>annullere, ændre eller tilføje varer</b>, indtil ordren er bearbejdet. De fleste ordrer bearbejdes inden for <b>1-2 hverdage</b>.</p>
+        <p class="sub" data-state="backorder">PEAK Vitamin D 180 stk er midlertidigt udsolgt hos vores leverandør. Vi venter på, at den kommer på lager — typisk <b>2-3 hverdage</b>. Du kan også få det vi har sendt nu og resten senere.</p>
+        <p class="sub" data-state="pakket">Pakken venter på, at fragtfirmaet henter den. Du får tracking-mail, så snart pakken er scannet ind hos DAO.</p>
+        <p class="sub" data-state="afhentet">DAO har afhentet din pakke hos vores lager og kører den til sortering. Du kan følge pakken hos DAO via knappen nedenfor.</p>
+        <p class="sub" data-state="sorteret">Pakken er sorteret hos DAO Brøndby og er videre til det lokale distributionsdepot — typisk fremme i pakkeshoppen næste hverdag.</p>
+        <p class="sub" data-state="undervejs">Forventet klar til afhentning i pakkeshop Spiloppen, Børkop — i morgen formentlig. DAO sender en mail, når pakken er klar.</p>
+        <p class="sub" data-state="forsinket">Vi har taget kontakt til DAO og bedt dem undersøge — du får direkte besked på e-mail, så snart vi hører fra dem. Hvis ikke pakken dukker op, sender vi en ny.</p>
+        <p class="sub" data-state="leveret">Hvis noget i pakken ikke er, som det skal være — manglende, forkert eller ødelagt vare — så start en sag med ét klik nedenfor.</p>
+        <p class="sub" data-state="annulleret">Pengene tilbageføres til samme konto, som du betalte med, inden for <b>1-5 hverdage</b>. Vi kan desværre ikke fremskynde det — det er bankens behandlingstid.</p>
+      </div>
+      <div class="eta" data-state="modtaget">Forventes pakket<div class="when">1-2 hverdage</div></div>
+      <div class="eta" data-state="backorder">Vare forventes<div class="when">17.-19. nov</div></div>
+      <div class="eta" data-state="pakket">Afhentes i dag<div class="when">af DAO</div></div>
+      <div class="eta" data-state="afhentet">Forventet levering<div class="when">14.-15. nov</div></div>
+      <div class="eta" data-state="sorteret">Klar i pakkeshop<div class="when">i morgen</div></div>
+      <div class="eta" data-state="undervejs">Klar i pakkeshop<div class="when">i morgen, 14. nov</div></div>
+      <div class="eta" data-state="forsinket">Sidste scan<div class="when">for 5 dage siden</div></div>
+      <div class="eta" data-state="leveret">Leveret<div class="when">14. nov 14:23</div></div>
+      <div class="eta" data-state="annulleret">Refundering<div class="when">senest 17. nov</div></div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-row ts0" data-state="modtaget">
+        <div class="step now"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11 10:14</div><div class="sub">i pakkekø</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">—</div></div>
+      </div>
+      <div class="timeline-row ts0" data-state="backorder">
+        <div class="step alert"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11</div><div class="sub">afventer produkt</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">—</div></div>
+      </div>
+      <div class="timeline-row ts1" data-state="pakket">
+        <div class="step done"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11 10:14</div></div>
+        <div class="step now"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">i dag 09:12</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">—</div></div>
+      </div>
+      <div class="timeline-row ts2" data-state="afhentet">
+        <div class="step done"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">13/11 09:12</div></div>
+        <div class="step now"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">13/11 17:42</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">—</div></div>
+      </div>
+      <div class="timeline-row ts3" data-state="sorteret">
+        <div class="step done"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">13/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">13/11 17:42</div></div>
+        <div class="step now"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">i dag 04:18</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">—</div></div>
+      </div>
+      <div class="timeline-row ts4" data-state="undervejs">
+        <div class="step done"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">13/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">13/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">i dag 04:18</div></div>
+        <div class="step now"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">i dag 11:04</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">i morgen</div></div>
+      </div>
+      <div class="timeline-row ts4" data-state="forsinket">
+        <div class="step done"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">13/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">13/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">18/11 09:14</div></div>
+        <div class="step alert"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">5 dage</div><div class="sub">forsinket</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">—</div></div>
+      </div>
+      <div class="timeline-row ts5" data-state="leveret">
+        <div class="step done"><div class="dot"></div><div class="lbl">Modtaget</div><div class="when">12/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Pakket</div><div class="when">13/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Afhentet af fragt</div><div class="when">13/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Sorteret</div><div class="when">14/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Undervejs</div><div class="when">14/11</div></div>
+        <div class="step done"><div class="dot"></div><div class="lbl">Leveret</div><div class="when">14/11 14:23</div></div>
+      </div>
+      <div class="timeline-row ts0" data-state="annulleret">
+        <div class="step now"><div class="dot" style="background:var(--bad);border-color:var(--bad);box-shadow:0 0 0 4px var(--bad-soft)"></div><div class="lbl">Annulleret</div><div class="when">12/11 11:42</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">—</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">—</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">—</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">—</div><div class="when">—</div></div>
+        <div class="step"><div class="dot"></div><div class="lbl">—</div><div class="when">—</div></div>
+      </div>
+    </div>
+
+    <div class="pri-actions" data-state="modtaget">
+      <button class="btn btn-bad">Annullér ordre</button>
+      <button class="btn btn-ghost">Ret leveringsadresse</button>
+      <button class="btn btn-ghost">Tilføj eller fjern varer</button>
+      <button class="btn btn-ghost">Ret e-mail på ordren</button>
+    </div>
+    <div class="pri-actions" data-state="backorder">
+      <button class="btn btn-primary">Send det jeg har — send resten senere</button>
+      <button class="btn btn-ghost">Erstat varen med en anden</button>
+      <button class="btn btn-bad">Annullér ordren</button>
+    </div>
+    <div class="pri-actions" data-state="pakket">
+      <button class="btn btn-primary">Følg pakken (DAO åbner snart)</button>
+      <button class="btn btn-ghost">Ret e-mail på ordren</button>
+    </div>
+    <div class="pri-actions" data-state="afhentet">
+      <a class="btn btn-primary" href="https://dao.as/find-din-pakke/?q=00057151273428497234#trackandtrace" target="_blank" rel="noopener">Følg pakken hos DAO →</a>
+      <button class="btn btn-ghost">Skift afhentningssted</button>
+    </div>
+    <div class="pri-actions" data-state="sorteret">
+      <a class="btn btn-primary" href="https://dao.as/find-din-pakke/?q=00057151273428497234#trackandtrace" target="_blank" rel="noopener">Følg pakken hos DAO →</a>
+      <button class="btn btn-ghost">Skift afhentningssted</button>
+    </div>
+    <div class="pri-actions" data-state="undervejs">
+      <a class="btn btn-primary" href="https://dao.as/find-din-pakke/?q=00057151273428497234#trackandtrace" target="_blank" rel="noopener">Følg pakken hos DAO →</a>
+      <button class="btn btn-ghost">Skift afhentningssted</button>
+      <button class="btn btn-ghost">Kontakt fragtselskab</button>
+    </div>
+    <div class="pri-actions" data-state="forsinket">
+      <button class="btn btn-warn">Vi har skrevet til DAO — du får besked</button>
+      <button class="btn btn-ghost">Send mig en ny pakke</button>
+      <button class="btn btn-ghost">Få pengene tilbage</button>
+    </div>
+    <div class="pri-actions" data-state="leveret">
+      <button class="btn btn-primary">Alt var som det skulle 👍</button>
+      <button class="btn btn-warn">Noget mangler eller er ødelagt</button>
+      <button class="btn btn-ghost">Start en retur</button>
+    </div>
+    <div class="pri-actions" data-state="annulleret">
+      <button class="btn btn-primary">Læg en ny ordre</button>
+      <button class="btn btn-ghost">Download kvittering</button>
+    </div>
+  </div>
+
+  <div class="delay-banner" data-state="backorder">
+    <h4>Vi venter på <b>PEAK Vitamin D 180 stk</b> — typisk 2-3 hverdage</h4>
+    <p>Hvis du ikke kan vente, kan vi sende det, vi har på lager nu, og resten når PEAK Vitamin D er tilbage (gratis ekstra fragt). Eller du kan erstatte den med en lignende vare — vi foreslår tre alternativer nedenfor.</p>
+  </div>
+
+  <div class="delay-banner" data-state="forsinket">
+    <h4>Beklager forsinkelsen — vi har lagt en lille ekstra hilsen klar</h4>
+    <p>Vi ved, at det er irriterende at vente, og selvom forsinkelsen ligger hos DAO, vil vi gerne gøre det godt igen. Brug den her kode på din næste ordre:</p>
+    <div class="gift">
+      <span class="code">JESPER-100-7892 🎁</span>
+      <span style="font-size:12.5px;color:var(--ink-soft)">100 kr rabat · ingen minimum · udløber ikke</span>
+    </div>
+  </div>
+
+  <div class="panel" data-state="leveret" style="margin-top:18px">
+    <h3>Var der noget galt med pakken?</h3>
+    <div class="claim-cta">
+      <button><span class="ico">📦</span>En vare manglede</button>
+      <button><span class="ico">🔄</span>Forkert vare leveret</button>
+      <button><span class="ico">💥</span>Vare/pakke ødelagt</button>
+    </div>
+    <div class="callout info" style="margin:0 18px 18px">
+      Vi beder altid om <b>billede + batchnummer</b> (samme sted som holdbarhedsdato) — så kan vi melde det videre til producenten og sende erstatning hurtigt 💪
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div>
+      <div class="panel">
+        <h3>Indhold</h3>
+        <div class="items">
+          <div class="item">
+            <div class="thumb">🥤</div>
+            <div class="name">C4 Pre-Workout (60 portioner)<small>Cherry Limeade · 360 g</small></div>
+            <div class="price"><b>329,00 kr</b><small>1 stk</small></div>
+          </div>
+          <div class="item">
+            <div class="thumb">💊</div>
+            <div class="name">PEAK Vitamin D 180 stk<small>D3, 4000 IU per kapsel</small></div>
+            <div class="price"><b>149,00 kr</b><small>1 stk</small><small class="warn" data-state="backorder">afventer</small></div>
+          </div>
+          <div class="item">
+            <div class="thumb">🍫</div>
+            <div class="name">Højprotein Flapjack — Chokolade Brownie<small>60 g</small></div>
+            <div class="price"><b>59,90 kr</b><small>10 stk</small></div>
+          </div>
+        </div>
+        <div class="totals">
+          <div class="row"><span>Varer</span><span class="v">577,90 kr</span></div>
+          <div class="row"><span>Fragt — DAO pakkeshop</span><span class="v">23,83 kr</span></div>
+          <div class="row grand"><span>I alt</span><span class="v">601,73 kr</span></div>
+          <div class="row refunded" data-state="annulleret"><span>Refunderes</span><span class="v">601,73 kr</span></div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px" data-state="afhentet">
+        <h3>Tracking</h3>
+        <div class="tracking">
+          <div class="carrier"><span class="badge-c">DAO</span><span class="tn">Forsendelses-id <b>00057151273428497234</b></span></div>
+          <a href="https://dao.as/find-din-pakke/?q=00057151273428497234#trackandtrace" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:6px">Åbn live tracking hos DAO →</a>
+          <div class="scans">
+            <div class="scan recent"><span class="when">13/11<br>17:42</span><span class="what">Afhentet hos FitnessNord lager <small>Pakken er hos DAO og kører mod sortering</small></span></div>
+            <div class="scan"><span class="when">13/11<br>09:12</span><span class="what">Pakket og klar til afhentning</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px" data-state="sorteret">
+        <h3>Tracking</h3>
+        <div class="tracking">
+          <div class="carrier"><span class="badge-c">DAO</span><span class="tn">Forsendelses-id <b>00057151273428497234</b></span></div>
+          <a href="https://dao.as/find-din-pakke/?q=00057151273428497234#trackandtrace" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:6px">Åbn live tracking hos DAO →</a>
+          <div class="scans">
+            <div class="scan recent"><span class="when">i dag<br>04:18</span><span class="what">Sorteret hos DAO Brøndby <small>Videresendt til lokalt depot Vejle</small></span></div>
+            <div class="scan"><span class="when">13/11<br>17:42</span><span class="what">Afhentet hos FitnessNord lager</span></div>
+            <div class="scan"><span class="when">13/11<br>09:12</span><span class="what">Pakket og klar til afhentning</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px" data-state="undervejs">
+        <h3>Tracking</h3>
+        <div class="tracking">
+          <div class="carrier"><span class="badge-c">DAO</span><span class="tn">Forsendelses-id <b>00057151273428497234</b></span></div>
+          <a href="https://dao.as/find-din-pakke/?q=00057151273428497234#trackandtrace" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:6px">Åbn live tracking hos DAO →</a>
+          <div class="scans">
+            <div class="scan recent"><span class="when">i dag<br>11:04</span><span class="what">Undervejs til pakkeshop Spiloppen, Børkop <small>På chaufførens rute — forventet fremme i morgen</small></span></div>
+            <div class="scan"><span class="when">i dag<br>04:18</span><span class="what">Sorteret hos DAO Brøndby</span></div>
+            <div class="scan"><span class="when">13/11<br>17:42</span><span class="what">Afhentet hos FitnessNord lager</span></div>
+            <div class="scan"><span class="when">13/11<br>09:12</span><span class="what">Pakket og klar til afhentning</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px" data-state="forsinket">
+        <h3>Tracking</h3>
+        <div class="tracking">
+          <div class="carrier"><span class="badge-c">DAO</span><span class="tn">Forsendelses-id <b>00057151273428497234</b></span></div>
+          <a href="#" target="_blank" class="btn btn-ghost" style="margin-top:6px">Åbn live tracking hos DAO →</a>
+          <div class="scans">
+            <div class="scan recent"><span class="when">18/11<br>09:14</span><span class="what">Sorteret hos DAO Brøndby <small>Sidste registrerede scan — ingen status siden</small></span></div>
+            <div class="scan"><span class="when">17/11<br>17:42</span><span class="what">Afhentet hos FitnessNord lager</span></div>
+            <div class="scan"><span class="when">17/11<br>09:12</span><span class="what">Pakket og klar til afhentning</span></div>
+          </div>
+          <div class="callout warn" style="margin-top:14px">
+            <b>Vi har taget kontakt til DAO</b> kl. 09:42 i dag og bedt dem undersøge sagen. Du får direkte besked på e-mail, så snart vi hører fra dem — typisk inden for 24 timer. Hvis pakken ikke dukker op, sender vi en ny.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px" data-state="leveret">
+        <h3>Tracking</h3>
+        <div class="tracking">
+          <div class="carrier"><span class="badge-c">DAO</span><span class="tn">Forsendelses-id <b>00057151273428497234</b></span></div>
+          <div class="scans">
+            <div class="scan recent"><span class="when">14/11<br>14:23</span><span class="what">Leveret · pakkeshop Spiloppen, Børkop <small>Afhentet af kunde 14. nov kl. 16:08</small></span></div>
+            <div class="scan"><span class="when">14/11<br>09:30</span><span class="what">Klar til afhentning i pakkeshop</span></div>
+            <div class="scan"><span class="when">13/11<br>17:42</span><span class="what">Afhentet hos FitnessNord lager</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h3>Levering</h3>
+        <div class="pad">
+          <div class="addr-box">
+            <div class="who">
+              <b>Pakkeshop Spiloppen</b>
+              Vejlevej 198<br>
+              7080 Børkop<br>
+              <span style="color:var(--ink-soft)">Modtager: Jesper Madsen</span>
+            </div>
+            <a href="#" class="edit" data-state="modtaget">Ret →</a>
+            <a href="#" class="edit" data-state="backorder">Ret →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <h3>Mails sendt til dig</h3>
+        <div class="comms">
+          <div class="comm">
+            <span class="when">12/11 10:14</span>
+            <span class="what"><b>Ordrebekræftelse</b><br><span style="color:var(--ink-soft)">Sendt til jesper@…</span></span>
+            <a href="#" class="resend">Send igen</a>
+          </div>
+          <div class="comm" data-state="pakket"><span class="when">i dag 09:12</span><span class="what"><b>Pakket og klar</b><br><span style="color:var(--ink-soft)">DAO afhenter</span></span><a href="#" class="resend">Send igen</a></div>
+          <div class="comm" data-state="afhentet"><span class="when">13/11 17:43</span><span class="what"><b>Pakkemail med tracking</b><br><span style="color:var(--ink-soft)">DAO 0005…8497234</span></span><a href="#" class="resend">Send igen</a></div>
+          <div class="comm" data-state="sorteret"><span class="when">13/11 17:43</span><span class="what"><b>Pakkemail med tracking</b><br><span style="color:var(--ink-soft)">DAO 0005…8497234</span></span><a href="#" class="resend">Send igen</a></div>
+          <div class="comm" data-state="undervejs"><span class="when">13/11 17:43</span><span class="what"><b>Pakkemail med tracking</b><br><span style="color:var(--ink-soft)">DAO 0005…8497234</span></span><a href="#" class="resend">Send igen</a></div>
+          <div class="comm" data-state="leveret"><span class="when">14/11 14:23</span><span class="what"><b>Pakke leveret</b><br><span style="color:var(--ink-soft)">DAO bekræftelse</span></span><a href="#" class="resend">Send igen</a></div>
+          <div class="comm" data-state="annulleret"><span class="when">12/11 11:42</span><span class="what"><b>Ordre annulleret</b><br><span style="color:var(--ink-soft)">Refundering 1-5 hverdage</span></span><a href="#" class="resend">Send igen</a></div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:14px">
+        <h3>Andet du kan gøre</h3>
+        <div class="actions">
+          <button class="action-row">
+            <span class="ico">⬇</span>
+            <span class="meta"><h4>Download faktura</h4><p>PDF — også med CVR til erhverv</p></span>
+            <span class="arr">→</span>
+          </button>
+          <button class="action-row">
+            <span class="ico">✉</span>
+            <span class="meta"><h4>Genfremsend ordrebekræftelse</h4><p>Hvis du ikke har modtaget den</p></span>
+            <span class="arr">→</span>
+          </button>
+          <button class="action-row" data-state="modtaget"><span class="ico">✏️</span><span class="meta"><h4>Ret e-mail på ordren</h4><p>Hvis du har skrevet forkert mail</p></span><span class="arr">→</span></button>
+          <button class="action-row" data-state="undervejs"><span class="ico">📞</span><span class="meta"><h4>Kontakt fragtselskab</h4><p>DAO · GLS · Bring telefonnumre</p></span><span class="arr">→</span></button>
+          <button class="action-row" data-state="forsinket"><span class="ico">📞</span><span class="meta"><h4>Kontakt fragtselskab</h4><p>DAO · GLS · Bring telefonnumre</p></span><span class="arr">→</span></button>
+          <button class="action-row"><span class="ico">💬</span><span class="meta"><h4>Skriv til kundeservice</h4><p>Hvis intet ovenfor passer</p></span><span class="arr">→</span></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:36px;padding:18px 0;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <span>Ordre <span id="ord-no-foot">#1200884356</span> · sidst opdateret <span data-state="modtaget">12. nov 11:00</span><span data-state="backorder">14. nov 09:00</span><span data-state="pakket">14. nov 09:12</span><span data-state="afhentet">13. nov 17:43</span><span data-state="sorteret">i dag 04:18</span><span data-state="undervejs">i dag 11:04</span><span data-state="forsinket">i dag 09:42</span><span data-state="leveret">14. nov 14:23</span><span data-state="annulleret">12. nov 11:42</span></span>
+    <span>FitnessNord · <a href="index.html">Hjælp</a></span>
+  </div>
+
+</main>
+
+<script>
+  const buttons = document.querySelectorAll('.demo-bar button');
+  buttons.forEach(b => b.addEventListener('click', () => {
+    const s = b.dataset.set;
+    document.body.setAttribute('data-state', s);
+    buttons.forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    history.replaceState(null, '', updateParam('state', s));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }));
+
+  function updateParam(key, val){
+    const u = new URL(window.location.href);
+    u.searchParams.set(key, val);
+    return u.toString();
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const orderNo = (params.get('order') || '').trim();
+  const email = (params.get('email') || '').trim();
+  const stateParam = params.get('state');
+
+  if (orderNo) {
+    document.getElementById('ord-no').textContent = '#' + orderNo;
+    document.getElementById('ord-no-foot').textContent = '#' + orderNo;
+  }
+  if (orderNo || email) {
+    const lc = document.getElementById('lookup-confirm');
+    lc.hidden = false;
+    if (orderNo) document.getElementById('lc-order').textContent = orderNo;
+    if (email) {
+      const e = email.replace(/^(.).*?(.)(@.*)$/, '$1***$2$3');
+      document.getElementById('lc-email').textContent = e;
+    }
+  }
+  const validStates = ['modtaget','backorder','pakket','afhentet','sorteret','undervejs','forsinket','leveret','annulleret'];
+  if (stateParam && validStates.includes(stateParam)) {
+    document.body.setAttribute('data-state', stateParam);
+    buttons.forEach(b => b.classList.toggle('on', b.dataset.set === stateParam));
+  }
+</script>
+
+</body>
+</html>
