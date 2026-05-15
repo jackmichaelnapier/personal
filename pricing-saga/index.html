@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>The Saga of Honest Pricing — Nordhall</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --border-strong: #d1d5db;
+    --text: #111827;
+    --text-soft: #4b5563;
+    --text-muted: #6b7280;
+    --text-faint: #9ca3af;
+    --accent: #1f2937;
+    --accent-soft: #f3f4f6;
+
+    --orange: #f97316;
+    --orange-bg: #fff7ed;
+    --orange-border: #fdba74;
+
+    --warn-bg: #fef3c7;
+    --warn-border: #fcd34d;
+    --warn-text: #78350f;
+
+    --bad-bg: #fef2f2;
+    --bad-border: #fca5a5;
+    --bad-text: #991b1b;
+
+    --good-bg: #f0fdf4;
+    --good-border: #86efac;
+    --good-text: #15803d;
+
+    --info-bg: #eff6ff;
+    --info-border: #93c5fd;
+    --info-text: #1e3a8a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    font-size: 14px;
+    padding: 32px 16px 80px;
+  }
+  .page { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(249,115,22,0.08), transparent 50%),
+      linear-gradient(180deg, #fff, #fafbfc);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    background: var(--orange-bg);
+    border: 1px solid var(--orange-border);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+  }
+  .hero-tag .dot { width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .hero h1 {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 10px;
+  }
+  .hero .tagline {
+    font-size: 17px;
+    color: var(--text-soft);
+    margin-bottom: 22px;
+    max-width: 600px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+  .meta-chip strong { color: var(--text); font-weight: 700; }
+  .meta-chip .dot-o { width: 8px; height: 8px; background: var(--orange); border-radius: 50%; }
+  .meta-chip .dot-b { width: 8px; height: 8px; background: #4f46e5; border-radius: 50%; }
+
+  /* ============================================================
+     WHY + TLDR
+     ============================================================ */
+  .why {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 26px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-soft);
+  }
+  .why strong { color: var(--text); font-weight: 700; }
+  .why-lead {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px;
+  }
+
+  .tldr {
+    background: linear-gradient(135deg, #fff 0%, #fefdfb 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 26px;
+    position: relative;
+  }
+  .tldr-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .tldr-icon {
+    width: 28px; height: 28px;
+    background: var(--orange);
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .tldr-head h2 { font-size: 17px; font-weight: 700; }
+  .tldr-head .sub { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+  .tldr-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 700px) { .tldr-list { grid-template-columns: 1fr; } }
+  .tldr-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .tldr-item .num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    background: var(--orange-bg);
+    color: var(--orange);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 12px;
+  }
+  .tldr-item strong { font-weight: 700; color: var(--text); }
+
+  /* ============================================================
+     OVERVIEW
+     ============================================================ */
+  .overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 720px) { .overview { grid-template-columns: 1fr; } }
+  .ov-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    position: relative;
+    transition: transform 0.15s;
+  }
+  .ov-card:hover { transform: translateY(-1px); }
+  .ov-card .num {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+    background: var(--orange-bg);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .ov-card .title { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .ov-card .desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ============================================================
+     SECTION (workstreams)
+     ============================================================ */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .section-head {
+    padding: 22px 26px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .section-head .label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: var(--orange);
+    background: var(--orange-bg);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .section-head h2 { font-size: 22px; font-weight: 700; }
+  .section-head .blurb { font-size: 13px; color: var(--text-muted); margin-top: 6px; max-width: 520px; line-height: 1.5; }
+  .section-body { padding: 24px 26px; }
+  .section-body > * + * { margin-top: 18px; }
+
+  /* Assignment row */
+  .assignment {
+    display: flex;
+    gap: 14px;
+    margin-top: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .owner-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text-soft);
+    font-weight: 500;
+  }
+  .owner-tag .avatar {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+  }
+  .owner-tag.tech .avatar { background: #0891b2; }
+  .due-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .due-tag::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .note-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+  .note-tag::before {
+    content: '✎';
+    color: var(--text-muted);
+    font-style: normal;
+    font-size: 11px;
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .badge.warn  { background: var(--warn-bg);  color: var(--warn-text);  border: 1px solid var(--warn-border); }
+  .badge.good  { background: var(--good-bg);  color: var(--good-text);  border: 1px solid var(--good-border); }
+  .badge.info  { background: var(--info-bg);  color: var(--info-text);  border: 1px solid var(--info-border); }
+  .badge.neutral { background: var(--accent-soft); color: var(--text); border: 1px solid var(--border-strong); }
+
+  /* Confirm callout */
+  .confirm-note {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--warn-text);
+    line-height: 1.5;
+  }
+  .confirm-note .q-icon {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #fde047;
+    color: var(--warn-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+  }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-body { flex: 1; font-size: 13.5px; line-height: 1.55; }
+  .step-body strong { font-weight: 700; color: var(--text); }
+  .step-body code {
+    background: #f3f4f6;
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  /* Sub-card */
+  .sub-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .sub-card-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .rule-list { list-style: none; }
+  .rule-list li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    font-size: 13.5px;
+    color: var(--text-soft);
+    line-height: 1.55;
+  }
+  .rule-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0; top: 6px;
+    color: var(--good-text);
+    font-weight: 800;
+  }
+  .rule-list li strong { color: var(--text); font-weight: 700; }
+
+  /* Bundle visual */
+  .bundle-flow {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  @media (max-width: 700px) { .bundle-flow { grid-template-columns: 1fr; } .bundle-flow .arrow { transform: rotate(90deg); } }
+  .bundle-flow .components { display: flex; gap: 8px; }
+  .bundle-flow .mini { width: 70px; background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 10px 8px; text-align: center; }
+  .bundle-flow .mini-img { height: 32px; background: #e5e7eb; border-radius: 4px; margin-bottom: 6px; }
+  .bundle-flow .mini-name { font-size: 10px; color: var(--text-muted); margin-bottom: 2px; }
+  .bundle-flow .mini-price { font-size: 11px; font-weight: 700; color: var(--text); }
+  .bundle-flow .arrow { font-size: 22px; color: var(--text-faint); }
+  .bundle-flow .bundle-result { background: var(--good-bg); border: 1px solid var(--good-border); border-radius: 8px; padding: 14px 16px; min-width: 160px; }
+  .bundle-flow .bundle-result .lbl { font-size: 10px; color: var(--good-text); font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .bundle-flow .bundle-result .reg { text-decoration: line-through; color: var(--text-faint); font-size: 12px; }
+  .bundle-flow .bundle-result .sale { font-size: 18px; font-weight: 800; color: var(--text); }
+  .bundle-flow .bundle-result .save { font-size: 11px; color: var(--good-text); font-weight: 700; margin-top: 4px; }
+
+  /* Stat cards */
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .stat-row { grid-template-columns: 1fr; } }
+  .stat-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+  .stat-num { font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -0.02em; }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+  /* Record table */
+  .record-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+    background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+  }
+  .record-table th {
+    background: var(--bg); text-align: left; padding: 10px 12px;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-muted); border-bottom: 1px solid var(--border);
+  }
+  .record-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-soft); }
+  .record-table tr:last-child td { border-bottom: none; }
+  .record-table td.mono { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 12px; color: var(--text); }
+
+  /* Cadence */
+  .cadence {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; background: var(--info-bg); border: 1px solid var(--info-border);
+    border-radius: 8px; color: var(--info-text); font-size: 13px;
+  }
+  .cadence .icon {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #fff; border: 1px solid var(--info-border);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; flex-shrink: 0;
+  }
+  .cadence strong { color: var(--info-text); font-weight: 700; }
+
+  /* Tech callout */
+  .tech {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 16px 18px; background: var(--accent-soft);
+    border: 1px solid var(--border-strong); border-radius: 8px;
+    font-size: 13.5px; color: var(--text); line-height: 1.55;
+  }
+  .tech .icon {
+    width: 30px; height: 30px; border-radius: 6px;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 12px; flex-shrink: 0;
+  }
+  .tech code {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+  }
+
+  /* ============================================================
+     PRODUCT CARD MOCKUPS
+     ============================================================ */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .pattern { display: flex; flex-direction: column; gap: 10px; }
+  .pattern-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .pattern-caption {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .pc-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    max-width: 280px;
+    margin: 0 auto;
+    width: 100%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .pc-img {
+    height: 150px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .pc-img .ph {
+    width: 70%; height: 70%;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: #9ca3af; font-size: 11px; text-align: center;
+  }
+  .pc-sold-bar {
+    height: 28px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-weight: 800;
+    font-size: 13px;
+    color: #000;
+    background: #ffd54f;
+  }
+  .pc-sold-bar::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 27%;
+    background: #e53935;
+  }
+  .pc-sold-bar span { position: relative; z-index: 1; }
+  .pc-info { padding: 12px 14px 6px; text-align: center; }
+  .pc-brand { font-size: 12px; font-weight: 800; color: #111827; margin-bottom: 4px; }
+  .pc-name { font-size: 14px; font-weight: 800; color: #111827; line-height: 1.3; }
+  .pc-select {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-soft);
+    margin-top: 8px;
+  }
+  .pc-select .chev { color: var(--text-muted); font-size: 14px; }
+  .pc-foot { display: flex; justify-content: space-between; align-items: stretch; }
+  .pc-price-block { padding: 12px 14px; flex: 1; }
+  .pc-price { font-size: 16px; font-weight: 800; color: #111827; }
+  .pc-vejl { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .pc-vejl .strike { text-decoration: line-through; color: var(--text-faint); }
+  .pc-buy {
+    background: #000;
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    line-height: 1.1;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 0 18px;
+    min-width: 70px;
+    letter-spacing: 0.04em;
+  }
+  .pc-spar {
+    position: absolute;
+    top: 16px; right: -42px;
+    width: 150px;
+    background: #ffd54f;
+    color: #111;
+    text-align: center;
+    padding: 6px 0;
+    font-weight: 800;
+    font-size: 13px;
+    transform: rotate(45deg);
+    z-index: 3;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .pc-lavpris {
+    position: absolute;
+    top: 16px; right: -42px;
+    width: 150px;
+    background: #2e7d32;
+    color: #fff;
+    text-align: center;
+    padding: 6px 0;
+    font-weight: 800;
+    font-size: 13px;
+    transform: rotate(45deg);
+    z-index: 3;
+    letter-spacing: 0.06em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .pc-flash {
+    position: absolute;
+    top: 12px; left: 12px;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: #e53935;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    font-weight: 800;
+    font-size: 12px;
+    line-height: 1.05;
+    transform: rotate(-12deg);
+    z-index: 3;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  }
+
+  /* Pattern B before/after */
+  .ba-pair {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 14px;
+    align-items: center;
+    margin-top: 4px;
+  }
+  @media (max-width: 700px) {
+    .ba-pair { grid-template-columns: 1fr; }
+    .ba-pair .ba-arrow { transform: rotate(90deg); justify-self: center; }
+  }
+  .ba-pair .ba-col { display: flex; flex-direction: column; gap: 8px; }
+  .ba-pair .ba-tag {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .ba-pair .ba-col.before .ba-tag { background: var(--bad-bg); color: var(--bad-text); }
+  .ba-pair .ba-col.after  .ba-tag { background: var(--good-bg); color: var(--good-text); }
+  .ba-pair .ba-arrow { font-size: 22px; color: var(--text-faint); text-align: center; }
+  .annotation {
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+  .annotation .change-pill {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    color: var(--text);
+  }
+
+  /* ============================================================
+     DO / DON'T MATRIX
+     ============================================================ */
+  .dodont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 700px) { .dodont { grid-template-columns: 1fr; } }
+  .dd-col-head {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .dd-col-head.do { background: var(--good-bg); color: var(--good-text); border: 1px solid var(--good-border); }
+  .dd-col-head.dont { background: var(--bad-bg); color: var(--bad-text); border: 1px solid var(--bad-border); }
+  .dd-col { display: flex; flex-direction: column; gap: 8px; }
+  .dd-item {
+    display: flex; gap: 10px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .dd-item.do { background: #fff; border: 1px solid var(--good-border); }
+  .dd-item.dont { background: #fff; border: 1px solid var(--bad-border); }
+  .dd-mark {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .dd-mark.do { background: var(--good-bg); color: var(--good-text); }
+  .dd-mark.dont { background: var(--bad-bg); color: var(--bad-text); }
+  .dd-item strong { color: var(--text); font-weight: 700; }
+
+  /* ============================================================
+     FINISH LINE CHECKLIST
+     ============================================================ */
+  .finish {
+    background: linear-gradient(135deg, var(--good-bg), #fff);
+    border: 1px solid var(--good-border);
+    border-radius: 12px;
+    padding: 24px 26px;
+  }
+  .finish-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .finish-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--good-text);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+  }
+  .finish-head h2 { font-size: 18px; font-weight: 700; color: var(--good-text); }
+  .finish-head .sub { font-size: 12px; color: var(--good-text); opacity: 0.75; margin-top: 2px; }
+  .finish-list { display: flex; flex-direction: column; gap: 8px; }
+  .finish-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--good-border);
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .finish-check {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    border: 2px solid var(--good-text);
+    border-radius: 4px;
+    background: #fff;
+    margin-top: 2px;
+  }
+  .finish-item strong { font-weight: 700; }
+
+  /* ============================================================
+     KEY POINTS (RULEBOOK)
+     ============================================================ */
+  .rules {
+    background: #fffbeb;
+    border: 1px solid var(--warn-border);
+    border-radius: 12px;
+    padding: 26px;
+  }
+  .rules-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .rules-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--warn-border);
+    color: var(--warn-text);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 17px;
+  }
+  .rules-head h2 { font-size: 18px; font-weight: 700; color: var(--warn-text); }
+  .rules-head .sub { font-size: 12px; color: var(--warn-text); opacity: 0.75; }
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+  }
+  @media (max-width: 700px) { .rules-grid { grid-template-columns: 1fr; } }
+  .rule {
+    background: #fff;
+    border: 1px solid var(--warn-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .rule .n {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    background: var(--warn-border);
+    color: var(--warn-text);
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .rule .title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .rule .body { font-size: 12.5px; color: var(--text-soft); line-height: 1.55; }
+  .rule .body strong { color: var(--text); font-weight: 700; }
+
+  /* Footer */
+  .footer { text-align: center; color: var(--text-faint); font-size: 12px; padding-top: 16px; }
+
+  /* ============================================================
+     VIKING ADDITIONS
+     ============================================================ */
+  .hero { display: grid; grid-template-columns: 1fr 260px; gap: 28px; align-items: center; }
+  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .hero-img-wrap { display: none; } }
+  .hero-img-wrap { display: flex; align-items: center; justify-content: center; }
+  .hero-img-wrap img { width: 100%; max-width: 260px; height: auto; display: block; }
+
+  /* Viking banner inside section bodies */
+  .viking-banner {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    gap: 18px;
+    align-items: center;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #fffaf2 0%, #fff 100%);
+    border: 1px solid var(--orange-border);
+    border-radius: 10px;
+  }
+  @media (max-width: 600px) { .viking-banner { grid-template-columns: 1fr; text-align: center; } .viking-banner img { margin: 0 auto; } }
+  .viking-banner img { width: 132px; height: 132px; border-radius: 8px; display: block; }
+  .viking-banner .vb-eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .viking-banner .vb-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .viking-banner .vb-body { font-size: 13.5px; color: var(--text-soft); line-height: 1.6; }
+  .viking-banner .vb-body strong { color: var(--text); font-weight: 700; }
+
+  /* Saga lesson — small wisdom callout */
+  .saga {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #fffbeb;
+    border: 1px solid var(--warn-border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--warn-text);
+    line-height: 1.6;
+  }
+  .saga .rune {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--warn-border);
+    color: var(--warn-text);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 14px;
+  }
+  .saga .saga-eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--warn-text);
+    margin-bottom: 3px;
+  }
+  .saga strong { color: var(--warn-text); font-weight: 700; }
+
+  /* Section-head viking avatar */
+  .section-head-row { display: flex; gap: 18px; align-items: flex-start; flex: 1; }
+  .section-head-avatar {
+    width: 72px; height: 72px;
+    border-radius: 12px;
+    background: var(--orange-bg);
+    border: 1px solid var(--orange-border);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .section-head-avatar img { width: 100%; height: 100%; object-fit: contain; }
+  @media (max-width: 600px) { .section-head-avatar { width: 56px; height: 56px; } }
+
+  /* Closing viking illustration banner */
+  .closing-viking {
+    display: flex; align-items: center; gap: 18px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--good-border);
+    margin-bottom: 18px;
+  }
+  .closing-viking img { width: 110px; height: 110px; flex-shrink: 0; border-radius: 8px; }
+  .closing-viking p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
+  .closing-viking p strong { color: var(--text); font-weight: 700; }
+
+  .rules-viking {
+    display: flex; align-items: center; gap: 18px;
+    padding: 18px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid var(--warn-border);
+    margin-bottom: 18px;
+  }
+  .rules-viking img { width: 110px; height: 110px; flex-shrink: 0; border-radius: 8px; }
+  .rules-viking p { font-size: 14px; color: var(--warn-text); line-height: 1.6; }
+  .rules-viking p strong { color: var(--warn-text); font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="hero-tag"><span class="dot"></span>Skál! · The longship has set sail</div>
+      <h1>The Saga of Honest Pricing</h1>
+      <div class="tagline">Four days. Three crews. One honest price tag. <strong>By Tyr's hand, no Loki tricks.</strong></div>
+      <div class="hero-meta">
+        <span class="meta-chip"><span class="dot-o"></span><strong>Due Tue 19 May 2026</strong></span>
+        <span class="meta-chip"><span class="dot-b"></span><strong>Catalog</strong> + <strong>Tech</strong></span>
+        <span class="meta-chip">3 workstreams</span>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <img src="media/01-hero-viking-scales.png" alt="A friendly Viking holding balanced scales of gold">
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <div class="why">
+    <div class="why-lead">Why we're doing this · The shieldmaiden's question</div>
+    Too many products on the site are wearing a fake discount: a "regular" price we never actually charged,
+    a "SPAR X%" badge that's been there for months. Customers see through it eventually, and the rules in
+    Denmark (and most of the Nordic kingdoms) are clear about it. The good news: <strong>honest pricing
+    makes our value story stronger, not weaker.</strong> A real low price beats a fake discount every time.
+    <br><br>
+    <em>Old viking wisdom:</em> a sword that says "the sharpest in the realm" had better cut. A price that says
+    "save 40%" had better save you 40%. Anything else, and word travels fast in the longhouse.
+  </div>
+
+  <!-- TLDR -->
+  <div class="tldr">
+    <div class="tldr-head">
+      <div class="tldr-icon">⚡</div>
+      <h2>The skald's 30-second telling</h2>
+      <span class="sub">If you only read one thing before the feast</span>
+    </div>
+    <div class="tldr-list">
+      <div class="tldr-item">
+        <div class="num">1</div>
+        <div><strong>Most products:</strong> drop the regular/sale/save framing. Single honest price wins.</div>
+      </div>
+      <div class="tldr-item">
+        <div class="num">2</div>
+        <div><strong>Bundles:</strong> keep the discount display. Just make sure the runes (the math) are true.</div>
+      </div>
+      <div class="tldr-item">
+        <div class="num">3</div>
+        <div><strong>Top 150 SKUs:</strong> switch to "Our price" vs "Comparable price". Sourced, honest, no fake %.</div>
+      </div>
+      <div class="tldr-item">
+        <div class="num">4</div>
+        <div><strong>Flash sale:</strong> keep it, but only for real short-term raids. Log everything in the ops sheet.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="overview">
+    <div class="ov-card">
+      <div class="num">01 · THOR'S WORK</div>
+      <div class="title">Flash sale page</div>
+      <div class="desc">Lightning is brief. Clean up the page, tighten the rules, no more permanent yellow stickers.</div>
+    </div>
+    <div class="ov-card">
+      <div class="num">02 · ROPE &amp; BARREL</div>
+      <div class="title">Bundles</div>
+      <div class="desc">Easy win. Make regular price = real sum of components, sale = bundle price.</div>
+    </div>
+    <div class="ov-card">
+      <div class="num">03 · THE SCHOLAR'S SCROLL</div>
+      <div class="title">Process update</div>
+      <div class="desc">Switch top 150 SKUs to honest comparative pricing with a quarterly review.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 01 -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="label">WORKSTREAM 01</div>
+        <h2>Flash sale page</h2>
+        <div class="blurb">Right now, flash sale is doing too much work. Items sit there for weeks. Some never leave. Let's make flash sale do what flash sale should.</div>
+        <div class="assignment">
+          <span class="owner-tag"><span class="avatar">PC</span>Product Catalog Team</span>
+          <span class="due-tag">Due 19 May 2026</span>
+        </div>
+      </div>
+      <span class="badge warn">Action required</span>
+    </div>
+    <div class="section-body">
+
+      <div class="viking-banner">
+        <img src="media/02-thor-flash.png" alt="A Viking raising a lightning-charged hammer">
+        <div>
+          <div class="vb-eyebrow">Saga lesson · Thor's hammer</div>
+          <div class="vb-title">Lightning that lingers is not lightning.</div>
+          <div class="vb-body">A flash sale is a strike of Mjölnir: short, loud, gone. If a "flash" sale has been hanging on the wall since the last solstice, it's not lightning, it's <strong>wallpaper</strong>. Customers stop seeing it, regulators do not.</div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><strong>Audit the page.</strong> Look at every product currently sitting on flash sale.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body"><strong>Remove anything that isn't genuinely on a short-term offer.</strong> If it's been there for weeks, it's not flash sale, it's wallpaper.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body"><strong>Reset the prices on removed items.</strong> Copy <code>sales_price</code> into <code>regular_price</code>, then clear <code>sales_price</code>. Example: regular €10 / sales €5 becomes regular €5, no sales price.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body"><strong>Removed products live on the Tilbud page</strong> with their new single price.</div>
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-title">House rules going forward</div>
+        <ul class="rule-list">
+          <li>Flash sale means <strong>genuinely time-limited offers only</strong>.</li>
+          <li>No automatic extensions. When the window closes, the product comes off.</li>
+          <li>Permanent or long-running low prices belong on the Tilbud page with <strong>"fixed low price"</strong> framing, not on flash sale.</li>
+        </ul>
+      </div>
+
+      <div class="saga">
+        <div class="rune">ᚦ</div>
+        <div>
+          <div class="saga-eyebrow">Why this matters · the learning bit</div>
+          A discount only feels like a discount because it's <strong>scarce</strong>. Repeat it forever and the brain stops registering it as a deal, the regulators start registering it as a misleading price. Both bad. Keep flash genuinely flashy.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 02 -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="label">WORKSTREAM 02</div>
+        <h2>Bundles</h2>
+        <div class="blurb">Bundles are the easy win. Buying three things at a discount really is cheaper than buying them one by one. The discount display stays. We just make the math honest.</div>
+        <div class="assignment">
+          <span class="owner-tag"><span class="avatar">PC</span>Product Catalog Team</span>
+          <span class="due-tag">Due 19 May 2026</span>
+        </div>
+      </div>
+      <span class="badge info">Discount is real</span>
+    </div>
+    <div class="section-body">
+
+      <div class="viking-banner">
+        <img src="media/03-bundle-viking.png" alt="A Viking carrying three barrels tied together">
+        <div>
+          <div class="vb-eyebrow">Saga lesson · Rope &amp; barrel</div>
+          <div class="vb-title">Three barrels for the price of two-and-a-half is a real bargain.</div>
+          <div class="vb-body">Buying three things at once <strong>actually does</strong> cost less than buying them one at a time, here. So the discount is real, no Loki at work. Show the customer the math honestly and the saving sells itself.</div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body"><strong>Walk every bundle.</strong> One pass through all of them.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">Set <strong>regular price</strong> = sum of the regular prices of every item in the bundle.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">Set <strong>sales price</strong> = the actual bundle price (the one the customer pays).</div>
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-title">Worked example · 3 × Whey Protein bundle</div>
+        <div class="bundle-flow">
+          <div class="components">
+            <div class="mini"><div class="mini-img"></div><div class="mini-name">Whey</div><div class="mini-price">€30</div></div>
+            <div class="mini"><div class="mini-img"></div><div class="mini-name">Whey</div><div class="mini-price">€30</div></div>
+            <div class="mini"><div class="mini-img"></div><div class="mini-name">Whey</div><div class="mini-price">€30</div></div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="bundle-result">
+            <div class="lbl">Bundle display</div>
+            <div class="reg">€90.00</div>
+            <div class="sale">€75.00</div>
+            <div class="save">Save 17%</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; font-size: 12.5px; color: var(--text-muted); line-height: 1.5;">
+          Three Whey at €30 each = €90 if you buy them individually. The bundle is €75. The customer saves €15 for real. That's a discount we can stand behind.
+        </div>
+      </div>
+
+      <div class="saga">
+        <div class="rune">ᛒ</div>
+        <div>
+          <div class="saga-eyebrow">Why this matters · the learning bit</div>
+          The bundle discount is the <strong>only place</strong> in the catalog where "save 17%" is mathematically true by construction. If the regular price is the genuine sum of components, the percentage stops being a marketing trick and starts being a fact. Boring, but bullet-proof.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 03 -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="label">WORKSTREAM 03</div>
+        <h2>Process update</h2>
+        <div class="blurb">We want shoppers to see we beat the competition on price. The honest way: show "Our price" next to a real competitor's price, with a source. No fake "regular" price, no fake percentage. Cleaner and more credible.</div>
+        <div class="assignment">
+          <span class="owner-tag"><span class="avatar">PC</span>Product Catalog Team</span>
+          <span class="due-tag">Due 19 May 2026</span>
+        </div>
+      </div>
+      <span class="badge good">New labelling</span>
+    </div>
+    <div class="section-body">
+
+      <div class="viking-banner">
+        <img src="media/04-scholar-scroll.png" alt="A wise Viking elder examining a rune scroll with a magnifying glass">
+        <div>
+          <div class="vb-eyebrow">Saga lesson · The scholar's scroll</div>
+          <div class="vb-title">A price next to a real rival's price tells a story. A fake percentage tells a tale.</div>
+          <div class="vb-body">The old skalds knew the difference between a true account and a tall one. Sourced comparison: <strong>"BodyLab sells the same whey for €25, we sell it for €19,99"</strong>. That's a story a buyer can verify. "SPAR 33%" against a price nobody ever paid is just a tall tale, and tall tales get the storyteller in trouble.</div>
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-title">Scope</div>
+        <div class="stat-row">
+          <div class="stat-card">
+            <div class="stat-num">50</div>
+            <div class="stat-label">Top private label products</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">100</div>
+            <div class="stat-label">Top third-party products</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-title">What changes on the card</div>
+        <div style="font-size: 13.5px; color: var(--text-soft); line-height: 1.6;">
+          On these 150 products: "Vejl. udsalgspris" becomes <strong style="color: var(--text);">"Sammenlignelig pris"</strong>,
+          and the yellow "SPAR X%" ribbon becomes a green <strong style="color: var(--text);">"LAVPRIS"</strong> ribbon.
+          The prices themselves stay the same. Visual reference further down.
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-title">Sourcing the comparable price</div>
+        <ul class="rule-list">
+          <li>Source from the highest-priced Danish competitors: <strong>BodyLab</strong>, <strong>Bodystore</strong>, or a specialty store, and other comparable Danish supplement sites.</li>
+          <li>The competitor product must be <strong>genuinely comparable</strong>: same active ingredient, similar serving size, similar form.</li>
+          <li>Per product, keep a record with: comparable price, source site + URL, date checked, comparability notes.</li>
+          <li><strong>Maintain a dedicated tracking sheet</strong> for all 150 SKUs. This sheet is the source of truth for what shows on the site.</li>
+        </ul>
+        <div style="margin-top: 14px;">
+          <table class="record-table">
+            <thead>
+              <tr>
+                <th>SKU</th><th>Comparable price</th><th>Source</th><th>Checked</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">FN-WHEY-VAN-1K</td>
+                <td class="mono">€25.00</td>
+                <td>bodylab.dk/whey-100</td>
+                <td class="mono">15 May 2026</td>
+              </tr>
+              <tr>
+                <td class="mono">FN-CREA-MONO-500</td>
+                <td class="mono">€18.50</td>
+                <td>bodystore.dk/creatine</td>
+                <td class="mono">15 May 2026</td>
+              </tr>
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-faint); font-size: 12px; padding: 8px;">
+                  Example record format
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-title">Flash sale operations sheet</div>
+        <div style="font-size: 13.5px; color: var(--text-soft); line-height: 1.6; margin-bottom: 10px;">
+          A separate sheet for flash sale. Two jobs: schedule private label marketing items on and off for exposure,
+          and log the realistic regular price for every flash sale deal so the discount is defensible.
+        </div>
+        <ul class="rule-list">
+          <li><strong>Rotation covers PL marketing items only.</strong> These are PL products we want to give extra exposure. On a schedule, on the page; off a schedule, off the page.</li>
+          <li><strong>Skip the rotation sheet for one-off flash sales, weekend deals, and PL overstock clearouts.</strong> They're genuinely unique or short-lived.</li>
+          <li><strong>Weekend Deals go on the flash sale page by default.</strong> Temporary by definition, flash sale is the right home.</li>
+          <li><strong>Every flash sale deal logs a realistic regular price in the sheet.</strong> The price shown as "regular" must match what we actually charged in the previous 30 days. Don't bump prices up the day before a flash sale.</li>
+        </ul>
+      </div>
+
+      <div class="cadence">
+        <div class="icon">Q</div>
+        <div>
+          <strong>Quarterly review.</strong> Recurring ClickUp task: verify every comparable price still holds.
+          Competitor product exists? Price still accurate? Update the record. If a comparable can't be justified, drop the label until a new source is found.
+        </div>
+      </div>
+
+      <div class="saga">
+        <div class="rune">ᛟ</div>
+        <div>
+          <div class="saga-eyebrow">Why this matters · the learning bit</div>
+          A sourced comparable price is something a customer can <strong>check themselves</strong>. That openness is the moat: anyone can claim "best price", almost no-one will show their working. We will. Every quarter.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PRODUCT CARD PATTERNS -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="label">VISUAL REFERENCE</div>
+        <h2>What cards look like after</h2>
+        <div class="blurb">Three states a product card can be in. Only the middle one changes visually.</div>
+        <div class="assignment">
+          <span class="owner-tag tech"><span class="avatar">TEC</span>Technology</span>
+          <span class="note-tag">Jack will update</span>
+        </div>
+      </div>
+      <span class="badge neutral">3 states</span>
+    </div>
+    <div class="section-body">
+      <div class="confirm-note">
+        <div class="q-icon">?</div>
+        <div><strong>@Product Catalog Team</strong> — please confirm the Danish wording below ("Sammenlignelig pris" and "LAVPRIS") before this goes to dev.</div>
+      </div>
+
+      <div class="pattern-grid">
+
+        <!-- Pattern A -->
+        <div class="pattern">
+          <div class="pattern-label">A · Single price</div>
+          <div class="pc-card">
+            <div class="pc-img"><div class="ph">Grenade bar</div></div>
+            <div class="pc-info">
+              <div class="pc-brand">Grenade</div>
+              <div class="pc-name">Grenade bar med 37% protein (1 x 60 g)</div>
+            </div>
+            <div class="pc-select"><span>Vælg venligst...</span><span class="chev">⌄</span></div>
+            <div class="pc-foot">
+              <div class="pc-price-block"><div class="pc-price">19,99 DKK</div></div>
+              <div class="pc-buy">KØB<br>NU</div>
+            </div>
+          </div>
+          <div class="pattern-caption">Default for most products. One price, no ribbon, no strikethrough.</div>
+        </div>
+
+        <!-- Pattern B -->
+        <div class="pattern">
+          <div class="pattern-label">B · Comparative pricing</div>
+          <div class="pc-card">
+            <div class="pc-lavpris">LAVPRIS</div>
+            <div class="pc-img"><div class="ph">Jawline trainer</div></div>
+            <div class="pc-info">
+              <div class="pc-brand">Nordhall</div>
+              <div class="pc-name">Jawline Kæbe træner (2-pack)</div>
+            </div>
+            <div class="pc-select"><span>Vælg venligst...</span><span class="chev">⌄</span></div>
+            <div class="pc-foot">
+              <div class="pc-price-block">
+                <div class="pc-price">19,99 DKK</div>
+                <div class="pc-vejl">Sammenlignelig pris <span class="strike">29,99 DKK</span></div>
+              </div>
+              <div class="pc-buy">KØB<br>NU</div>
+            </div>
+          </div>
+          <div class="pattern-caption">Top 150 SKUs. Our price next to a documented competitor price. No "save X%" claim.</div>
+        </div>
+
+        <!-- Pattern C -->
+        <div class="pattern">
+          <div class="pattern-label">C · Flash sale</div>
+          <div class="pc-card">
+            <div class="pc-flash">FLASH<br>SALE</div>
+            <div class="pc-spar">SPAR 54%</div>
+            <div class="pc-img"><div class="ph">Creatine+</div></div>
+            <div class="pc-sold-bar"><span>73% SOLGT</span></div>
+            <div class="pc-info">
+              <div class="pc-brand">Nordhall</div>
+              <div class="pc-name">Nordhall Kreatin+ med vitaminer (360 g)</div>
+            </div>
+            <div class="pc-select"><span>Vælg venligst...</span><span class="chev">⌄</span></div>
+            <div class="pc-foot">
+              <div class="pc-price-block">
+                <div class="pc-price">119,99 DKK</div>
+                <div class="pc-vejl">Vejl. udsalgspris <span class="strike">259,99 DKK</span></div>
+              </div>
+              <div class="pc-buy">KØB<br>NU</div>
+            </div>
+          </div>
+          <div class="pattern-caption">Flash sale page only. Unchanged: SPAR ribbon, FLASH SALE badge, sold bar all stay.</div>
+        </div>
+
+      </div>
+
+      <div class="sub-card">
+        <div class="sub-card-title">Pattern B · the two text changes</div>
+        <div class="ba-pair">
+          <div class="ba-col before">
+            <div class="ba-tag">Before</div>
+            <div class="pc-card">
+              <div class="pc-spar">SPAR 34%</div>
+              <div class="pc-img"><div class="ph">Jawline trainer</div></div>
+              <div class="pc-info">
+                <div class="pc-brand">Nordhall</div>
+                <div class="pc-name">Jawline Kæbe træner (2-pack)</div>
+              </div>
+              <div class="pc-select"><span>Vælg venligst...</span><span class="chev">⌄</span></div>
+              <div class="pc-foot">
+                <div class="pc-price-block">
+                  <div class="pc-price">19,99 DKK</div>
+                  <div class="pc-vejl">Vejl. udsalgspris <span class="strike">29,99 DKK</span></div>
+                </div>
+                <div class="pc-buy">KØB<br>NU</div>
+              </div>
+            </div>
+          </div>
+          <div class="ba-arrow">→</div>
+          <div class="ba-col after">
+            <div class="ba-tag">After</div>
+            <div class="pc-card">
+              <div class="pc-lavpris">LAVPRIS</div>
+              <div class="pc-img"><div class="ph">Jawline trainer</div></div>
+              <div class="pc-info">
+                <div class="pc-brand">Nordhall</div>
+                <div class="pc-name">Jawline Kæbe træner (2-pack)</div>
+              </div>
+              <div class="pc-select"><span>Vælg venligst...</span><span class="chev">⌄</span></div>
+              <div class="pc-foot">
+                <div class="pc-price-block">
+                  <div class="pc-price">19,99 DKK</div>
+                  <div class="pc-vejl">Sammenlignelig pris <span class="strike">29,99 DKK</span></div>
+                </div>
+                <div class="pc-buy">KØB<br>NU</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="annotation">
+          Two changes only: <span class="change-pill">SPAR 34%</span> → <span class="change-pill">LAVPRIS</span> (yellow becomes green) and
+          <span class="change-pill">Vejl. udsalgspris</span> → <span class="change-pill">Sammenlignelig pris</span>.
+          The prices, image, brand, name, and layout don't move.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECHNICAL EXECUTION -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="label">UNDER THE HOOD</div>
+        <h2>What's happening in the data</h2>
+        <div class="blurb">A one-pass sweep across the catalog so the front-end change is clean.</div>
+      </div>
+      <span class="badge neutral">Dev sweep</span>
+    </div>
+    <div class="section-body">
+      <div class="tech">
+        <div class="icon">{ }</div>
+        <div>
+          From a technical perspective: I'm walking the whole site. For every product with a <code>sales_price</code> set,
+          the sales price is copied into <code>regular_price</code>, then <code>sales_price</code> is cleared. The result is
+          one price per product across the catalog. <strong>Bundles and flash sale items are excluded</strong> from this
+          sweep and handled per Workstreams 01 and 02.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DO / DON'T -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <div class="label">CHEAT SHEET</div>
+        <h2>Do this. Not that.</h2>
+        <div class="blurb">Quick reference for everyday calls. Stick this on your monitor.</div>
+      </div>
+      <span class="badge neutral">Quick reference</span>
+    </div>
+    <div class="section-body">
+
+      <div class="viking-banner">
+        <img src="media/05-do-dont-judge.png" alt="Two Vikings side by side, one honest, one sneaky">
+        <div>
+          <div class="vb-eyebrow">Saga lesson · Two warriors</div>
+          <div class="vb-title">One Viking earns their reputation. The other rents it.</div>
+          <div class="vb-body">When you're not sure which side a call falls on, ask: <strong>"If a customer screenshotted this, would it embarrass us in front of the longhouse?"</strong> If yes, it belongs in the right-hand "not this" column. If no, ship it.</div>
+        </div>
+      </div>
+
+      <div class="dodont">
+
+        <div>
+          <div class="dd-col-head do">✓ Do this</div>
+          <div class="dd-col">
+            <div class="dd-item do"><div class="dd-mark do">✓</div><div>Show a <strong>single price</strong> when there's no real discount.</div></div>
+            <div class="dd-item do"><div class="dd-mark do">✓</div><div>Run flash sales for <strong>days or a weekend</strong>. Pull the product when the window closes.</div></div>
+            <div class="dd-item do"><div class="dd-mark do">✓</div><div>Show <strong>"Sammenlignelig pris"</strong> next to <strong>"Our price"</strong> with a sourced competitor record.</div></div>
+            <div class="dd-item do"><div class="dd-mark do">✓</div><div>Bundle regular price = <strong>real sum of components</strong>.</div></div>
+            <div class="dd-item do"><div class="dd-mark do">✓</div><div>Log every flash sale's <strong>real prior 30-day price</strong> in the ops sheet.</div></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="dd-col-head dont">✕ Not this</div>
+          <div class="dd-col">
+            <div class="dd-item dont"><div class="dd-mark dont">✕</div><div>Crossed-out "regular" price we <strong>never actually used</strong>.</div></div>
+            <div class="dd-item dont"><div class="dd-mark dont">✕</div><div>Flash sale <strong>that runs for months</strong>. That's just wallpaper.</div></div>
+            <div class="dd-item dont"><div class="dd-mark dont">✕</div><div>Made-up "Vejl. udsalgspris" with <strong>no source behind it</strong>.</div></div>
+            <div class="dd-item dont"><div class="dd-mark dont">✕</div><div>Bundle "regular price" <strong>invented to inflate the saving</strong>.</div></div>
+            <div class="dd-item dont"><div class="dd-mark dont">✕</div><div><strong>Bumping the regular price up</strong> the day before a flash sale.</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FINISH LINE -->
+  <div class="finish">
+    <div class="finish-head">
+      <div class="finish-icon">✓</div>
+      <div>
+        <h2>You'll know we're done when… (raise the horn)</h2>
+        <div class="sub">Tick these off and we sail home, mead waiting.</div>
+      </div>
+    </div>
+
+    <div class="closing-viking">
+      <img src="media/06-victory-horn.png" alt="A triumphant Viking raising a drinking horn in celebration">
+      <p>When every box below is ticked, the saga is done and the catalog is honest. <strong>Then we drink.</strong> Until then, keep going.</p>
+    </div>
+
+    <div class="finish-list">
+      <div class="finish-item">
+        <div class="finish-check"></div>
+        <div>Every non-flash-sale product shows a <strong>single price</strong>: no strikethrough, no save badge.</div>
+      </div>
+      <div class="finish-item">
+        <div class="finish-check"></div>
+        <div>Every bundle's regular price equals the <strong>sum of its component regular prices</strong>.</div>
+      </div>
+      <div class="finish-item">
+        <div class="finish-check"></div>
+        <div>Top 50 PL + top 100 third-party SKUs are labeled with <strong>"Sammenlignelig pris" / "LAVPRIS"</strong> and have records in the tracking sheet.</div>
+      </div>
+      <div class="finish-item">
+        <div class="finish-check"></div>
+        <div>Flash sale page contains <strong>only genuinely short-term offers</strong>. Everything else has moved to Tilbud.</div>
+      </div>
+      <div class="finish-item">
+        <div class="finish-check"></div>
+        <div>The flash sale ops sheet is created and active, with a <strong>realistic regular price logged</strong> for every flash sale deal.</div>
+      </div>
+      <div class="finish-item">
+        <div class="finish-check"></div>
+        <div>Quarterly review is scheduled in ClickUp as a recurring task.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY POINTS RULEBOOK -->
+  <div class="rules">
+    <div class="rules-head">
+      <div class="rules-icon">ᚱ</div>
+      <div>
+        <h2>The five runes · Key points to consider</h2>
+        <div class="sub">The principles carved on the standing stone. Memorise these and most edge-cases answer themselves.</div>
+      </div>
+    </div>
+
+    <div class="rules-viking">
+      <img src="media/07-rune-elder.png" alt="A wise Viking elder teaching beside a tall rune stone">
+      <p>The work above changes <strong>this quarter</strong>. The five principles below are the standing stone: they outlast the project. When in doubt, walk back to the stone and read it again.</p>
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule">
+        <div class="n">1</div>
+        <div class="title">30-day rule for the prior price</div>
+        <div class="body">When we show a price reduction, the "prior price" must be <strong>our own lowest price in the previous 30 days</strong>. Not a market reference, not a competitor price.</div>
+      </div>
+      <div class="rule">
+        <div class="n">2</div>
+        <div class="title">Don't dress up a stable price as a discount</div>
+        <div class="body">If there's been no real reduction from our own prior price: <strong>no "save X%", no strikethrough, no before/now</strong>.</div>
+      </div>
+      <div class="rule">
+        <div class="n">3</div>
+        <div class="title">Flash sale = genuinely short-term</div>
+        <div class="body">No automatic extensions. No rolling discounts on the same products month after month.</div>
+      </div>
+      <div class="rule">
+        <div class="n">4</div>
+        <div class="title">Comparative pricing has rules</div>
+        <div class="body">Comparing to a competitor is allowed only with a <strong>transparent source</strong>, a <strong>genuinely comparable product</strong>, ongoing accuracy, and <strong>no discount percentages</strong>.</div>
+      </div>
+      <div class="rule">
+        <div class="n">5</div>
+        <div class="title">Long-term low? Use "fixed low price"</div>
+        <div class="body">Permanent or long-running low prices are framed as <strong>"fixed low price"</strong>, never as a discount.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Nordhall · The Saga of Honest Pricing · 15 May 2026 · Skál!</div>
+
+</div>
+</body>
+</html>
