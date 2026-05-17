@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000005">
+<title>Earth's Orbit & Seasons</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    background: #000;
+    color: #eee;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+    overflow: hidden;
+  }
+  #scene { display: block; position: fixed; inset: 0; }
+
+  #ui {
+    position: fixed; top: 16px; left: 16px;
+    background: rgba(8, 12, 20, 0.7);
+    padding: 14px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.08);
+    width: 320px;
+    max-width: calc(100vw - 32px);
+    font-size: 13px; line-height: 1.45;
+    user-select: none;
+    z-index: 10;
+  }
+  #ui.collapsed .ui-body { display: none; }
+  #ui-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  #ui.collapsed #ui-header { margin-bottom: 0; }
+  h1 {
+    margin: 0;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 1.4px;
+    color: #ffcc66;
+    text-transform: uppercase;
+  }
+  #ui-collapse {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #aaa;
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    font-size: 16px; line-height: 1;
+    padding: 0; flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #ui-collapse:hover, #ui-collapse:active { background: rgba(255,200,100,0.15); color: #ffcc66; }
+  .row { display: flex; justify-content: space-between; gap: 12px; margin: 3px 0; }
+  .row .label { color: #8896a8; }
+  .row .val {
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+  }
+  #slider {
+    width: 100%;
+    margin: 12px 0 6px;
+    accent-color: #ffcc66;
+  }
+  .events {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-top: 6px;
+  }
+  button {
+    background: rgba(255,255,255,0.04);
+    color: #ddd;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 5px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  button:hover {
+    background: rgba(255,200,100,0.12);
+    border-color: rgba(255,200,100,0.4);
+    color: #ffcc66;
+  }
+  #play { width: 100%; margin-top: 8px; padding: 7px; }
+  #tilt-toggle { width: 100%; margin-top: 8px; padding: 9px; }
+  #tilt-toggle.active { background: rgba(255,200,100,0.18); border-color: rgba(255,200,100,0.5); color: #ffcc66; }
+  .legend {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: #6a7080;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+  .swatch {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+  .toggles {
+    display: flex; flex-direction: column; gap: 6px;
+    margin-top: 10px;
+    font-size: 11px; color: #aab2c2;
+  }
+  .toggles label { display: flex; align-items: center; gap: 7px; cursor: pointer; user-select: none; }
+  .toggles input[type=checkbox] { accent-color: #ffcc66; cursor: pointer; }
+  /* Constellation labels rendered by CSS2DRenderer */
+  .con-label {
+    color: rgba(180, 205, 240, 0.7);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 0 6px rgba(0,0,0,0.95);
+    white-space: nowrap;
+  }
+  #labels { position: fixed; inset: 0; pointer-events: none; }
+
+  /* ===== Mobile / narrow viewport ===== */
+  @media (max-width: 600px) {
+    #ui {
+      top: max(8px, env(safe-area-inset-top, 0px));
+      left: 8px; right: 8px;
+      width: auto;
+      max-width: none;
+      padding: 11px 13px;
+      font-size: 13px;
+    }
+    #ui-header { margin-bottom: 10px; }
+    #ui.collapsed { padding: 9px 11px; }
+    .row { margin: 2px 0; }
+    .row .val { font-size: 12px; }
+    .events { gap: 5px; }
+    .events button { padding: 9px 4px; font-size: 11px; min-height: 36px; }
+    #play { padding: 10px; font-size: 12px; min-height: 38px; }
+    .toggles { font-size: 12px; gap: 8px; }
+    .toggles input[type=checkbox] { width: 18px; height: 18px; }
+    .legend { display: none; }
+    .con-label { font-size: 12px; color: rgba(190, 215, 250, 0.78); }
+    #slider {
+      height: 24px;
+      margin: 14px 0 4px;
+    }
+  }
+  /* On any phone-orientation viewport (portrait), default the UI to a compact strip
+     pinned to the top — the scene gets the rest of the screen. */
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div id="labels"></div>
+<div id="ui">
+  <div id="ui-header">
+    <h1>Earth's Orbit · Seasons</h1>
+    <button id="ui-collapse" aria-label="Collapse panel">−</button>
+  </div>
+  <div class="ui-body">
+  <div class="row"><span class="label">Date</span><span class="val" id="date">—</span></div>
+  <div class="row"><span class="label">Day of year</span><span class="val" id="doy">—</span></div>
+  <div class="row"><span class="label">Helio long.</span><span class="val" id="heliolong">—</span></div>
+  <div class="row"><span class="label">Distance</span><span class="val" id="dist">—</span></div>
+  <div class="row"><span class="label">Sub-solar lat.</span><span class="val" id="subsolar">—</span></div>
+  <div class="row"><span class="label">N hem.</span><span class="val" id="season">—</span></div>
+  <input type="range" id="slider" min="1" max="365" step="0.5" value="80">
+  <div class="events">
+    <button data-event="marEq">Mar Eq</button>
+    <button data-event="junSol">Jun Sol</button>
+    <button data-event="sepEq">Sep Eq</button>
+    <button data-event="decSol">Dec Sol</button>
+    <button data-event="peri">Perihelion</button>
+    <button data-event="apo">Aphelion</button>
+  </div>
+  <button id="play">▶ Animate year</button>
+  <div class="toggles">
+    <label><input type="checkbox" id="toggle-lines" checked> Constellation lines</label>
+    <label><input type="checkbox" id="toggle-labels" checked> Constellation labels</label>
+  </div>
+  <button id="tilt-toggle" hidden>Use phone tilt to look around</button>
+  <div class="legend">
+    <div>Drag to rotate · scroll to zoom</div>
+    <div style="margin-top:6px;">
+      <span class="swatch" style="background:#ffcc66"></span> Tropic of Cancer / Capricorn (±23.44°)<br>
+      <span class="swatch" style="background:#66ccff"></span> Arctic / Antarctic circles (±66.56°)<br>
+      <span class="swatch" style="background:#ffff80"></span> Sub-solar point (Sun directly overhead)<br>
+      <span class="swatch" style="background:#ff5555"></span> Rotation axis (fixed in space, toward Polaris)
+    </div>
+    <div style="margin-top:8px;">
+      Axial tilt (23.44°), orbital eccentricity (0.01671), longitude of perihelion (102.95°) and Kepler-orbit speed are accurate. Sun and Earth diameters are exaggerated, otherwise they'd be invisible at 1 AU.
+    </div>
+  </div>
+  </div><!-- /.ui-body -->
+</div>
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+// === Astronomical constants ===
+const AU = 100;                                       // visual scale (1 AU = 100 units)
+const ECC = 0.01671;                                  // Earth orbital eccentricity, J2000
+const SEMI_MAJOR = 1.0 * AU;                          // semi-major axis
+const OBLIQ = 23.4392811 * Math.PI / 180;             // axial tilt, J2000
+const LONG_PERIHELION = 102.94719 * Math.PI / 180;    // longitude of perihelion, J2000
+const PERIHELION_DOY = 3;                             // ≈ Jan 3
+const YEAR = 365.25;
+const EARTH_R = 2.2;
+const SUN_R = 7;
+
+// Coordinate convention (Three.js Y-up):
+//   +Y = ecliptic north
+//   X-Z plane = ecliptic plane
+//   +X = direction toward vernal equinox point
+//   Earth heliocentric longitude L: position = (r cos L, 0, -r sin L)
+//   Earth orbits with L increasing over time (prograde, CCW seen from +Y)
+//   Axis direction in world: (0, cos ε, -sin ε) — fixed regardless of orbital position
+
+// === Three.js setup ===
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000005);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.5, 3000);
+camera.position.set(180, 115, 180);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 25;
+controls.maxDistance = 800;
+// Touch gestures: one finger rotates, two fingers pinch-zoom + rotate simultaneously.
+// (Default two-finger behavior was DOLLY_PAN, which couldn't rotate.)
+controls.touches = {
+  ONE: THREE.TOUCH.ROTATE,
+  TWO: THREE.TOUCH.DOLLY_ROTATE
+};
+
+// CSS2D renderer for constellation labels (DOM elements positioned in 3D)
+const labelRenderer = new CSS2DRenderer({ element: document.getElementById('labels') });
+labelRenderer.setSize(innerWidth, innerHeight);
+
+const constellationGroup = new THREE.Group();
+const constellationLabelGroup = new THREE.Group();
+scene.add(constellationGroup);
+scene.add(constellationLabelGroup);
+
+// === Background stars (HYG v4.2 catalog, mag < 6.0, J2000) ===
+//
+// Converts equatorial RA/Dec into the same inertial frame the orbit uses.
+//   +X = vernal equinox direction (shared by both equatorial and ecliptic)
+//   equatorial → ecliptic (z-up frames): rotate by -ε around X
+//   ecliptic z-up → Three.js Y-up: (x, y, z)_ec → (x, z, -y)_3js
+//
+// Combining, for a star at RA=R, Dec=D:
+//   x_3js = cos D cos R
+//   y_3js = -cos D sin R sin ε + sin D cos ε
+//   z_3js = -cos D sin R cos ε - sin D sin ε
+//
+// We place all stars on a sphere of radius STAR_R (they're effectively infinitely
+// far compared to the AU orbit, so a fixed shell is fine).
+const STAR_R = 1400;
+const STAR_DPR = Math.min(devicePixelRatio || 1, 2.5);
+
+// B–V color index → approximate RGB for the star point sprite.
+function bvToRGB(bv) {
+  if (bv == null || isNaN(bv)) return [1.0, 1.0, 1.0];
+  // Crude piecewise map; good enough for visual flavor.
+  // O/B (~-0.3): blue. A/F (~0.0–0.3): white. G (~0.6): yellowish. K (~1.0): orange. M (~1.5+): red.
+  if (bv < -0.10) return [0.61, 0.73, 1.00];   // blue
+  if (bv <  0.30) return [0.85, 0.91, 1.00];   // blue-white
+  if (bv <  0.58) return [1.00, 1.00, 0.96];   // white
+  if (bv <  0.81) return [1.00, 0.96, 0.82];   // yellow-white
+  if (bv <  1.40) return [1.00, 0.84, 0.62];   // orange
+  return [1.00, 0.66, 0.50];                   // red
+}
+
+// Build a HIP → THREE.Vector3 lookup so constellations.json can reference world positions.
+const hipMap = new Map();
+
+async function loadStars() {
+  const resp = await fetch('stars.json');
+  if (!resp.ok) throw new Error('stars.json fetch failed: ' + resp.status);
+  const cat = await resp.json();
+  const N = cat.n;
+  const positions = new Float32Array(N * 3);
+  const colors    = new Float32Array(N * 3);
+  const sizes     = new Float32Array(N);
+  const cosE = Math.cos(OBLIQ), sinE = Math.sin(OBLIQ);
+  for (let i = 0; i < N; i++) {
+    const [ra, dec, mag, ci, hip] = cat.data[i];
+    const cD = Math.cos(dec), sD = Math.sin(dec);
+    const cR = Math.cos(ra),  sR = Math.sin(ra);
+    const x = STAR_R * (cD * cR);
+    const y = STAR_R * (-cD * sR * sinE + sD * cosE);
+    const z = STAR_R * (-cD * sR * cosE - sD * sinE);
+    positions[i*3]   = x;
+    positions[i*3+1] = y;
+    positions[i*3+2] = z;
+    if (hip != null) hipMap.set(hip, new THREE.Vector3(x, y, z));
+    const [r, g, b] = bvToRGB(ci);
+    colors[i*3]   = r;
+    colors[i*3+1] = g;
+    colors[i*3+2] = b;
+    // Size in device pixels from apparent magnitude. Multiplied by DPR so the
+    // points stay a constant physical size on high-DPI screens (Retina, phones).
+    sizes[i] = Math.max(1.4, 9.0 - 1.2 * (mag + 1.5)) * STAR_DPR;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('starColor', new THREE.BufferAttribute(colors, 3));
+  geo.setAttribute('size',      new THREE.BufferAttribute(sizes, 1));
+
+  // Custom shader so each star gets its own size + color and stays circular.
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: `
+      attribute float size;
+      attribute vec3 starColor;
+      varying vec3 vColor;
+      void main() {
+        vColor = starColor;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        gl_PointSize = size;
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vColor;
+      void main() {
+        vec2 c = gl_PointCoord - vec2(0.5);
+        float d = length(c);
+        if (d > 0.5) discard;
+        // Bright core with soft Gaussian-ish halo, additive blending sums it.
+        float core = smoothstep(0.5, 0.05, d);
+        float halo = smoothstep(0.5, 0.0, d) * 0.4;
+        float a = core + halo;
+        gl_FragColor = vec4(vColor * a, 1.0);
+      }
+    `,
+    blending: THREE.AdditiveBlending,
+    transparent: true,
+    depthWrite: false,
+  });
+  scene.add(new THREE.Points(geo, mat));
+}
+const constellationLabelElements = [];
+
+async function loadConstellations() {
+  const resp = await fetch('constellations.json');
+  if (!resp.ok) throw new Error('constellations.json fetch failed: ' + resp.status);
+  const data = await resp.json();
+
+  const segPositions = [];   // pairs of vertices for LineSegments
+  for (const con of data.constellations) {
+    const centroid = new THREE.Vector3();
+    const seen = new Set();
+    for (const poly of con.lines) {
+      for (let i = 0; i < poly.length - 1; i++) {
+        const a = hipMap.get(poly[i]);
+        const b = hipMap.get(poly[i + 1]);
+        if (!a || !b) continue;
+        segPositions.push(a.x, a.y, a.z, b.x, b.y, b.z);
+      }
+      for (const h of poly) {
+        if (seen.has(h)) continue;
+        const v = hipMap.get(h);
+        if (v) { centroid.add(v); seen.add(h); }
+      }
+    }
+    if (seen.size > 0) {
+      centroid.multiplyScalar(1 / seen.size);
+      centroid.setLength(STAR_R);
+      const div = document.createElement('div');
+      div.className = 'con-label';
+      div.textContent = con.name;
+      const label = new CSS2DObject(div);
+      label.position.copy(centroid);
+      constellationLabelGroup.add(label);
+      constellationLabelElements.push(div);
+    }
+  }
+
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(segPositions), 3));
+  const lines = new THREE.LineSegments(geo, new THREE.LineBasicMaterial({
+    color: 0x6e8dc0, transparent: true, opacity: 0.55
+  }));
+  constellationGroup.add(lines);
+}
+
+loadStars()
+  .then(loadConstellations)
+  .catch(err => console.error('catalog load failed:', err));
+
+document.getElementById('toggle-lines').addEventListener('change', e => {
+  constellationGroup.visible = e.target.checked;
+});
+document.getElementById('toggle-labels').addEventListener('change', e => {
+  const display = e.target.checked ? '' : 'none';
+  for (const el of constellationLabelElements) el.style.display = display;
+});
+
+// === Phone tilt → camera orbit ===
+// Maps the device's left/right roll (gamma) and forward/back pitch (beta)
+// into incremental yaw/pitch on the OrbitControls, so tilting the phone
+// "looks around" the scene. iOS 13+ requires a permission request from a
+// user gesture (the button click handles that).
+const tiltBtn = document.getElementById('tilt-toggle');
+let tiltActive = false;
+let tiltBase = null;          // baseline phone orientation in degrees
+let tiltTargetYaw = 0, tiltTargetPitch = 0;
+let tiltCurYaw = 0,    tiltCurPitch = 0;
+const TILT_SENSITIVITY = 1.6;  // 30° phone tilt → ~48° view shift
+const TILT_SMOOTHING   = 0.18;
+
+const hasOrientation = typeof DeviceOrientationEvent !== 'undefined';
+const isTouchDevice  = matchMedia('(pointer: coarse)').matches;
+if (hasOrientation && isTouchDevice) tiltBtn.hidden = false;
+
+function onOrientation(e) {
+  if (e.beta == null || e.gamma == null) return;
+  if (!tiltBase) {
+    tiltBase = { beta: e.beta, gamma: e.gamma };
+    return;
+  }
+  const dBeta  = e.beta  - tiltBase.beta;   // forward/back tilt
+  const dGamma = e.gamma - tiltBase.gamma;  // left/right tilt
+  // gamma → yaw (orbit around the vertical axis), beta → pitch
+  tiltTargetYaw   = THREE.MathUtils.degToRad(-dGamma * TILT_SENSITIVITY);
+  tiltTargetPitch = THREE.MathUtils.degToRad(-dBeta  * TILT_SENSITIVITY);
+}
+
+async function startTilt() {
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    try {
+      const perm = await DeviceOrientationEvent.requestPermission();
+      if (perm !== 'granted') return false;
+    } catch { return false; }
+  }
+  window.addEventListener('deviceorientation', onOrientation);
+  return true;
+}
+function stopTilt() {
+  window.removeEventListener('deviceorientation', onOrientation);
+  tiltBase = null;
+  tiltTargetYaw = tiltTargetPitch = 0;
+}
+
+tiltBtn.addEventListener('click', async () => {
+  if (tiltActive) {
+    tiltActive = false;
+    stopTilt();
+    controls.enableRotate = true;
+    tiltBtn.classList.remove('active');
+    tiltBtn.textContent = 'Use phone tilt to look around';
+  } else {
+    tiltBtn.textContent = 'Requesting permission…';
+    const ok = await startTilt();
+    if (!ok) {
+      tiltBtn.textContent = 'Tilt unavailable (permission denied)';
+      setTimeout(() => { tiltBtn.textContent = 'Use phone tilt to look around'; }, 2400);
+      return;
+    }
+    tiltActive = true;
+    controls.enableRotate = false;  // finger-rotate would fight the tilt
+    tiltCurYaw = tiltCurPitch = 0;
+    tiltBtn.classList.add('active');
+    tiltBtn.textContent = 'Stop phone tilt';
+  }
+});
+
+// Called from the animation tick — smooths the tilt and forwards to OrbitControls.
+function applyTiltFrame() {
+  if (!tiltActive) return;
+  const newYaw   = tiltCurYaw   + (tiltTargetYaw   - tiltCurYaw)   * TILT_SMOOTHING;
+  const newPitch = tiltCurPitch + (tiltTargetPitch - tiltCurPitch) * TILT_SMOOTHING;
+  const dYaw   = newYaw   - tiltCurYaw;
+  const dPitch = newPitch - tiltCurPitch;
+  tiltCurYaw   = newYaw;
+  tiltCurPitch = newPitch;
+  // OrbitControls public helpers — they update its internal spherical, and the
+  // subsequent controls.update() applies it to the camera.
+  controls.rotateLeft(-dYaw);
+  controls.rotateUp(-dPitch);
+}
+
+// UI collapse for narrow viewports
+const uiPanel = document.getElementById('ui');
+const uiCollapseBtn = document.getElementById('ui-collapse');
+function setCollapsed(c) {
+  uiPanel.classList.toggle('collapsed', c);
+  uiCollapseBtn.textContent = c ? '+' : '−';
+}
+uiCollapseBtn.addEventListener('click', () => setCollapsed(!uiPanel.classList.contains('collapsed')));
+// Default-collapse on phone-width screens so the scene gets the full canvas
+if (matchMedia('(max-width: 600px)').matches) setCollapsed(true);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.05));
+
+// === Sun ===
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(SUN_R, 48, 48),
+  new THREE.MeshBasicMaterial({ color: 0xffe080 })
+));
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(SUN_R * 1.4, 32, 32),
+  new THREE.MeshBasicMaterial({ color: 0xffb050, transparent: true, opacity: 0.32 })
+));
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(SUN_R * 2.0, 32, 32),
+  new THREE.MeshBasicMaterial({ color: 0xff8040, transparent: true, opacity: 0.16 })
+));
+scene.add(new THREE.Mesh(
+  new THREE.SphereGeometry(SUN_R * 2.8, 32, 32),
+  new THREE.MeshBasicMaterial({ color: 0xff5020, transparent: true, opacity: 0.07 })
+));
+const sunLight = new THREE.PointLight(0xfff0d8, 3.0, 0, 0);
+scene.add(sunLight);
+
+// === Ecliptic plane reference grid ===
+{
+  const grid = new THREE.PolarGridHelper(SEMI_MAJOR * 1.15, 8, 4, 64, 0x1a3050, 0x0d1828);
+  grid.material.transparent = true;
+  grid.material.opacity = 0.4;
+  scene.add(grid);
+}
+
+// === Kepler orbit math ===
+function solveKepler(M, e) {
+  let E = M;
+  for (let i = 0; i < 10; i++) {
+    E -= (E - e * Math.sin(E) - M) / (1 - e * Math.cos(E));
+  }
+  return E;
+}
+
+function trueAnomaly(E, e) {
+  return 2 * Math.atan2(
+    Math.sqrt(1 + e) * Math.sin(E / 2),
+    Math.sqrt(1 - e) * Math.cos(E / 2)
+  );
+}
+
+function earthState(doy) {
+  const days = doy - PERIHELION_DOY;
+  const M = 2 * Math.PI * days / YEAR;
+  const E = solveKepler(M, ECC);
+  const nu = trueAnomaly(E, ECC);
+  const r = SEMI_MAJOR * (1 - ECC * Math.cos(E));
+  const L = LONG_PERIHELION + nu;
+  const x = r * Math.cos(L);
+  const z = -r * Math.sin(L);
+  return { x, y: 0, z, r, L };
+}
+
+// Inverse: given a target heliocentric longitude, return the DOY that produces it
+function doyForHelioLong(targetL) {
+  let nu = targetL - LONG_PERIHELION;
+  nu = ((nu % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const E = 2 * Math.atan2(
+    Math.sqrt(1 - ECC) * Math.sin(nu / 2),
+    Math.sqrt(1 + ECC) * Math.cos(nu / 2)
+  );
+  const En = ((E % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+  const M = En - ECC * Math.sin(En);
+  let doy = PERIHELION_DOY + M * YEAR / (2 * Math.PI);
+  if (doy < 1) doy += YEAR;
+  if (doy > 365) doy -= YEAR;
+  return doy;
+}
+
+const EVENT_DOY = {
+  marEq:  doyForHelioLong(Math.PI),           // Sun's geocentric long = 0°
+  junSol: doyForHelioLong(3 * Math.PI / 2),   // 90°
+  sepEq:  doyForHelioLong(0),                 // 180°
+  decSol: doyForHelioLong(Math.PI / 2),       // 270°
+  peri:   PERIHELION_DOY,
+  apo:    (PERIHELION_DOY + YEAR / 2) % YEAR
+};
+
+// === Orbit path ===
+{
+  const pts = [];
+  const N = 512;
+  for (let i = 0; i <= N; i++) {
+    const nu = (i / N) * Math.PI * 2;
+    const r = SEMI_MAJOR * (1 - ECC * ECC) / (1 + ECC * Math.cos(nu));
+    const L = LONG_PERIHELION + nu;
+    pts.push(new THREE.Vector3(r * Math.cos(L), 0, -r * Math.sin(L)));
+  }
+  scene.add(new THREE.LineLoop(
+    new THREE.BufferGeometry().setFromPoints(pts),
+    new THREE.LineBasicMaterial({ color: 0x5594dc, transparent: true, opacity: 0.7 })
+  ));
+}
+
+// === Orbit event markers ===
+function orbitMarker(doy, color, size = 1.1) {
+  const s = earthState(doy);
+  const m = new THREE.Mesh(
+    new THREE.SphereGeometry(size, 16, 16),
+    new THREE.MeshBasicMaterial({ color })
+  );
+  m.position.set(s.x, s.y, s.z);
+  scene.add(m);
+}
+orbitMarker(EVENT_DOY.marEq,  0x88ffaa);
+orbitMarker(EVENT_DOY.junSol, 0xffdd66);
+orbitMarker(EVENT_DOY.sepEq,  0xff9966);
+orbitMarker(EVENT_DOY.decSol, 0x88ccff);
+orbitMarker(EVENT_DOY.peri,   0xffffff, 0.7);
+orbitMarker(EVENT_DOY.apo,    0x666666, 0.7);
+
+// === Earth ===
+const earthGroup = new THREE.Group();
+earthGroup.rotation.x = -OBLIQ;  // axis tilt; rotation never changes → axis fixed in world frame
+
+earthGroup.add(new THREE.Mesh(
+  new THREE.SphereGeometry(EARTH_R, 64, 64),
+  new THREE.MeshPhongMaterial({ color: 0x1f6fcc, shininess: 5, specular: 0x223344 })
+));
+
+// Atmosphere halo
+earthGroup.add(new THREE.Mesh(
+  new THREE.SphereGeometry(EARTH_R * 1.05, 48, 48),
+  new THREE.MeshBasicMaterial({
+    color: 0x6699ff, transparent: true, opacity: 0.10, side: THREE.BackSide
+  })
+));
+
+// Rotation axis + Polaris arrow
+{
+  const len = EARTH_R * 3.5;
+  earthGroup.add(new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0, -len * 0.9, 0),
+      new THREE.Vector3(0,  len, 0)
+    ]),
+    new THREE.LineBasicMaterial({ color: 0xff5555, transparent: true, opacity: 0.85 })
+  ));
+  const head = new THREE.Mesh(
+    new THREE.ConeGeometry(0.35, 1.2, 12),
+    new THREE.MeshBasicMaterial({ color: 0xff5555 })
+  );
+  head.position.y = len;
+  earthGroup.add(head);
+}
+
+// Pole markers
+for (const sign of [1, -1]) {
+  const nub = new THREE.Mesh(
+    new THREE.SphereGeometry(0.25, 12, 12),
+    new THREE.MeshBasicMaterial({ color: 0xffffff })
+  );
+  nub.position.y = sign * EARTH_R;
+  earthGroup.add(nub);
+}
+
+// Latitude rings
+function latRing(latDeg, color, opacity = 0.55) {
+  const lat = latDeg * Math.PI / 180;
+  const rad = Math.cos(lat) * EARTH_R * 1.003;
+  const y   = Math.sin(lat) * EARTH_R * 1.003;
+  const pts = [];
+  for (let i = 0; i <= 96; i++) {
+    const t = i / 96 * Math.PI * 2;
+    pts.push(new THREE.Vector3(Math.cos(t) * rad, y, Math.sin(t) * rad));
+  }
+  return new THREE.LineLoop(
+    new THREE.BufferGeometry().setFromPoints(pts),
+    new THREE.LineBasicMaterial({ color, transparent: true, opacity })
+  );
+}
+earthGroup.add(latRing(0,       0xffffff, 0.5));
+earthGroup.add(latRing( 23.44,  0xffcc66, 0.75));
+earthGroup.add(latRing(-23.44,  0xffcc66, 0.75));
+earthGroup.add(latRing( 66.56,  0x66ccff, 0.6));
+earthGroup.add(latRing(-66.56,  0x66ccff, 0.6));
+
+scene.add(earthGroup);
+
+// Sub-solar point marker — world space, recomputed each update
+const subSolarMarker = new THREE.Mesh(
+  new THREE.SphereGeometry(0.32, 16, 16),
+  new THREE.MeshBasicMaterial({ color: 0xffff80 })
+);
+scene.add(subSolarMarker);
+
+// Sun-Earth line
+const sunLine = new THREE.Line(
+  new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]),
+  new THREE.LineDashedMaterial({
+    color: 0xffd070, dashSize: 3, gapSize: 2, transparent: true, opacity: 0.5
+  })
+);
+scene.add(sunLine);
+
+// === Update on slider change ===
+function update(doy) {
+  const s = earthState(doy);
+  earthGroup.position.set(s.x, s.y, s.z);
+
+  // Sub-solar point: Earth surface point on the line from Sun to Earth
+  const dir = new THREE.Vector3(-s.x, 0, -s.z).normalize();
+  subSolarMarker.position.set(
+    s.x + dir.x * EARTH_R * 1.015,
+    s.y + dir.y * EARTH_R * 1.015,
+    s.z + dir.z * EARTH_R * 1.015
+  );
+
+  // Sun-Earth dashed line
+  sunLine.geometry.setFromPoints([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(s.x, s.y, s.z)
+  ]);
+  sunLine.computeLineDistances();
+
+  // Stats panel
+  const Ldeg = ((s.L * 180 / Math.PI) % 360 + 360) % 360;
+  const sunGeoLong = (Ldeg + 180) % 360;
+  const subSolarLat = Math.asin(Math.sin(OBLIQ) * Math.sin(sunGeoLong * Math.PI / 180)) * 180 / Math.PI;
+  const distAU = s.r / AU;
+
+  document.getElementById('date').textContent = doyToDate(doy);
+  document.getElementById('doy').textContent = doy.toFixed(1);
+  document.getElementById('heliolong').textContent = `${Ldeg.toFixed(2)}°`;
+  document.getElementById('dist').textContent = `${distAU.toFixed(5)} AU (${(distAU * 149.598).toFixed(2)} M km)`;
+  document.getElementById('subsolar').textContent = `${subSolarLat >= 0 ? '+' : ''}${subSolarLat.toFixed(2)}°`;
+
+  // Boundary tolerance so labels read cleanly at the equinox/solstice positions
+  const sg = (sunGeoLong + 0.05) % 360;
+  let season;
+  if (sg <  90) season = 'Spring';
+  else if (sg < 180) season = 'Summer';
+  else if (sg < 270) season = 'Autumn';
+  else season = 'Winter';
+  document.getElementById('season').textContent = season;
+}
+
+function doyToDate(doy) {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const lens = [31,28,31,30,31,30,31,31,30,31,30,31];
+  let d = Math.max(1, Math.min(365, Math.round(doy)));
+  let m = 0;
+  while (m < 12 && d > lens[m]) { d -= lens[m]; m++; }
+  return `${months[m]} ${d}`;
+}
+
+// === UI ===
+const slider = document.getElementById('slider');
+slider.addEventListener('input', () => update(parseFloat(slider.value)));
+
+document.querySelectorAll('.events button[data-event]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const doy = EVENT_DOY[btn.dataset.event];
+    slider.value = doy;
+    update(doy);
+  });
+});
+// Snap slider initial position to the precise March equinox in the model
+slider.value = EVENT_DOY.marEq;
+
+let playing = false;
+const playBtn = document.getElementById('play');
+playBtn.addEventListener('click', () => {
+  playing = !playing;
+  playBtn.textContent = playing ? '⏸ Pause' : '▶ Animate year';
+});
+
+let lastT = performance.now();
+function tick(t) {
+  requestAnimationFrame(tick);
+  const dt = (t - lastT) / 1000;
+  lastT = t;
+  if (playing) {
+    let doy = parseFloat(slider.value) + dt * 35;  // ~10s per year
+    while (doy > 365) doy -= 365;
+    slider.value = doy;
+    update(doy);
+  }
+  applyTiltFrame();
+  controls.update();
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+}
+update(parseFloat(slider.value));
+requestAnimationFrame(tick);
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  labelRenderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>
