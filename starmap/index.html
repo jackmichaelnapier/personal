@@ -435,9 +435,14 @@ let tiltCurYaw = 0,    tiltCurPitch = 0;
 const TILT_SENSITIVITY = 1.6;  // 30° phone tilt → ~48° view shift
 const TILT_SMOOTHING   = 0.18;
 
+// Show the tilt button on any device that has the orientation API AND is
+// either touch-primary or narrow enough to plausibly be a phone. Some mobile
+// browsers underreport `pointer: coarse`, so we OR with a viewport check.
 const hasOrientation = typeof DeviceOrientationEvent !== 'undefined';
-const isTouchDevice  = matchMedia('(pointer: coarse)').matches;
-if (hasOrientation && isTouchDevice) tiltBtn.hidden = false;
+const isPhoneish = matchMedia('(pointer: coarse)').matches
+                || matchMedia('(hover: none)').matches
+                || matchMedia('(max-width: 900px)').matches;
+if (hasOrientation && isPhoneish) tiltBtn.hidden = false;
 
 function onOrientation(e) {
   if (e.beta == null || e.gamma == null) return;
