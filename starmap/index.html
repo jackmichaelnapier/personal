@@ -183,7 +183,7 @@
     <button data-event="peri">Perihelion</button>
     <button data-event="apo">Aphelion</button>
   </div>
-  <button id="play">▶ Animate year</button>
+  <button id="play">⏸ Pause</button>
   <div class="toggles">
     <label><input type="checkbox" id="toggle-lines" checked> Constellation lines</label>
     <label><input type="checkbox" id="toggle-labels" checked> Constellation labels</label>
@@ -787,7 +787,7 @@ document.querySelectorAll('.events button[data-event]').forEach(btn => {
 // Snap slider initial position to the precise March equinox in the model
 slider.value = EVENT_DOY.marEq;
 
-let playing = false;
+let playing = true;
 const playBtn = document.getElementById('play');
 playBtn.addEventListener('click', () => {
   playing = !playing;
