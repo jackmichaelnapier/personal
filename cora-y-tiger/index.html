@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cora y Tiger · en Jávea</title>
-<meta name="description" content="Unas fotos de Cora y Tiger desde que nos mudamos a Jávea, para las maestras de Can Roses y para los que tanto les quisieron en Barcelona.">
+<meta name="description" content="Unas fotos y vídeos de Cora y Tiger desde que nos mudamos a Jávea, para las maestras de Can Roses y para los que tanto les quisieron en Barcelona.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,21 +52,21 @@
     z-index: 0;
   }
 
-  /* HERO */
+  /* HERO — family-photo background, title pinned top-left, vignette top + bottom */
   .hero {
     position: relative;
     min-height: 100vh;
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     overflow: hidden;
     z-index: 1;
   }
   .hero-bg {
     position: absolute;
     inset: 0;
-    background-image: url('media/terraza-montgo.jpg');
+    background-image: url('media/familia-jacaranda.jpg');
     background-size: cover;
-    background-position: center 55%;
+    background-position: center 60%;
     filter: saturate(0.95) contrast(1.02);
   }
   .hero-bg::after {
@@ -75,9 +75,11 @@
     inset: 0;
     background:
       linear-gradient(180deg,
-        rgba(247,242,232,0) 22%,
-        rgba(247,242,232,0.55) 50%,
-        rgba(247,242,232,0.85) 80%,
+        rgba(247,242,232,0.90) 0%,
+        rgba(247,242,232,0.55) 16%,
+        rgba(247,242,232,0.05) 32%,
+        rgba(247,242,232,0) 70%,
+        rgba(247,242,232,0.30) 90%,
         var(--whitewash) 100%),
       radial-gradient(ellipse at 30% 20%, rgba(232,181,71,0.15), transparent 60%);
   }
@@ -111,7 +113,7 @@
     position: relative;
     z-index: 2;
     width: 100%;
-    padding: 0 8vw 8vh;
+    padding: 14vh 8vw 0;
   }
   h1 {
     font-family: 'DM Serif Display', serif;
@@ -158,11 +160,13 @@
     max-width: 680px;
     margin: 0 auto;
     padding: 0 32px;
+    position: relative;
   }
   .col-wide {
     max-width: 1180px;
     margin: 0 auto;
     padding: 0 32px;
+    position: relative;
   }
   .plate {
     display: inline-block;
@@ -235,7 +239,7 @@
     margin: 24px 0;
   }
 
-  /* PHOTOS */
+  /* PHOTOS — polaroid frame */
   .photo {
     background: #fcfaf3;
     padding: 14px 14px 56px;
@@ -243,12 +247,15 @@
     display: inline-block;
     position: relative;
   }
-  .photo img {
+  .photo img,
+  .photo video {
     display: block;
     width: 100%;
     height: auto;
     filter: saturate(0.95) contrast(0.98);
+    background: #1a1a1a;
   }
+  .photo video { filter: none; }
   .photo .cap {
     font-family: 'Caveat', cursive;
     font-size: 22px;
@@ -256,6 +263,11 @@
     margin-top: 14px;
     color: var(--ink-soft);
     line-height: 1.2;
+  }
+  .photo .cap .arrow {
+    color: var(--terracotta);
+    margin-left: 6px;
+    font-weight: 600;
   }
   .photo.tape::before {
     content: '';
@@ -269,22 +281,27 @@
     border-left: 1px solid rgba(232, 181, 71, 0.6);
     border-right: 1px solid rgba(232, 181, 71, 0.6);
   }
-  .photo.tilt-l { transform: rotate(-2.2deg); }
-  .photo.tilt-r { transform: rotate(2deg); }
+  .photo.tilt-l   { transform: rotate(-2.2deg); }
+  .photo.tilt-r   { transform: rotate(2deg); }
   .photo.tilt-sm-l { transform: rotate(-1deg); }
   .photo.tilt-sm-r { transform: rotate(1deg); }
+  .photo.tilt-lg-l { transform: rotate(-3.5deg); }
+  .photo.tilt-lg-r { transform: rotate(3deg); }
 
   .panorama {
     margin: 80px 0;
     position: relative;
   }
-  .panorama img {
+  .panorama img,
+  .panorama video {
     width: 100%;
     height: auto;
     display: block;
     filter: saturate(0.9) contrast(1.02);
     box-shadow: 0 20px 60px rgba(43,36,25,0.15);
+    background: #1a1a1a;
   }
+  .panorama video { filter: none; }
   .panorama-cap {
     font-family: 'Caveat', cursive;
     font-size: 26px;
@@ -294,6 +311,7 @@
     padding-right: 8%;
     transform: rotate(-0.5deg);
   }
+  .panorama-cap.left { text-align: left; padding-right: 0; padding-left: 8%; }
 
   .scrap {
     display: grid;
@@ -302,7 +320,14 @@
     align-items: center;
     margin: 48px 0;
   }
+  .scrap.asym {
+    grid-template-columns: 2fr 3fr;
+  }
+  .scrap.asym-r {
+    grid-template-columns: 3fr 2fr;
+  }
   .stack { position: relative; padding: 24px 0; }
+  .center { text-align: center; margin: 56px 0; }
 
   .wave {
     display: block;
@@ -312,6 +337,99 @@
     color: var(--terracotta);
   }
 
+  /* ILLUSTRATIONS */
+  .illust-map {
+    margin: 96px calc(50% - 50vw) 96px;
+    padding: 0 32px;
+    position: relative;
+  }
+  .illust-map img {
+    display: block;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    height: auto;
+    filter: saturate(0.96);
+  }
+  .illust-map .map-cap {
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 28px;
+    color: var(--sea-deep);
+    margin-top: 18px;
+    transform: rotate(-0.4deg);
+  }
+
+  .illust-spot {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 32px 0;
+    pointer-events: none;
+  }
+  .illust-spot.small { max-width: 140px; }
+  .illust-spot.medium { max-width: 220px; }
+  .illust-spot.large { max-width: 300px; }
+  .illust-spot.tilt-l { transform: rotate(-3deg); }
+  .illust-spot.tilt-r { transform: rotate(2.5deg); }
+
+  .illust-side {
+    position: absolute;
+    top: 12px;
+    right: -180px;
+    width: 160px;
+    height: auto;
+    pointer-events: none;
+    opacity: 0.92;
+  }
+  .illust-side.left {
+    right: auto;
+    left: -180px;
+  }
+
+  /* PULL QUOTE TILE */
+  .tile-quote {
+    margin: 96px auto;
+    max-width: 760px;
+    padding: 56px 48px;
+    background: var(--whitewash);
+    border: 6px double var(--sea);
+    text-align: center;
+    transform: rotate(-0.8deg);
+    box-shadow: 8px 8px 0 var(--whitewash-shade);
+    position: relative;
+  }
+  .tile-quote::before, .tile-quote::after {
+    content: '✦';
+    color: var(--sun);
+    font-size: 24px;
+    position: absolute;
+    top: 16px;
+  }
+  .tile-quote::before { left: 20px; }
+  .tile-quote::after  { right: 20px; }
+  .tile-quote q {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(24px, 3.4vw, 36px);
+    line-height: 1.25;
+    color: var(--ink);
+    quotes: "\00AB" "\00BB";
+  }
+  .tile-quote q::before { color: var(--terracotta); font-size: 1.3em; line-height: 0; vertical-align: -0.25em; margin-right: 0.05em; }
+  .tile-quote q::after  { color: var(--terracotta); font-size: 1.3em; line-height: 0; vertical-align: -0.25em; margin-left: 0.05em; }
+
+  /* TINY SCRAPS — for nisperos / naranjas-verdes (the little place-detail photos) */
+  .tinies {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 56px 0;
+    flex-wrap: wrap;
+  }
+  .tinies .photo { max-width: 260px; }
+
   /* FOOTER */
   footer {
     padding: 40px 32px;
@@ -319,6 +437,7 @@
     border-top: 2px dashed var(--terracotta-faded);
     max-width: 700px;
     margin: 64px auto 48px;
+    position: relative;
   }
   footer .stamp {
     display: inline-block;
@@ -339,18 +458,28 @@
     transform: rotate(-1deg);
     display: inline-block;
   }
+  footer .footer-illust {
+    display: block;
+    width: 140px;
+    margin: 0 auto 28px;
+    transform: rotate(-3deg);
+  }
 
   @media (max-width: 760px) {
     body { font-size: 18px; }
-    .hero-content { padding: 0 24px 6vh; }
+    .hero-content { padding: 12vh 24px 0; }
     .hero-mark { top: 20px; left: 20px; }
     .hero-coords { top: 20px; right: 20px; }
     .col, .col-wide { padding: 0 24px; }
     section { padding: 8vh 0; }
-    .scrap { grid-template-columns: 1fr; gap: 32px; }
+    .scrap, .scrap.asym, .scrap.asym-r { grid-template-columns: 1fr; gap: 32px; }
     .photo.tilt-l, .photo.tilt-r,
-    .photo.tilt-sm-l, .photo.tilt-sm-r { transform: rotate(-1deg); }
-    .panorama-cap { padding-right: 0; text-align: center; }
+    .photo.tilt-sm-l, .photo.tilt-sm-r,
+    .photo.tilt-lg-l, .photo.tilt-lg-r { transform: rotate(-1deg); }
+    .panorama-cap, .panorama-cap.left { padding-right: 0; padding-left: 0; text-align: center; }
+    .illust-side { display: none; }
+    .tile-quote { padding: 40px 24px; }
+    .tinies .photo { max-width: 100%; }
   }
 </style>
 </head>
@@ -370,13 +499,13 @@
       Cora y Tiger,<br>
       <span class="accent">en Jávea.</span>
     </h1>
-    <p class="hero-sub">de estos primeros meses, los días lentos<br>y los chicos creciendo</p>
+    <p class="hero-sub">los cuatro, una mañana cualquiera,<br>en una calle nueva</p>
   </div>
 </header>
 
 <section>
   <div class="col">
-    <p class="lede opener">Para las maestras y los maestros de Can Roses, y para todos los que en Barcelona nos ayudasteis con Cora y Tiger durante estos años. Nos preguntáis cómo están. Aquí tenéis unas pocas fotos de los chicos en Jávea, de estos primeros meses, para que veáis dónde han ido a parar y en qué se están convirtiendo.</p>
+    <p class="lede opener">Para las maestras y los maestros de Can Roses, y para todos los que en Barcelona nos ayudasteis con Cora y Tiger durante estos años. Nos preguntáis cómo están. Aquí tenéis unas pocas fotos (y tres vídeos pequeños) de los chicos en Jávea, de estos primeros meses, para que veáis dónde han ido a parar y en qué se están convirtiendo.</p>
 
     <p>Nos mudamos hace muy poco, así que esto no es una crónica entera, son recortes. Unos días en el jardín, otros en el mar, alguno de cole y de recados. Lo de siempre, en otro sitio.</p>
 
@@ -388,7 +517,7 @@
   <div class="col">
     <span class="plate">No. I · La casa</span>
     <h2>Una casa con <span class="it">arcos</span>, y el Montgó <span class="blue">detrás</span></h2>
-    <p>La casa tiene una terraza larga, con arcos, que da al valle y a la montaña. Los locales la llaman «el elefante» por la forma, y una vez te la enseñan ya no la puedes dejar de ver. Los niños desayunan ahí, pintan ahí, juegan a sus cosas ahí. La mayoría de las fotos que os mandamos hoy son de esa terraza, o del jardín de abajo.</p>
+    <p>La casa tiene una terraza larga con arcos que da al valle y a la montaña. Los locales la llaman «el elefante» por la forma, y una vez te la enseñan ya no la puedes dejar de ver. Los niños desayunan ahí, pintan ahí, juegan a sus cosas ahí. Bajan al jardín por la mañana, vuelven a subir cuando hace calor, y se sientan a hablar de cosas serias en sus dos sillas plegables del color de la piscina.</p>
   </div>
 
   <div class="col-wide">
@@ -399,7 +528,7 @@
 
     <div class="scrap">
       <div class="stack" style="text-align: right;">
-        <div class="photo tilt-l tape" style="max-width: 360px;">
+        <div class="photo tilt-l tape" style="max-width: 340px;">
           <img src="media/tiger-arcos.jpg" alt="Tiger pequeño, de espaldas, en uno de los arcos de la terraza mirando el valle">
           <p class="cap">Tiger mirando el valle,<br>la primera vez</p>
         </div>
@@ -414,17 +543,51 @@
 
     <div class="scrap">
       <div class="stack">
-        <div class="photo tilt-r" style="max-width: 460px;">
-          <img src="media/cora-jardin-conejo.jpg" alt="Cora sentada en el jardín con su conejo de peluche y un tobogán rojo detrás">
-          <p class="cap">Cora y el conejo,<br>en el jardín</p>
+        <div class="photo tilt-r" style="max-width: 480px;">
+          <img src="media/cora-tobogan-jardin.jpg" alt="Cora bajándose de un tobogán rojo en el jardín, con palmeras y un muro de azulejos detrás">
+          <p class="cap">tobogán nuevo,<br>en el jardín de abajo</p>
         </div>
       </div>
       <div class="stack" style="text-align: right;">
         <div class="photo tilt-sm-l tape" style="max-width: 440px;">
+          <img src="media/tiger-silla-azulejo.jpg" alt="Tiger sentado en una silla plegable azul en el patio de la casa, comiendo algo, con muro de azulejo y la silueta del Montgó detrás">
+          <p class="cap">Tiger en su silla preferida</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="center">
+      <div class="photo tilt-sm-r" style="max-width: 540px;">
+        <img src="media/dos-libro-sillas.jpg" alt="Cora y Tiger sentados muy juntos en dos sillas azules del jardín, abrazados, mirando un libro">
+        <p class="cap">los dos, en sus sillas,<br>con un libro a medias</p>
+      </div>
+    </div>
+
+    <div class="scrap">
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-l" style="max-width: 380px;">
+          <img src="media/cora-jardin-conejo.jpg" alt="Cora sentada en el jardín con su conejo de peluche y un tobogán rojo detrás">
+          <p class="cap">Cora y el conejo,<br>en el jardín</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="photo tilt-sm-r tape" style="max-width: 440px;">
           <img src="media/dos-jardin.jpg" alt="Cora y Tiger juntos en el jardín con sus peluches y el tobogán rojo">
           <p class="cap">los dos, casi siempre juntos</p>
         </div>
       </div>
+    </div>
+
+    <div class="center">
+      <div class="photo tilt-lg-l" style="max-width: 520px;">
+        <video src="media/cora-explorando.mp4" poster="media/cora-explorando-poster.jpg" controls preload="metadata" playsinline></video>
+        <p class="cap">Cora explorando la casa nueva <span class="arrow">▶</span></p>
+      </div>
+    </div>
+
+    <div class="panorama">
+      <img src="media/montgo-atardecer.jpg" alt="El Montgó al atardecer visto desde el patio de la casa, con un muro de piedra y el sol bajando">
+      <p class="panorama-cap left">— el elefante, al final del día</p>
     </div>
   </div>
 </section>
@@ -433,11 +596,18 @@
   <path d="M2 12 Q 17 2, 32 12 T 62 12 T 92 12 T 122 12 T 152 12 T 178 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
 </svg>
 
+<div class="col-wide">
+  <div class="tile-quote">
+    <q>Aquí también suena el mar, mami, pero está más lejos.</q>
+  </div>
+</div>
+
 <section>
   <div class="col">
     <span class="plate terracotta">No. II · Los días</span>
     <h2>El cole, los recados, <span class="it">las mañanas</span></h2>
-    <p>Aquí también hay rutina, claro. Hay un cole nuevo al que Cora va casi cada mañana, hay café antes, hay supermercado después. A Tiger le ha dado por subirse al carrito de la compra como si fuera suyo. Cora le imita un rato más tarde, con la cara muy seria que ponéis vosotras cuando os explica algo importante.</p>
+    <p>Aquí también hay rutina. Hay un cole nuevo al que Cora va casi cada mañana, hay café antes, hay supermercado después. A Tiger le ha dado por subirse al carrito de la compra como si fuera suyo. Cora le imita un rato más tarde, con la cara muy seria que ponéis vosotras cuando os explica algo importante.</p>
+    <p>El pueblo es pequeño y antiguo. Las calles del casco viejo se llaman cosas como Damaris y Maians, tienen plantas en macetas en cada portal, y al fondo se ven balcones de hierro forjado. Vamos caminando a todo.</p>
     <span class="margin-note">↳ vuestras costumbres se ven mucho en ellos todavía</span>
   </div>
 
@@ -471,50 +641,105 @@
         </div>
       </div>
     </div>
+
+    <div class="center">
+      <div class="photo tilt-lg-r" style="max-width: 380px;">
+        <img src="media/damaris-calle.jpg" alt="Una calle estrecha del casco antiguo de Xàbia con plantas en macetas, balcones de hierro y un letrero que dice DAMARIS">
+        <p class="cap">la calle Damaris,<br>nuestro atajo al pueblo</p>
+      </div>
+    </div>
+
+    <div class="scrap asym-r">
+      <div class="stack">
+        <div class="photo tilt-l" style="max-width: 520px;">
+          <img src="media/tiger-tendedero.jpg" alt="Tiger en el camino del huerto comiendo algo, con un tendedero de ropa detrás y Cora corriendo entre los naranjos">
+          <p class="cap">huerto detrás de casa,<br>con el tendedero al fondo</p>
+        </div>
+      </div>
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-sm-r tape" style="max-width: 320px;">
+          <video src="media/huerto-jardin.mp4" poster="media/huerto-jardin-poster.jpg" controls preload="metadata" playsinline></video>
+          <p class="cap">el huerto, una vuelta entera <span class="arrow">▶</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tinies">
+      <div class="photo tilt-l" style="max-width: 220px;">
+        <img src="media/naranjas-verdes.jpg" alt="Naranjas todavía verdes en una rama del huerto, con el Montgó al fondo">
+        <p class="cap">naranjas verdes,<br>en abril</p>
+      </div>
+      <div class="photo tilt-sm-r tape" style="max-width: 220px;">
+        <img src="media/nisperos.jpg" alt="Una bolsa de plástico llena de nísperos amarillos recién cogidos sobre una encimera de mármol">
+        <p class="cap">nísperos, los primeros</p>
+      </div>
+    </div>
   </div>
 </section>
+
+<div class="illust-map">
+  <img src="media/illust/costa-mapa.png" alt="Mapa dibujado a mano de la costa de Xàbia, con Cabo de San Antonio, La Grava, el puerto, El Arenal y El Montgó">
+  <p class="map-cap">— el trozo de costa que es nuestro ahora</p>
+</div>
 
 <section>
   <div class="col">
     <span class="plate olive">No. III · El mar</span>
     <h2>Bajar a la playa, <span class="blue">casi todos los días</span></h2>
-    <p>La playa de aquí no es la de Barcelona. Es de piedras blancas en una parte («La Grava») y de arena en la otra («El Arenal»), y se llega andando. Vamos casi todos los días, aunque sea un rato. Tiger se sienta a mirar el mar largo rato, callado, como si ya pensara cosas. Cora corre. Algunos días el mar está gris y feo, y aun así bajamos.</p>
+    <p>La playa de aquí no es la de Barcelona. Es de piedras blancas en una parte (La Grava) y de arena en la otra (El Arenal), y se llega andando. Vamos casi todos los días, aunque sea un rato. Tiger se sienta a mirar el mar largo rato, callado, como si ya pensara cosas. Cora corre. Algunos días el mar está gris y feo, y aun así bajamos.</p>
+    <p>Al lado del puerto hay un grupo de elefantes de bronce, de tamaño real, que un artista local instaló hace muchos años. Tiger pide ir cada vez. Se mete debajo del elefante grande, levanta los brazos como si lo aguantara, y se ríe.</p>
   </div>
 
   <div class="col-wide">
     <div class="scrap">
       <div class="stack" style="text-align: right;">
-        <div class="photo tilt-l tape" style="max-width: 480px;">
+        <div class="photo tilt-l tape" style="max-width: 500px;">
           <img src="media/cora-grava.jpg" alt="Cora con su chaquetilla rosa tumbada en la playa de piedras de La Grava, mirando a la cámara con Jávea detrás">
           <p class="cap">Cora frente a Jávea,<br>en La Grava</p>
         </div>
       </div>
       <div class="stack">
-        <div class="photo tilt-sm-r" style="max-width: 360px;">
+        <div class="photo tilt-sm-r" style="max-width: 340px;">
           <img src="media/tiger-grava-bib.jpg" alt="Tiger con su babero blanco caminando por las piedras blancas de La Grava">
           <p class="cap">Tiger camina las piedras</p>
         </div>
       </div>
     </div>
 
-    <div class="scrap">
+    <div class="scrap asym">
+      <div class="stack" style="text-align: right;">
+        <img src="media/illust/piedra-grava.png" alt="" class="illust-spot medium tilt-l">
+      </div>
       <div class="stack">
-        <div class="photo tilt-r" style="max-width: 480px;">
+        <div class="photo tilt-r" style="max-width: 520px;">
           <img src="media/tiger-mirando-mar.jpg" alt="Tiger sentado en las piedras mirando el mar largo rato, con la silueta del cabo al fondo">
           <p class="cap">mira el mar largo rato</p>
         </div>
       </div>
-      <div class="stack" style="text-align: right;">
-        <div class="photo tilt-sm-l tape" style="max-width: 440px;">
+    </div>
+
+    <div class="center">
+      <div class="photo tilt-lg-l tape" style="max-width: 480px;">
+        <img src="media/tiger-elefante-puerto.jpg" alt="Tiger debajo de un elefante de bronce de tamaño real en el puerto de Jávea, con los brazos levantados como si lo aguantara, riéndose">
+        <p class="cap">Tiger y «su» elefante,<br>en el puerto</p>
+      </div>
+    </div>
+
+    <div class="scrap">
+      <div class="stack">
+        <div class="photo tilt-r" style="max-width: 460px;">
           <img src="media/tiger-mar-gris.jpg" alt="Tiger con un abrigo de cuadros rojos solo en las escaleras del paseo marítimo un día gris de levante">
           <p class="cap">un día de levante,<br>no le importa</p>
         </div>
+      </div>
+      <div class="stack" style="text-align: right;">
+        <img src="media/illust/palmera.png" alt="" class="illust-spot small tilt-r">
       </div>
     </div>
 
     <div class="scrap">
       <div class="stack" style="text-align: right;">
-        <div class="photo tilt-l" style="max-width: 440px;">
+        <div class="photo tilt-l" style="max-width: 460px;">
           <img src="media/cora-arenal.jpg" alt="Cora caminando por la arena de la playa de El Arenal con palmeras altas alrededor">
           <p class="cap">Cora descubre la arena</p>
         </div>
@@ -529,15 +754,17 @@
   </div>
 </section>
 
-<svg class="wave" viewBox="0 0 180 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <path d="M2 12 Q 17 2, 32 12 T 62 12 T 92 12 T 122 12 T 152 12 T 178 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-</svg>
+<div class="col-wide">
+  <div class="tile-quote">
+    <q>Hemos cambiado el ascensor por una colina. Las suelas duran menos.</q>
+  </div>
+</div>
 
 <section>
   <div class="col">
     <span class="plate sun">No. IV · Lo demás</span>
     <h2>Pintar, comer helados, <span class="it">arrastrarse por el suelo</span></h2>
-    <p>Y luego está todo lo demás. Cora ha empezado a escribir su nombre (le sale «CORA» en mayúsculas grandes y siempre con un dibujo al lado). Tiene un caballete nuevo en la habitación que mira al Montgó, y se concentra ahí muy seria. Tiger se ha apropiado de un oso de peluche enorme, casi de su tamaño. Y los dos, cuando aparece un helado por casa, se ponen igual de serios que vosotras cuando explicáis algo en clase.</p>
+    <p>Y luego está todo lo demás. Cora ha empezado a escribir su nombre (le sale «CORA» en mayúsculas grandes y siempre con un dibujo al lado). Tiene un caballete nuevo en la habitación que mira al Montgó, y se concentra ahí muy seria. Tiger se ha apropiado de un oso de peluche enorme, casi de su tamaño, y se queda dormido encima de él la mitad de las tardes. Y los dos, cuando aparece un helado por casa, se ponen igual de serios que vosotras cuando explicáis algo en clase.</p>
     <span class="margin-note">↳ todo gracias a vosotras también</span>
   </div>
 
@@ -559,21 +786,63 @@
 
     <div class="scrap">
       <div class="stack">
-        <div class="photo tilt-r" style="max-width: 360px;">
+        <div class="photo tilt-r" style="max-width: 500px;">
+          <img src="media/cora-cuarto-saludo.jpg" alt="La habitación nueva de Cora, con una cama de madera con techo de casita, un caballete, una silla rosa peluda y la sierra al fondo por la ventana">
+          <p class="cap">su cuarto, con vistas a la sierra</p>
+        </div>
+      </div>
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-sm-l tape" style="max-width: 340px;">
+          <img src="media/cora-tiles-tarde.jpg" alt="Cora sentada a la mesa de la terraza al atardecer, jugando con unas piezas magnéticas, con palmeras y el valle detrás">
+          <p class="cap">piezas magnéticas,<br>luz de la tarde</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrap">
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-l" style="max-width: 360px;">
           <img src="media/tiger-oso.jpg" alt="Tiger en su habitación, con un jersey de tigre, abrazando un oso de peluche enorme del tamaño suyo">
           <p class="cap">Tiger y su oso grande</p>
         </div>
       </div>
-      <div class="stack" style="text-align: right;">
-        <div class="photo tilt-sm-l tape" style="max-width: 460px;">
+      <div class="stack">
+        <div class="photo tilt-sm-r tape" style="max-width: 460px;">
           <img src="media/dos-helados.jpg" alt="Cora y Tiger comiendo sendos helados de chocolate en el patio, con muro de piedra y árboles detrás">
           <p class="cap">helados, un trabajo serio</p>
         </div>
       </div>
     </div>
 
-    <div style="text-align: center; margin-top: 56px;">
-      <div class="photo tilt-sm-r" style="max-width: 480px;">
+    <div class="scrap">
+      <div class="stack" style="text-align: right;">
+        <img src="media/illust/helado.png" alt="" class="illust-spot medium tilt-l">
+      </div>
+      <div class="stack">
+        <div class="photo tilt-r" style="max-width: 420px;">
+          <video src="media/tiger-jugando.mp4" poster="media/tiger-jugando-poster.jpg" controls preload="metadata" playsinline></video>
+          <p class="cap">Tiger y sus animales,<br>una tarde entera <span class="arrow">▶</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrap">
+      <div class="stack">
+        <div class="photo tilt-r" style="max-width: 380px;">
+          <img src="media/cora-dormida.jpg" alt="Cora durmiendo en su cama-casita Montessori, con un osito a sus pies y una manta de hojas">
+          <p class="cap">Cora dormida, las once de la noche</p>
+        </div>
+      </div>
+      <div class="stack" style="text-align: right;">
+        <div class="photo tilt-sm-l tape" style="max-width: 380px;">
+          <img src="media/tiger-dormido-oso.jpg" alt="Tiger acurrucado encima de un peluche enorme con forma de oso, dormido, con la cabeza apoyada en él">
+          <p class="cap">Tiger encima de su oso,<br>también frito</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="center">
+      <div class="photo tilt-sm-r" style="max-width: 520px;">
         <img src="media/dos-tobogan.jpg" alt="Tiger empujando a Cora por un tobogán azul hacia una piscina de pelotas de colores">
         <p class="cap">Tiger empuja, Cora se deja</p>
       </div>
@@ -583,13 +852,14 @@
 
 <section>
   <div class="col">
-    <p class="lede">Esto es todo por ahora. Es poco, lo sabemos. Os mandaremos más cuando empiece el verano de verdad, cuando se metan en el agua por primera vez, cuando Cora deje de escribir su nombre y empiece a escribir otras cosas.</p>
+    <p class="lede">Esto es todo por ahora. Es poco, lo sabemos. Os mandaremos más cuando empiece el verano de verdad, cuando se metan en el agua por primera vez, cuando Cora deje de escribir su nombre y empiece a escribir otras cosas, cuando Tiger se cambie de oso.</p>
     <p>Gracias por preguntar. Gracias por cuidarlos los años que los cuidasteis. Una parte de lo que hacen ahora, lo aprendieron con vosotras, y se nota mucho.</p>
     <p>Un beso enorme de los cuatro, desde Jávea.</p>
   </div>
 </section>
 
 <footer>
+  <img src="media/illust/barco-papel.png" alt="" class="footer-illust">
   <div class="stamp">Xàbia · Mayo MMXXVI</div><br>
   <span class="signoff">con cariño,<br>Constanza, Cora, Tiger y Jack</span>
 </footer>
