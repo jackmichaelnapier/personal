@@ -944,3 +944,96 @@ footer.colophon strong { color: var(--ink); font-weight: 600; }
   content: '';
 }
 
+/* ─────────────────────────────────────────
+   EMOJI RING — used in admin-workshop where spotlight
+   illustrations are emoji instead of PNG.
+   ───────────────────────────────────────── */
+
+.ring.emoji-ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+/* ═════════════════════════════════════════════════════════════
+   MOBILE FIXES (Admin Workshop) — appended 2026-05-29
+   Long monospace / YAML / braced text was forcing the page
+   wider than the viewport on mobile. Force aggressive
+   wrapping for code, pre, jb-io, compare legends, station-
+   card descriptions, and the flow strip. Stop the page itself
+   from horizontal-scrolling and pull container padding in.
+   ═════════════════════════════════════════════════════════════ */
+
+@media (max-width: 720px) {
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .wrap { padding: 24px 16px 64px; }
+
+  /* Anywhere monospace technical content can appear, force aggressive wrap */
+  pre, code,
+  .joint-block, .joint-block .jb-io,
+  .flow-strip .flow-line,
+  .reveal-card pre, .rewrite-vibe pre,
+  .field .example, .field .why,
+  .field input, .field textarea,
+  .station-card .desc, .station-card .desc code,
+  .card.quote, .card.quote em,
+  .card.compare .legend h4,
+  .card.compare .legend p,
+  .aside-pip p, .aside-pip p em,
+  .try p, .try h4 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Flow strip stages need to wrap as units, with breathing line-height */
+  .flow-strip .stage,
+  .flow-strip .cut {
+    display: inline-block;
+    max-width: 100%;
+  }
+  .flow-strip .flow-line {
+    line-height: 1.9;
+  }
+
+  /* Pull padding tighter on card-style containers */
+  .card.spotlights, .card.compare, .card.worked-spec,
+  .quiz-card, .rewrite-card, .reveal-card,
+  .flow-strip, .export-panel, .field {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  /* Card.quote large serif text was clipping right edge */
+  .card.quote {
+    padding: 28px 22px;
+    font-size: clamp(19px, 4.2vw, 26px);
+  }
+}
+
+@media (max-width: 480px) {
+  .wrap { padding: 20px 14px 56px; }
+
+  /* Hero + sign headings tighten further on very narrow viewports */
+  .hero h1 { font-size: clamp(28px, 8vw, 34px); line-height: 1.08; }
+  .sign h1, .sign h2 { font-size: clamp(24px, 7vw, 30px); }
+
+  /* Tighter card padding */
+  .card.spotlights, .card.compare, .card.worked-spec,
+  .quiz-card, .rewrite-card, .reveal-card,
+  .flow-strip, .export-panel, .field {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* Make the masthead title shrink instead of clipping */
+  .masthead {
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+  }
+}
+
