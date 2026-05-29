@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Station 03 · Write data, not vibes — The Research Workshop</title>
+<meta name="description" content="Station 3 of the Research Workshop. Vibe inputs and outputs are uncheckable. Schemas are how skills compose.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+<style>
+  .rewrite-card { background: var(--card); border: 1px solid var(--hairline); border-radius: 22px; padding: 24px 28px; box-shadow: var(--shadow-card); }
+  .rewrite-card h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 19px; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .rewrite-vibe { background: var(--paper-tint); border: 1px dashed var(--hairline); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; }
+  .rewrite-vibe .lbl { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 6px; display: block; }
+  .rewrite-vibe pre { margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; color: var(--ink); white-space: pre-wrap; }
+  .rewrite-area { width: 100%; min-height: 160px; background: #fffef9; border: 2px solid var(--sun-border); border-radius: 12px; padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); line-height: 1.6; resize: vertical; outline: none; transition: border-color 150ms ease, box-shadow 150ms ease; }
+  .rewrite-area:focus { border-color: var(--sun-accent); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+  .rewrite-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+  .btn-reveal { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; background: var(--peri-ink); color: white; border: none; border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: transform 120ms ease, background 120ms ease; }
+  .btn-reveal:hover { background: #4f46e5; transform: translateY(-1px); }
+  .btn-clear { background: transparent; color: var(--ink); border: 1px solid var(--hairline); border-radius: 10px; padding: 10px 16px; font-family: 'Inter', sans-serif; font-size: 13.5px; cursor: pointer; }
+  .btn-clear:hover { background: var(--paper-tint); }
+  .rewrite-hint { font-size: 12px; color: var(--ink-muted); font-style: italic; }
+  .reveal-card { background: var(--mint-bg); border: 1px solid var(--mint-border); border-radius: 16px; padding: 18px 20px; margin-top: 18px; display: none; }
+  .reveal-card.visible { display: block; }
+  .reveal-card .lbl { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mint-ink); margin-bottom: 10px; }
+  .reveal-card pre { background: var(--card); border: 1px solid var(--mint-border); border-radius: 10px; padding: 14px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--ink); overflow-x: auto; white-space: pre-wrap; }
+  .reveal-card .note { margin-top: 12px; font-size: 13.5px; color: var(--mint-ink); line-height: 1.55; }
+  .reveal-card .note em { font-style: italic; font-weight: 500; }
+  .reveal-card .note code { background: var(--card); border: 1px solid var(--mint-border); padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Research Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span>
+    <span class="sep"></span><span class="step done">2</span>
+    <span class="sep"></span><span class="step current">3</span>
+    <span class="sep"></span><span class="step">4</span>
+    <span class="sep"></span><span class="step">5</span>
+    <span class="sep"></span><span class="step studio">6</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Station 03 · The Drafting Table</span>
+    <h1>Write data, <em>not vibes</em>.</h1>
+    <p class="sub">
+      If you can't describe the output as a data shape, you can't tell whether a run was successful.
+      The schema is what makes the skill auditable, composable, and re-runnable across different inputs.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <div class="card quote">
+      "A literature review" is a vibe. A list of <em>foundational_works</em>, <em>approach_families</em>, and <em>open_gaps</em> is a shape.
+    </div>
+
+    <div class="aside-pip">
+      <div class="face">👩‍🔬</div>
+      <div>
+        <div class="label">Marie thinks…</div>
+        <p>
+          A chemist's view: a reaction has reactants, conditions, products, with stereochemistry,
+          yield, byproducts. A skill is the same. Every field has a type, every output has a shape.
+          If you can't draw it on the back of an envelope, you can't compose it.
+        </p>
+      </div>
+    </div>
+
+    <div class="card compare">
+      <h3>Vibe vs <em>shape</em>.</h3>
+      <div class="legends">
+        <div class="legend left">
+          <span class="label">Vibe</span>
+          <h4>input: a research topic<br>output: a literature review</h4>
+          <p>Looks fine alone. Breaks the moment a downstream skill needs to consume it. No types, no fields, no audit trail.</p>
+        </div>
+        <div class="legend right">
+          <span class="label">Shape</span>
+          <h4>{ topic, year_window, allowed_journals }<br>{ foundational_works, families, gaps }</h4>
+          <p>A downstream hypothesis-forge skill can iterate over <code>open_gaps</code> and reference <code>state_of_the_art</code>. Every field has a type. The skill is auditable run-by-run.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sign" style="margin: 16px auto 0;">
+      <span class="chip">Try this</span>
+      <h2>Turn this vibe into a <em>schema</em>.</h2>
+    </div>
+
+    <div class="rewrite-card">
+      <h3>Rewrite the I/O for <code>literature-cartographer</code>.</h3>
+      <div class="rewrite-vibe">
+        <span class="lbl">starting point (too vague)</span>
+        <pre>name: literature-cartographer
+input:  a research topic
+output: a literature review</pre>
+      </div>
+      <textarea class="rewrite-area" id="area" placeholder="rewrite the input and output as concrete data shapes. think: what fields? what types? what would a downstream hypothesis-forge skill need from this?"></textarea>
+      <div class="rewrite-actions">
+        <button class="btn-reveal" id="reveal">Reveal one strong version</button>
+        <button class="btn-clear" id="clear">Clear</button>
+        <span class="rewrite-hint">there are many right answers; this is one.</span>
+      </div>
+      <div class="reveal-card" id="rev">
+        <span class="lbl">one strong version</span>
+        <pre>name: literature-cartographer
+
+input:
+  topic: string              # e.g. "ring resonator biosensor for protein detection"
+  year_window: [int, int]    # e.g. [2010, 2026]
+  allowed_journals: [string] # optional
+
+output:
+  foundational_works:
+    - {authors: string, year: int, contribution: string}
+  approach_families:
+    - {name: string, lead_groups: [string], tradeoffs: string}
+  state_of_the_art:
+    {metric: string, value: string, group: string, year: int}
+  open_gaps:
+    - string</pre>
+        <p class="note">
+          Notice what changed. Every field has a type. The output is consumable by a downstream
+          <em>hypothesis-forge</em> skill, which can iterate over <code>open_gaps</code> and reference
+          <code>state_of_the_art</code> when framing its predicted signature. The vibe version was
+          uncomposable.
+        </p>
+      </div>
+    </div>
+
+    <div class="try">
+      <span class="label">Before you scroll on</span>
+      <h4>Pick a real artifact. Write its schema.</h4>
+      <p>
+        Grab the last XRD pattern you identified, or the last reviewer comment you responded to.
+        Write down the schema you'd want — every field with a type. Five minutes. You'll discover
+        at least one field your skill needs that you'd have forgotten.
+      </p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../cut/">
+      <span class="dir">← Previous</span>
+      <span class="label">Station 02 · Find the cut lines</span>
+    </a>
+    <a class="nav-card next" href="../compress/">
+      <span class="dir">Next →</span>
+      <span class="label">Station 04 · Compress the judgment</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Research Workshop</strong> · Station 03</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+document.getElementById('reveal').addEventListener('click', () => {
+  document.getElementById('rev').classList.add('visible');
+});
+document.getElementById('clear').addEventListener('click', () => {
+  document.getElementById('area').value = '';
+  document.getElementById('rev').classList.remove('visible');
+});
+</script>
+
+</body>
+</html>
