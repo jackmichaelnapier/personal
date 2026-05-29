@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Studio 01 · The Builder Bench — The Admin Workshop</title>
+<meta name="description" content="Studio 1 of the Admin Workshop. Fill in seven small fields and walk out with a real admin skill, ready to hand to Claude. Autosaves in your browser, exports as Markdown.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+<style>
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .preset-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: var(--paper-tint); border: 1px solid var(--hairline); border-radius: 999px; padding: 6px 12px; cursor: pointer; color: var(--ink-soft); transition: all 150ms ease; }
+  .preset-btn:hover { background: var(--peri-tint); border-color: var(--peri-border); color: var(--peri-ink); }
+  .preset-btn.active { background: var(--peri-ink); color: white; border-color: var(--peri-ink); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Admin Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span>
+    <span class="sep"></span><span class="step done">2</span>
+    <span class="sep"></span><span class="step done">3</span>
+    <span class="sep"></span><span class="step done">4</span>
+    <span class="sep"></span><span class="step done">5</span>
+    <span class="sep"></span><span class="step studio current">6</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Studio 01 · The Builder Bench</span>
+    <h1>Write your <em>first admin skill</em>.</h1>
+    <p class="sub">
+      Seven small fields. Most take 1-3 sentences each. By the end of this studio you'll have
+      a real admin skill you can hand to Claude — or paste into a future conversation as context.
+      Your answers save automatically in your browser. Export the whole thing as Markdown when you're done.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <div class="aside-pip">
+      <div class="face">🦆</div>
+      <div>
+        <div class="label">Otto thinks…</div>
+        <p>
+          This is where we stop talking and start building. Pick a real recurring task from your week.
+          The supplier invoice you 3-way-match every Friday. The manufacturing follow-up. The stock
+          projection. Fill the form below for that one. <em>Don't worry about getting it perfect — the
+          first draft is supposed to be rough.</em> Run it on Monday, see what fell out, refactor.
+        </p>
+      </div>
+    </div>
+
+    <!-- PRESET LOADER -->
+    <div class="sign" style="margin: 24px auto 0;">
+      <span class="chip">Quick start</span>
+      <h2>Load a <em>worked example</em>, or start from scratch.</h2>
+      <p class="sub">
+        Three pre-filled admin skills to look at the shape of a finished one. Pick one to load it
+        into the form, then edit toward your real task. Or skip and start blank.
+      </p>
+    </div>
+
+    <div class="preset-row" id="preset-row">
+      <button class="preset-btn" data-preset="invoice">supplier-invoice-reconciler</button>
+      <button class="preset-btn" data-preset="stock">stock-projector</button>
+      <button class="preset-btn" data-preset="job">manufacturing-job-tracker</button>
+      <button class="preset-btn" data-preset="blank">start blank</button>
+    </div>
+
+    <form id="skill-form">
+
+      <!-- 01 NAME -->
+      <div class="field">
+        <div class="icon placeholder">01</div>
+        <div>
+          <div class="head"><span class="num">Field 01</span><h4>Skill name</h4></div>
+          <p class="prompt">Kebab-case. Short, verb- or noun-led handle. Avoid clever puns.</p>
+          <div class="why"><strong>Why it matters →</strong> The name is the handle you'll use when chaining or referencing the skill. <code>supplier-invoice-reconciler</code> beats <code>InvoiceBot9000</code>.</div>
+          <div class="example"><span class="lbl">Example</span>supplier-invoice-reconciler</div>
+          <input type="text" name="f01" placeholder="your-skill-name…">
+          <div class="pip-tip"><em>If you can't name it in three words, you don't know what it is yet.</em></div>
+        </div>
+      </div>
+
+      <!-- 02 INPUT -->
+      <div class="field">
+        <div class="icon placeholder">02</div>
+        <div>
+          <div class="head"><span class="num">Field 02</span><h4>Input (one line, structured)</h4></div>
+          <p class="prompt">What does the skill consume? Schema-ish, not prose. List the fields it expects.</p>
+          <div class="why"><strong>Why it matters →</strong> If you can't write the input as fields, the skill isn't ready to run. Writing it forces you to be honest about what's actually available.</div>
+          <div class="example"><span class="lbl">Example</span>{invoice, matching_po, grn}</div>
+          <input type="text" name="f02" placeholder="{ fields it consumes }…">
+        </div>
+      </div>
+
+      <!-- 03 OUTPUT -->
+      <div class="field">
+        <div class="icon placeholder">03</div>
+        <div>
+          <div class="head"><span class="num">Field 03</span><h4>Output (one line, structured)</h4></div>
+          <p class="prompt">What does the skill produce? Make it consumable by a downstream skill — types, not vibes.</p>
+          <div class="why"><strong>Why it matters →</strong> The output shape determines what stacks on top of this skill. Vibe outputs orphan the skill; structured outputs let it chain.</div>
+          <div class="example"><span class="lbl">Example</span>{match_status, discrepancies, recommendation, reasoning, next_action}</div>
+          <input type="text" name="f03" placeholder="{ structured output }…">
+        </div>
+      </div>
+
+      <!-- 04 PURPOSE -->
+      <div class="field">
+        <div class="icon placeholder">04</div>
+        <div>
+          <div class="head"><span class="num">Field 04</span><h4>Purpose (one sentence)</h4></div>
+          <p class="prompt">In one sentence: what does this skill do, and what does it produce?</p>
+          <div class="why"><strong>Why it matters →</strong> If you need two sentences with an "and," you have two skills pretending to be one. Cut.</div>
+          <div class="example"><span class="lbl">Example</span>Given a supplier invoice, the matching PO, and the GRN, reconcile line-by-line, classify discrepancies with EUR impact, and recommend an action.</div>
+          <textarea name="f04" placeholder="In one sentence…"></textarea>
+          <div class="pip-tip"><em>Read your sentence aloud. If a colleague would say "wait, what?" the sentence isn't right yet.</em></div>
+        </div>
+      </div>
+
+      <!-- 05 LOGIC -->
+      <div class="field">
+        <div class="icon placeholder">05</div>
+        <div>
+          <div class="head"><span class="num">Field 05</span><h4>Logic — numbered moves (one per line)</h4></div>
+          <p class="prompt">3 to 6 numbered steps. Each verb-led. Each one you could ask "did I do this?"</p>
+          <div class="why"><strong>Why it matters →</strong> This is where you transfer your judgment into the skill. Don't write "be thorough." Write what a thorough version actually does, in order.</div>
+          <div class="example"><span class="lbl">Example</span>Match invoice line items against PO by SKU.
+For each match: check quantity and price agreement.
+For each PO line not on the invoice: flag as missing.
+Cross-check the GRN to confirm physical receipt.
+Compute EUR impact per discrepancy; pick a recommendation.</div>
+          <textarea name="f05" rows="7" placeholder="One step per line. Verb-led."></textarea>
+          <div class="pip-tip"><em>If a step starts with "be" or "consider" or "think about" — rewrite it as a verb.</em></div>
+        </div>
+      </div>
+
+      <!-- 06 SCHEMA -->
+      <div class="field">
+        <div class="icon placeholder">06</div>
+        <div>
+          <div class="head"><span class="num">Field 06</span><h4>Output schema (YAML, free-form)</h4></div>
+          <p class="prompt">Spell out the output shape with types. The schema is what makes the skill auditable run-by-run.</p>
+          <div class="why"><strong>Why it matters →</strong> Without a schema, every run produces a slightly different shape. With one, you can chain reliably and a downstream skill knows exactly what to consume.</div>
+          <div class="example"><span class="lbl">Example</span>reconciliation:
+  match_status: clean | minor | major
+  discrepancies:
+    - {type, sku, expected, actual, eur_impact}
+  recommendation: pay_in_full | pay_partial | hold | reject
+  reasoning: string
+  next_action: string</div>
+          <textarea name="f06" rows="7" placeholder="YAML or any shape language. Just be explicit."></textarea>
+        </div>
+      </div>
+
+      <!-- 07 WHY -->
+      <div class="field">
+        <div class="icon placeholder">07</div>
+        <div>
+          <div class="head"><span class="num">Field 07</span><h4>Why this ingredient matters</h4></div>
+          <p class="prompt">One short paragraph. What does this skill solve that gut-feel doesn't? What downstream skill consumes it?</p>
+          <div class="why"><strong>Why it matters →</strong> If you can't answer this in a paragraph, the skill is probably an orphan. Or it should have been a function instead.</div>
+          <div class="example"><span class="lbl">Example</span>Untracked supplier discrepancies erode margin invisibly. Forcing the EUR impact field surfaces small leaks (2% on 80 SKUs is six figures a year). Pair with a bank-payment-executor and the loop runs until the recommendation says hold or reject.</div>
+          <textarea name="f07" rows="4" placeholder="What this skill solves, and what it feeds…"></textarea>
+        </div>
+      </div>
+
+    </form>
+
+    <!-- EXPORT PANEL -->
+    <div class="export-panel">
+      <h3>Your skill, ready to ship.</h3>
+      <p>Autosaved as you type. Export as Markdown to drop into a Claude conversation, or download as a <code>.md</code> file to keep alongside your other skills.</p>
+      <div class="actions">
+        <button id="copy">Copy as Markdown</button>
+        <button id="download">⇣ Download as .md</button>
+        <button class="secondary" id="clear">Clear all fields</button>
+      </div>
+      <div class="save-state" id="save-state">Your answers will save here automatically.</div>
+    </div>
+
+    <div class="souvenir" style="margin-top: 28px;">
+      <span class="label">You finished the workshop</span>
+      <div class="badge" style="display:flex;align-items:center;justify-content:center;font-size:80px;background:var(--mint-bg);border:2px solid var(--mint-border);">🦆</div>
+      <h3>First Skill Built</h3>
+      <p>You decomposed the task. You wrote the schema. You compressed the moves. Now run it on a real example, see what falls out, refactor. That's the plasticity loop.</p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../joint/">
+      <span class="dir">← Previous</span>
+      <span class="label">Station 05 · The joints</span>
+    </a>
+    <a class="nav-card next" href="../">
+      <span class="dir">Back to Welcome →</span>
+      <span class="label">The Workshop Door</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Admin Workshop</strong> · Studio 01</span>
+    <span class="right">Made with Otto. Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'admin_workshop_skill_v1';
+const form = document.getElementById('skill-form');
+const saveState = document.getElementById('save-state');
+const FIELD_LABELS = {
+  f01: 'Skill name',
+  f02: 'Input',
+  f03: 'Output',
+  f04: 'Purpose',
+  f05: 'Logic',
+  f06: 'Output schema',
+  f07: 'Why this ingredient matters',
+};
+
+const PRESETS = {
+  invoice: {
+    f01: 'supplier-invoice-reconciler',
+    f02: '{invoice, matching_po, grn}',
+    f03: "{match_status, discrepancies, recommendation, reasoning, next_action}",
+    f04: 'Given a supplier invoice, the matching PO, and the goods-received note, reconcile the three documents line-by-line, classify any discrepancies with their EUR impact, and recommend an action (pay in full, partial-pay, hold for supplier response, or reject).',
+    f05: 'Match invoice line items against PO line items by SKU.\nFor each match: check quantity agreement (within tolerance) and unit-price agreement (exact).\nFor each PO line not on the invoice: flag as missing_line.\nFor each invoice line not on the PO: flag as extra_line (unauthorized supply).\nCross-check the GRN: confirm goods physically received in the claimed quantity; flag short or damaged shipments.\nCompute EUR impact per discrepancy; classify overall match status; pick a recommendation based on total EUR exposure and discrepancy severity.',
+    f06: 'reconciliation:\n  match_status: clean | minor_discrepancies | major_discrepancies\n  discrepancies:\n    - type: qty | price | extra_line | missing_line | damaged\n      sku: string\n      expected: any\n      actual: any\n      eur_impact: float\n  recommendation: pay_in_full | pay_partial | hold_for_supplier_response | reject\n  reasoning: string\n  next_action: string',
+    f07: 'Untracked supplier discrepancies erode margin invisibly. Forcing the EUR impact field surfaces small leaks (a 2% overcharge on 80 SKUs is six figures a year) and the explicit recommendation removes the "let me think about it" delay that kills the follow-up. Pair with a downstream bank-payment-executor skill and the whole loop runs without a person until the recommendation says hold or reject.',
+  },
+  stock: {
+    f01: 'stock-projector',
+    f02: '{sku, sales_history_weekly, current_stock, lead_time_days, moq, safety_stock_weeks}',
+    f03: '{sku, days_to_stockout, recommended_reorder_date, recommended_reorder_qty, primary_supplier, urgency}',
+    f04: "Given a SKU's recent sales history, current inventory state, and supplier lead time / MOQ / safety stock parameters, project the stock-out date and recommend both a reorder date and quantity, with an urgency tag.",
+    f05: 'Compute trailing-12-week average weekly velocity. If data spans >6 months, check for seasonality and apply a seasonal adjustment to the next-90-day projection.\nCompute current days-of-cover = current_stock / weekly_velocity * 7.\nCompute the latest-safe reorder date = today + days_of_cover - lead_time_days - (safety_stock_weeks * 7).\nCompute the recommended reorder quantity = max(MOQ, weekly_velocity * (lead_time_days/7 + safety_stock_weeks + planning_horizon_weeks)).\nClassify urgency: critical (already past safe reorder date), urgent (within 7 days), normal (within 14 days), low (>14 days out).\nIdentify primary supplier from recent PO history.',
+    f06: 'projection:\n  sku: string\n  days_to_stockout: int\n  recommended_reorder_date: date\n  recommended_reorder_qty: int\n  primary_supplier: string\n  urgency: low | normal | urgent | critical\n  velocity_weekly: float\n  seasonality_factor: float\n  notes: [string]',
+    f07: 'Manual stock projections drift toward gut-feel reorder quantities and gut-feel timing. Forcing urgency surfaces the criticals at the top of the queue; forcing notes catches the SKUs where the simple model is wrong (seasonal spikes, lead time creep). Pair with po-drafter and the planning loop runs on autopilot for the 80% of SKUs that behave normally.',
+  },
+  job: {
+    f01: 'manufacturing-job-tracker',
+    f02: '{job_id, sku, original_promise_date, latest_supplier_update, open_customer_commitments}',
+    f03: '{job_id, status, slip_days, customer_impact, draft_supplier_followup, draft_customer_comms}',
+    f04: "Given a private-label manufacturing job's latest status update and any open customer commitments for the SKU, classify the job (on-track / slipping / at-risk / blocked), quantify customer impact, and draft both a supplier follow-up and (if needed) a customer-facing comms note matching the urgency.",
+    f05: 'Parse the latest supplier update; if older than 7 days, mark the job stale and treat as blocked pending response.\nExtract or estimate the current best-case ship date; calculate slip in working days vs the original promise.\nCross-reference open customer commitments for the SKU; flag any commitments at risk if the slip lands inside their fulfillment window.\nClassify: on-track, slipping (1–14d slip, no customer impact), at-risk (slip WITH customer impact), or blocked.\nDraft the supplier follow-up: friendly nudge for slipping, escalation for at-risk, immediate-response-required for blocked.\nIf customer impact exists, also draft the customer-facing comms.',
+    f06: 'tracker:\n  job_id: string\n  status: on_track | slipping | at_risk | blocked\n  slip_days: int\n  customer_impact:\n    - {order_id: string, qty: int, promised_date: date}\n  draft_supplier_followup: string\n  draft_customer_comms: string\n  recommended_escalation: none | project_lead | supplier_account_manager',
+    f07: 'Manufacturing follow-ups slide because each one feels like it needs custom thought. Pre-classifying the status removes that hesitation: the at-risk ones get escalated immediately, the on-track ones get a brief check-in rather than nothing. Surfacing customer impact at the classifier (not later) means you never email a supplier without knowing whether the slip is also a customer story.',
+  },
+  blank: { f01:'', f02:'', f03:'', f04:'', f05:'', f06:'', f07:'' },
+};
+
+function loadIntoForm(data) {
+  for (const [name, value] of Object.entries(data)) {
+    const el = form.querySelector('[name="' + name + '"]');
+    if (el) el.value = value || '';
+  }
+  saveCurrent();
+}
+
+function saveCurrent() {
+  const data = {};
+  for (const el of form.querySelectorAll('input, textarea')) {
+    if (el.value) data[el.name] = el.value;
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  updateSaveState();
+}
+
+function updateSaveState() {
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const filled = Object.values(data).filter(v => v && v.trim()).length;
+  if (filled === 0) {
+    saveState.textContent = 'Your answers will save here automatically.';
+  } else {
+    saveState.textContent = filled + ' of 7 fields saved · ' + new Date().toLocaleTimeString();
+  }
+}
+
+// Initial load
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  if (Object.keys(saved).length === 0) {
+    loadIntoForm(PRESETS.invoice);
+    document.querySelector('[data-preset="invoice"]').classList.add('active');
+  } else {
+    for (const [name, value] of Object.entries(saved)) {
+      const el = form.querySelector('[name="' + name + '"]');
+      if (el) el.value = value;
+    }
+    updateSaveState();
+  }
+} catch (e) { console.warn('Could not load saved skill', e); }
+
+form.addEventListener('input', saveCurrent);
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = PRESETS[btn.dataset.preset];
+    loadIntoForm(p);
+  });
+});
+
+function buildMarkdown() {
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const name = data.f01 || 'unnamed-skill';
+  const logicLines = (data.f05 || '').split('\n').map(l => l.trim()).filter(Boolean);
+  const numberedLogic = logicLines.map((l, i) => (i+1) + '. ' + l).join('\n');
+
+  return [
+    '---',
+    'name: ' + name,
+    'input: ' + (data.f02 || '—'),
+    'output: ' + (data.f03 || '—'),
+    '---',
+    '',
+    '## Purpose',
+    data.f04 || '—',
+    '',
+    '## Logic (the reasoning pattern)',
+    numberedLogic || '—',
+    '',
+    '## Output schema',
+    '```yaml',
+    (data.f06 || '—'),
+    '```',
+    '',
+    '## Why this ingredient matters',
+    data.f07 || '—',
+    '',
+  ].join('\n');
+}
+
+document.getElementById('copy').addEventListener('click', async () => {
+  const md = buildMarkdown();
+  try {
+    await navigator.clipboard.writeText(md);
+    saveState.textContent = '✓ Copied to clipboard · ' + new Date().toLocaleTimeString();
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = md; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    saveState.textContent = '✓ Copied to clipboard';
+  }
+});
+
+document.getElementById('download').addEventListener('click', () => {
+  const md = buildMarkdown();
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const name = (data.f01 || 'admin-skill').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name + '.md';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  saveState.textContent = '✓ Downloaded ' + name + '.md';
+});
+
+document.getElementById('clear').addEventListener('click', () => {
+  if (!confirm('Clear all 7 fields? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  for (const el of form.querySelectorAll('input, textarea')) el.value = '';
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  updateSaveState();
+});
+</script>
+
+</body>
+</html>
