@@ -1040,6 +1040,38 @@ footer.colophon strong { color: var(--ink); font-weight: 600; }
   }
 }
 
+@media (max-width: 600px) {
+  /* Force critical multi-column layouts to single column. !important
+     wins regardless of source order so this is a hard guarantee. */
+  .stations-grid,
+  .moves-grid,
+  .anti-grid,
+  .domain-grid,
+  .metrics-row,
+  .charts-row,
+  .workshop-grid,
+  .station-nav {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Headings must wrap rather than push the page wider than viewport */
+  h1, h2, h3, h4,
+  .hero h1, .sign h1, .sign h2,
+  .card.quote, .card.quote em,
+  .station-card h4, .anti-card h4, .move-card h3,
+  .domain-card h4, .pattern-card h4 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Belt-and-suspenders: nothing inside .wrap may exceed its width */
+  .wrap > *,
+  .wrap > * > *,
+  .stream > * {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
   .wrap { padding: 20px 14px 56px; }
 
