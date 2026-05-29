@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Station 01 · Spot the skill-shape — The Research Workshop</title>
+<meta name="description" content="Station 1 of the Research Workshop. Learn to tell a skill-shaped research task from a coaching question in 10 seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+<style>
+  .quiz-card { background: var(--card); border: 1px solid var(--hairline); border-radius: 22px; padding: 24px 26px; box-shadow: var(--shadow-card); }
+  .quiz-card .quiz-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed var(--hairline); flex-wrap: wrap; gap: 10px; }
+  .quiz-card .quiz-head h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 19px; margin: 0; letter-spacing: -0.01em; }
+  .quiz-card .quiz-head .score { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-muted); padding: 3px 10px; background: var(--paper-tint); border-radius: 999px; }
+  .quiz-list { display: grid; gap: 10px; }
+  .quiz-item { background: var(--paper-tint); border-radius: 12px; padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; transition: background 200ms ease; }
+  .quiz-item.right { background: var(--mint-bg); }
+  .quiz-item.wrong { background: var(--warm-bg); }
+  .quiz-item .qt { font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+  .quiz-item .feedback { display: block; margin-top: 8px; font-size: 13px; color: var(--ink-soft); font-style: italic; opacity: 0; max-height: 0; overflow: hidden; transition: opacity 250ms ease, max-height 250ms ease; }
+  .quiz-item.revealed .feedback { opacity: 1; max-height: 160px; }
+  .quiz-options { display: flex; gap: 6px; }
+  .quiz-btn { background: var(--card); border: 1px solid var(--hairline); border-radius: 8px; padding: 7px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted); cursor: pointer; transition: all 150ms ease; }
+  .quiz-btn:hover { background: var(--paper); color: var(--ink); }
+  .quiz-btn.picked-good { background: var(--mint-accent); color: white; border-color: var(--mint-accent); }
+  .quiz-btn.picked-bad { background: #ea580c; color: white; border-color: #ea580c; }
+  .quiz-item.revealed .quiz-btn:not(.picked-good):not(.picked-bad) { opacity: 0.35; }
+  @media (max-width: 540px) { .quiz-item { grid-template-columns: 1fr; } .quiz-options { justify-content: flex-start; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Research Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step current">1</span>
+    <span class="sep"></span><span class="step">2</span>
+    <span class="sep"></span><span class="step">3</span>
+    <span class="sep"></span><span class="step">4</span>
+    <span class="sep"></span><span class="step">5</span>
+    <span class="sep"></span><span class="step studio">6</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Station 01 · The Sorting Bench</span>
+    <h1>Spot the <em>skill-shape</em>.</h1>
+    <p class="sub">
+      Some research tasks are skill-shaped, most aren't. By the end of this station
+      you'll be able to tell them apart in ten seconds and stop wasting your time
+      on the ones that aren't ready.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <div class="card quote">
+      A skill-shaped task has a clean <em>input</em>, a single <em>verb</em>, and a structured <em>output</em>.
+    </div>
+
+    <div class="card spotlights">
+      <div class="row">
+        <div class="spot">
+          <div class="ring emoji-ring">📥</div>
+          <h4>One input</h4>
+          <p>A noun phrase. An XRD pattern. A list of papers. A reviewer comment + manuscript section.</p>
+        </div>
+        <div class="spot">
+          <div class="ring emoji-ring">⚙️</div>
+          <h4>One verb</h4>
+          <p>A single transformation. Identify. Classify. Fit. Not three at once.</p>
+        </div>
+        <div class="spot">
+          <div class="ring emoji-ring">📤</div>
+          <h4>One output shape</h4>
+          <p>Something you could schema. A phase + confidence. A gap list. A classified comment.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="aside-pip">
+      <div class="face">👩‍🔬</div>
+      <div>
+        <div class="label">Marie thinks…</div>
+        <p>
+          If you can't write the input as a noun phrase, the verb as a single word, and the output
+          as something you could draw on a piece of paper, the task isn't skill-shaped <em>yet</em>.
+          That's fine — it just means it needs more thought before you wrap it in a skill.
+        </p>
+      </div>
+    </div>
+
+    <div class="card compare">
+      <h3>Skill-shaped, <em>or not yet</em>.</h3>
+      <div class="legends">
+        <div class="legend left">
+          <span class="label">Skill-shaped</span>
+          <h4>Identify this XRD phase</h4>
+          <p>Given a powder XRD pattern and a shortlist of plausible phases, identify the dominant crystal phase with a confidence score and flag any peaks that don't match.</p>
+        </div>
+        <div class="legend right">
+          <span class="label">Not yet</span>
+          <h4>Help me think about my next research direction</h4>
+          <p>No input. No defined transformation. No checkable output. A great conversation, but not a skill.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="sign" style="margin: 16px auto 0;">
+      <span class="chip">Try this</span>
+      <h2>Six candidates. Which are <em>skill-shaped</em>?</h2>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-head">
+        <h3>Click skill-shaped or not yet on each.</h3>
+        <span class="score" id="score">0 / 0 answered</span>
+      </div>
+      <div class="quiz-list" id="quiz"></div>
+    </div>
+
+    <div class="try">
+      <span class="label">Before you scroll on</span>
+      <h4>What's a recurring research task in your week?</h4>
+      <p>
+        Not a grand project. The 5-minute thing you do 50 times a year. The XRD pattern you eyeball.
+        The literature gap analysis you keep half-finishing. The reviewer comment you avoid drafting a
+        response to. Hold it in your head. We'll come back to it at every station.
+      </p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../">
+      <span class="dir">← The Workshop Door</span>
+      <span class="label">Welcome</span>
+    </a>
+    <a class="nav-card next" href="../cut/">
+      <span class="dir">Next →</span>
+      <span class="label">Station 02 · Find the cut lines</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Research Workshop</strong> · Station 01</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+const ITEMS = [
+  {text:"Given a powder XRD pattern and a shortlist of plausible phases, identify the dominant crystal phase and report a confidence score.",answer:true,feedback:"Clean input (XRD pattern + suspected phases), single transformation (identify), structured output ({phase, confidence, unidentified_peaks}). Skill-shaped."},
+  {text:"Help me think about my next research direction.",answer:false,feedback:"No input, no defined transformation, no schema. A great conversation with a mentor, but not a skill."},
+  {text:"Given a list of recent papers, produce a literature gap analysis grouped by approach family.",answer:true,feedback:"Input (papers list), transformation (analyze + group), output you can describe with fields. Skill-shaped."},
+  {text:"Be more creative with my catalyst design.",answer:false,feedback:"No input, no transformation, no checkable output. Coaching, not a skill."},
+  {text:"Given a reviewer comment and the manuscript section it refers to, classify the comment as substantive / cosmetic / wrong and draft a response.",answer:true,feedback:"Two-field input, two-step transformation (classify + draft), structured output. Textbook skill shape."},
+  {text:"Make my paper better.",answer:false,feedback:"What does 'better' mean? Until you can name an input field and an output field, this is not yet skill-shaped — it's an aspiration."},
+];
+const list = document.getElementById('quiz');
+const score = document.getElementById('score');
+let answered = 0, correct = 0;
+function update() { score.textContent = correct + ' correct · ' + answered + ' / ' + ITEMS.length + ' answered'; }
+ITEMS.forEach(item => {
+  const el = document.createElement('div');
+  el.className = 'quiz-item';
+  el.innerHTML = '<div><div class="qt">' + item.text + '</div><span class="feedback">' + item.feedback + '</span></div><div class="quiz-options"><button class="quiz-btn" data-pick="yes">skill-shaped</button><button class="quiz-btn" data-pick="no">not yet</button></div>';
+  el.querySelectorAll('.quiz-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (el.classList.contains('revealed')) return;
+      const userYes = btn.dataset.pick === 'yes';
+      const isCorrect = userYes === item.answer;
+      btn.classList.add(isCorrect ? 'picked-good' : 'picked-bad');
+      el.classList.add('revealed', isCorrect ? 'right' : 'wrong');
+      answered++; if (isCorrect) correct++;
+      update();
+    });
+  });
+  list.appendChild(el);
+});
+update();
+</script>
+
+</body>
+</html>
