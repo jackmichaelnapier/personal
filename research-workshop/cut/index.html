@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Station 02 · Find the cut lines — The Research Workshop</title>
+<meta name="description" content="Station 2 of the Research Workshop. The research production line is six output forms in a trench coat. Cut where the form changes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+<style>
+  .quiz-card { background: var(--card); border: 1px solid var(--hairline); border-radius: 22px; padding: 24px 26px; box-shadow: var(--shadow-card); }
+  .quiz-card .quiz-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed var(--hairline); flex-wrap: wrap; gap: 10px; }
+  .quiz-card .quiz-head h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 19px; margin: 0; letter-spacing: -0.01em; }
+  .quiz-card .quiz-head .score { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-muted); padding: 3px 10px; background: var(--paper-tint); border-radius: 999px; }
+  .quiz-list { display: grid; gap: 10px; }
+  .quiz-item { background: var(--paper-tint); border-radius: 12px; padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; transition: background 200ms ease; }
+  .quiz-item.right { background: var(--mint-bg); }
+  .quiz-item.wrong { background: var(--warm-bg); }
+  .quiz-item .qt { font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+  .quiz-item .feedback { display: block; margin-top: 8px; font-size: 13px; color: var(--ink-soft); font-style: italic; opacity: 0; max-height: 0; overflow: hidden; transition: opacity 250ms ease, max-height 250ms ease; }
+  .quiz-item.revealed .feedback { opacity: 1; max-height: 160px; }
+  .quiz-options { display: flex; gap: 6px; }
+  .quiz-btn { background: var(--card); border: 1px solid var(--hairline); border-radius: 8px; padding: 7px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted); cursor: pointer; transition: all 150ms ease; }
+  .quiz-btn:hover { background: var(--paper); color: var(--ink); }
+  .quiz-btn.picked-good { background: var(--mint-accent); color: white; border-color: var(--mint-accent); }
+  .quiz-btn.picked-bad { background: #ea580c; color: white; border-color: #ea580c; }
+  .quiz-item.revealed .quiz-btn:not(.picked-good):not(.picked-bad) { opacity: 0.35; }
+  .flow-strip { background: var(--card); border: 1px solid var(--hairline); border-radius: 22px; padding: 24px 28px; box-shadow: var(--shadow-card); }
+  .flow-strip .flow-line { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; line-height: 2; color: var(--ink); background: var(--paper-tint); border-radius: 12px; padding: 16px 18px; border: 1px dashed var(--hairline); }
+  .flow-strip .stage { display: inline-block; margin-right: 4px; }
+  .flow-strip .cut { display: inline-block; color: var(--peri-ink); font-weight: 700; margin: 0 6px; padding: 0 4px; background: var(--peri-tint); border-radius: 4px; }
+  .flow-strip .note { margin-top: 14px; font-size: 13.5px; color: var(--ink-soft); line-height: 1.55; }
+  @media (max-width: 540px) { .quiz-item { grid-template-columns: 1fr; } .quiz-options { justify-content: flex-start; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Research Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span>
+    <span class="sep"></span><span class="step current">2</span>
+    <span class="sep"></span><span class="step">3</span>
+    <span class="sep"></span><span class="step">4</span>
+    <span class="sep"></span><span class="step">5</span>
+    <span class="sep"></span><span class="step studio">6</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Station 02 · The Cutting Bench</span>
+    <h1>Find the <em>cut lines</em>.</h1>
+    <p class="sub">
+      The research production line looks like one workflow. It's actually six output forms
+      strung together. Cut where the form genuinely changes — not on activity boundaries,
+      not on calendar boundaries.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <div class="card quote">
+      Cut where the output <em>form</em> changes.
+    </div>
+
+    <div class="aside-pip">
+      <div class="face">👩‍🔬</div>
+      <div>
+        <div class="label">Marie thinks…</div>
+        <p>
+          The Goldilocks rule. Cut too coarse, you get one fragile mega-skill that fails
+          unpredictably and you can't debug. Cut too fine, you spend more time on handoffs
+          than on the science. Cut at form-change boundaries and the joins take care of themselves.
+        </p>
+      </div>
+    </div>
+
+    <div class="sign" style="margin: 16px auto 0;">
+      <span class="chip">Worked example</span>
+      <h2>The research production line, <em>decomposed</em>.</h2>
+      <p class="sub">
+        Ten activities. Five cuts. Six skills. Each cut sits where the output form genuinely changes:
+        prior-art map → hypothesis → protocol → fitted data → figure → prose.
+      </p>
+    </div>
+
+    <div class="flow-strip">
+      <div class="flow-line">
+        <span class="stage">1. read background</span> ·
+        <span class="stage">2. id open questions</span>
+        <span class="cut">│ CUT │</span>
+        <span class="stage">3. pick one to test</span> ·
+        <span class="stage">4. predict signature</span>
+        <span class="cut">│ CUT │</span>
+        <span class="stage">5. design the rig</span> ·
+        <span class="stage">6. pick materials &amp; controls</span>
+        <span class="cut">│ CUT │</span>
+        <span class="stage">7. run measurement</span>
+        <span class="cut">│ CUT │</span>
+        <span class="stage">8. fit data &amp; estimate error</span>
+        <span class="cut">│ CUT │</span>
+        <span class="stage">9. make figures</span>
+        <span class="cut">│ CUT │</span>
+        <span class="stage">10. write the paper</span>
+      </div>
+      <p class="note">
+        Each cut sits where the output form genuinely changes: literature corpus → claim →
+        protocol → raw traces → fitted parameters → publication figure → manuscript prose.
+      </p>
+    </div>
+
+    <div class="sign" style="margin-top: 24px;">
+      <span class="chip">Try this</span>
+      <h2>Four candidate <em>cut points</em>. Yes or no?</h2>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-head">
+        <h3>Click "cut here" or "leave joined" on each.</h3>
+        <span class="score" id="score">0 / 0 answered</span>
+      </div>
+      <div class="quiz-list" id="quiz"></div>
+    </div>
+
+    <div class="try">
+      <span class="label">Before you scroll on</span>
+      <h4>Pick your own workflow. Where are the form-change cuts?</h4>
+      <p>
+        Take the research task you held in your head from Station 01. Try to list it as
+        6-10 micro-activities and mark where the output form actually changes. Don't overthink
+        the first draft — the first cut is usually wrong, and that's fine.
+      </p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../spot/">
+      <span class="dir">← Previous</span>
+      <span class="label">Station 01 · Spot the skill-shape</span>
+    </a>
+    <a class="nav-card next" href="../schema/">
+      <span class="dir">Next →</span>
+      <span class="label">Station 03 · Write data, not vibes</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Research Workshop</strong> · Station 02</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+const ITEMS = [
+  {text:"Between step 4 (predict the signature) and step 5 (design the rig).",answer:true,feedback:"Good cut. The output form changes from a claim + predicted observable to an experimental protocol with materials, light source, controls. Different shape of output, different skill."},
+  {text:"Between step 7 (run measurement) and step 8 (fit data + estimate error).",answer:true,feedback:"Good cut. Step 7 produces raw traces; step 8 produces fitted parameters with error bars and residual analysis. The output form genuinely changes — and you want them as separate skills so the data-refiner can be re-run on different traces."},
+  {text:"Between step 8 (fit data) and step 9 (make figures), splitting them into two skills.",answer:true,feedback:"Good cut. A fitted parameter set is a different shape from a publication figure with a self-contained caption. The figure composer benefits from being re-runnable on existing fits."},
+  {text:"Between step 1 (read background) and step 2 (identify open questions), splitting them.",answer:false,feedback:"Premature. Both stages produce literature material — citations, summaries, gap notes. The output form hasn't changed yet. They belong inside one literature-cartographer skill."},
+];
+const list = document.getElementById('quiz');
+const score = document.getElementById('score');
+let answered = 0, correct = 0;
+function update() { score.textContent = correct + ' correct · ' + answered + ' / ' + ITEMS.length + ' answered'; }
+ITEMS.forEach(item => {
+  const el = document.createElement('div');
+  el.className = 'quiz-item';
+  el.innerHTML = '<div><div class="qt">' + item.text + '</div><span class="feedback">' + item.feedback + '</span></div><div class="quiz-options"><button class="quiz-btn" data-pick="yes">cut here</button><button class="quiz-btn" data-pick="no">leave joined</button></div>';
+  el.querySelectorAll('.quiz-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (el.classList.contains('revealed')) return;
+      const userYes = btn.dataset.pick === 'yes';
+      const isCorrect = userYes === item.answer;
+      btn.classList.add(isCorrect ? 'picked-good' : 'picked-bad');
+      el.classList.add('revealed', isCorrect ? 'right' : 'wrong');
+      answered++; if (isCorrect) correct++;
+      update();
+    });
+  });
+  list.appendChild(el);
+});
+update();
+</script>
+
+</body>
+</html>
