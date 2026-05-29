@@ -973,6 +973,31 @@ footer.colophon strong { color: var(--ink); font-weight: 600; }
 
   .wrap { padding: 24px 16px 64px; }
 
+  /* Grid + flex children default to min-width: auto, which means a
+     cell refuses to shrink below the size of its widest unbreakable
+     content. That kept the stations-grid in 2-col mode at 390px wide
+     because long <code> spans held the column open. Force min-width:0
+     so the column can collapse and 1fr behaves like one would expect. */
+  .stations-grid > *,
+  .card.spotlights .row > *,
+  .joint-pair > *,
+  .station-nav > *,
+  .field > *,
+  .workshop-grid > *,
+  .masthead > *,
+  .quiz-head > *,
+  .joint-actions > *,
+  .moves-grid > *,
+  .charts-row > *,
+  .anti-grid > *,
+  .domain-grid > *,
+  .metrics-row > * {
+    min-width: 0;
+  }
+
+  /* Belt-and-suspenders: images and other replaced elements never exceed parent */
+  img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
+
   /* Anywhere monospace technical content can appear, force aggressive wrap */
   pre, code,
   .joint-block, .joint-block .jb-io,
