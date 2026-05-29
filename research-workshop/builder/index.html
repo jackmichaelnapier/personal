@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Studio 01 · The Builder Bench — The Research Workshop</title>
+<meta name="description" content="Studio 1 of the Research Workshop. Fill in seven small fields and walk out with a real research skill, ready to hand to Claude. Autosaves in your browser, exports as Markdown.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+<style>
+  .preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 16px; }
+  .preset-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; background: var(--paper-tint); border: 1px solid var(--hairline); border-radius: 999px; padding: 6px 12px; cursor: pointer; color: var(--ink-soft); transition: all 150ms ease; }
+  .preset-btn:hover { background: var(--peri-tint); border-color: var(--peri-border); color: var(--peri-ink); }
+  .preset-btn.active { background: var(--peri-ink); color: white; border-color: var(--peri-ink); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Research Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step done">1</span>
+    <span class="sep"></span><span class="step done">2</span>
+    <span class="sep"></span><span class="step done">3</span>
+    <span class="sep"></span><span class="step done">4</span>
+    <span class="sep"></span><span class="step done">5</span>
+    <span class="sep"></span><span class="step studio current">6</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Studio 01 · The Builder Bench</span>
+    <h1>Write your <em>first research skill</em>.</h1>
+    <p class="sub">
+      Seven small fields. Most take 1-3 sentences each. By the end of this studio you'll have
+      a real research skill you can hand to Claude — or paste into a future conversation as context.
+      Your answers save automatically in your browser. Export the whole thing as Markdown when you're done.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <div class="aside-pip">
+      <div class="face">👩‍🔬</div>
+      <div>
+        <div class="label">Marie thinks…</div>
+        <p>
+          This is where we stop talking and start building. Pick a real recurring task from your
+          research week. The XRD pattern you identify every Friday. The reviewer comment you've
+          been avoiding. The control experiment you keep designing from scratch. Fill the form
+          below for that one. <em>Don't worry about getting it perfect — the first draft is
+          supposed to be rough.</em> Run it on Monday, see what fell out, refactor.
+        </p>
+      </div>
+    </div>
+
+    <div class="sign" style="margin: 24px auto 0;">
+      <span class="chip">Quick start</span>
+      <h2>Load a <em>worked example</em>, or start from scratch.</h2>
+      <p class="sub">
+        Three pre-filled research skills to look at the shape of a finished one. Pick one to load
+        it into the form, then edit toward your real task. Or skip and start blank.
+      </p>
+    </div>
+
+    <div class="preset-row" id="preset-row">
+      <button class="preset-btn" data-preset="reviewer">reviewer-comment-classifier</button>
+      <button class="preset-btn" data-preset="xrd">xrd-phase-identifier</button>
+      <button class="preset-btn" data-preset="controls">control-experiment-designer</button>
+      <button class="preset-btn" data-preset="blank">start blank</button>
+    </div>
+
+    <form id="skill-form">
+
+      <div class="field">
+        <div class="icon placeholder">01</div>
+        <div>
+          <div class="head"><span class="num">Field 01</span><h4>Skill name</h4></div>
+          <p class="prompt">Kebab-case. Short, verb- or noun-led handle. Avoid clever puns.</p>
+          <div class="why"><strong>Why it matters →</strong> The name is the handle you'll use when chaining or referencing the skill. <code>literature-cartographer</code> beats <code>PaperBot9000</code>.</div>
+          <div class="example"><span class="lbl">Example</span>reviewer-comment-classifier</div>
+          <input type="text" name="f01" placeholder="your-skill-name…">
+          <div class="pip-tip"><em>If you can't name it in three words, you don't know what it is yet.</em></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon placeholder">02</div>
+        <div>
+          <div class="head"><span class="num">Field 02</span><h4>Input (one line, structured)</h4></div>
+          <p class="prompt">What does the skill consume? Schema-ish, not prose. List the fields it expects.</p>
+          <div class="why"><strong>Why it matters →</strong> If you can't write the input as fields, the skill isn't ready to run. Writing it forces you to be honest about what's actually available.</div>
+          <div class="example"><span class="lbl">Example</span>{manuscript_section: string, reviewer_comment: string}</div>
+          <input type="text" name="f02" placeholder="{ fields it consumes }…">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon placeholder">03</div>
+        <div>
+          <div class="head"><span class="num">Field 03</span><h4>Output (one line, structured)</h4></div>
+          <p class="prompt">What does the skill produce? Make it consumable by a downstream skill — types, not vibes.</p>
+          <div class="why"><strong>Why it matters →</strong> The output shape determines what stacks on top of this skill. Vibe outputs orphan the skill; structured outputs let it chain.</div>
+          <div class="example"><span class="lbl">Example</span>{classification: 'substantive'|'cosmetic'|'wrong', suggested_action: string, draft_response: string}</div>
+          <input type="text" name="f03" placeholder="{ structured output }…">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon placeholder">04</div>
+        <div>
+          <div class="head"><span class="num">Field 04</span><h4>Purpose (one sentence)</h4></div>
+          <p class="prompt">In one sentence: what does this skill do, and what does it produce?</p>
+          <div class="why"><strong>Why it matters →</strong> If you need two sentences with an "and," you have two skills pretending to be one. Cut.</div>
+          <div class="example"><span class="lbl">Example</span>Given a reviewer comment on a manuscript section, classify the comment as substantive / cosmetic / wrong, and draft a response that addresses it without sounding defensive.</div>
+          <textarea name="f04" placeholder="In one sentence…"></textarea>
+          <div class="pip-tip"><em>Read your sentence aloud. If a colleague would say "wait, what?" the sentence isn't right yet.</em></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon placeholder">05</div>
+        <div>
+          <div class="head"><span class="num">Field 05</span><h4>Logic — numbered moves (one per line)</h4></div>
+          <p class="prompt">3 to 6 numbered steps. Each verb-led. Each one you could ask "did I do this?"</p>
+          <div class="why"><strong>Why it matters →</strong> This is where you transfer your judgment into the skill. Don't write "be thorough." Write what a thorough version actually does, in order.</div>
+          <div class="example"><span class="lbl">Example</span>Read the reviewer comment in context of the section it refers to.
+Classify: substantive, cosmetic, or wrong?
+If substantive: name the experiment or concession needed.
+If cosmetic: quote the new wording.
+If wrong: clarify with evidence already in the manuscript.
+Thank the reviewer in the opening line regardless.</div>
+          <textarea name="f05" rows="7" placeholder="One step per line. Verb-led."></textarea>
+          <div class="pip-tip"><em>If a step starts with "be" or "consider" or "think about" — rewrite it as a verb.</em></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon placeholder">06</div>
+        <div>
+          <div class="head"><span class="num">Field 06</span><h4>Output schema (YAML, free-form)</h4></div>
+          <p class="prompt">Spell out the output shape with types. The schema is what makes the skill auditable run-by-run.</p>
+          <div class="why"><strong>Why it matters →</strong> Without a schema, every run produces a slightly different shape. With one, you can chain reliably and a downstream skill knows exactly what to consume.</div>
+          <div class="example"><span class="lbl">Example</span>response:
+  classification: substantive | cosmetic | wrong
+  suggested_action: string
+  draft_response: string  # 2-4 sentences
+  manuscript_location: string</div>
+          <textarea name="f06" rows="7" placeholder="YAML or any shape language. Just be explicit."></textarea>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="icon placeholder">07</div>
+        <div>
+          <div class="head"><span class="num">Field 07</span><h4>Why this ingredient matters</h4></div>
+          <p class="prompt">One short paragraph. What does this skill solve that gut-feel doesn't? What downstream skill consumes it?</p>
+          <div class="why"><strong>Why it matters →</strong> If you can't answer this in a paragraph, the skill is probably an orphan. Or it should have been a function instead.</div>
+          <div class="example"><span class="lbl">Example</span>The review cycle is where many manuscripts die, not from bad science but from defensive writing. Forcing the classification up front prevents arguing with a comment that should have been conceded.</div>
+          <textarea name="f07" rows="4" placeholder="What this skill solves, and what it feeds…"></textarea>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="export-panel">
+      <h3>Your skill, ready to ship.</h3>
+      <p>Autosaved as you type. Export as Markdown to drop into a Claude conversation, or download as a <code>.md</code> file to keep alongside your other skills.</p>
+      <div class="actions">
+        <button id="copy">Copy as Markdown</button>
+        <button id="download">⇣ Download as .md</button>
+        <button class="secondary" id="clear">Clear all fields</button>
+      </div>
+      <div class="save-state" id="save-state">Your answers will save here automatically.</div>
+    </div>
+
+    <div class="souvenir" style="margin-top: 28px;">
+      <span class="label">You finished the workshop</span>
+      <div class="badge" style="display:flex;align-items:center;justify-content:center;font-size:80px;background:var(--mint-bg);border:2px solid var(--mint-border);">👩‍🔬</div>
+      <h3>First Skill Built</h3>
+      <p>You decomposed the task. You wrote the schema. You compressed the moves. Now run it on a real example, see what falls out, refactor. That's the plasticity loop.</p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../joint/">
+      <span class="dir">← Previous</span>
+      <span class="label">Station 05 · The joints</span>
+    </a>
+    <a class="nav-card next" href="../">
+      <span class="dir">Back to Welcome →</span>
+      <span class="label">The Workshop Door</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Research Workshop</strong> · Studio 01</span>
+    <span class="right">Made with Marie. Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'research_workshop_skill_v1';
+const form = document.getElementById('skill-form');
+const saveState = document.getElementById('save-state');
+
+const PRESETS = {
+  reviewer: {
+    f01: 'reviewer-comment-classifier',
+    f02: '{manuscript_section: string, reviewer_comment: string}',
+    f03: "{classification: 'substantive'|'cosmetic'|'wrong', suggested_action: string, draft_response: string}",
+    f04: 'Given a reviewer comment on a manuscript section, classify the comment as substantive, cosmetic, or wrong, and draft a response that addresses it without sounding defensive.',
+    f05: 'Read the reviewer comment in the context of the manuscript section it refers to.\nClassify: does the comment require new data or rethinking (substantive), only wording changes (cosmetic), or is it factually incorrect (wrong)?\nIf substantive: name the experiment, re-analysis, or concession needed.\nIf cosmetic: quote the new wording.\nIf wrong: clarify with evidence already in the manuscript, never argumentative.\nThank the reviewer in the opening line regardless of classification.',
+    f06: 'response:\n  classification: substantive | cosmetic | wrong\n  suggested_action: string\n  draft_response: string  # 2-4 sentences\n  manuscript_location: string  # where the change goes',
+    f07: 'The review cycle is where many manuscripts die, not from bad science but from defensive writing. Forcing the classification up front, before drafting the response, prevents the common failure of arguing with a comment that should have been conceded.',
+  },
+  xrd: {
+    f01: 'xrd-phase-identifier',
+    f02: '{xrd_pattern: float[][], two_theta_range: [float, float], suspected_phases: [string]}',
+    f03: '{dominant_phase: string, confidence: float, secondary_phases: [{name, fraction}], unidentified_peaks: [float]}',
+    f04: 'Given a powder XRD pattern and a shortlist of plausible phases, identify the dominant crystal phase with a confidence score and flag any peaks that don\'t match.',
+    f05: 'Locate peaks above the background and record their 2θ positions and relative intensities.\nFor each suspected phase, compare the predicted reflections (positions and intensities) against the observed pattern.\nScore the match for each phase as a fraction of explained intensity within tolerance.\nPick the dominant phase as the highest score; report secondary phases above the noise threshold.\nList 2θ positions of any peaks not explained by the matched phases — these are the interesting ones.',
+    f06: 'identification:\n  dominant_phase: string\n  confidence: float  # 0.0 to 1.0\n  secondary_phases:\n    - {name: string, fraction: float}\n  unidentified_peaks: [float]  # 2θ degrees',
+    f07: 'Phase ID by eye is fast but misses minor phases and unidentified peaks, which are precisely the diagnostic signals. Forcing the skill to enumerate unidentified peaks turns "looks like rutile" into "looks like rutile, but there are 2 unexplained peaks at 31.4° and 45.2°" — which is a different conversation.',
+  },
+  controls: {
+    f01: 'control-experiment-designer',
+    f02: '{claim: string, proposed_mechanism: string, experimental_protocol: string}',
+    f03: '{positive_control: string, negative_control: string, artifact_controls: [string], minimum_replicates: int}',
+    f04: 'Given a mechanistic claim and the experiment that tests it, design the controls that distinguish the proposed mechanism from the most common artifacts.',
+    f05: 'Name the proposed mechanism explicitly: what species, what step, what observable.\nList the three most plausible alternative explanations (solvent, background, instrument artifact, etc.).\nFor each alternative, design a single experiment that produces a different observable than the proposed mechanism would.\nPick the strongest as the negative control; the others become artifact controls.\nDesign a positive control that produces a known outcome and validates the rig.\nSpecify the minimum replicate count based on the expected effect size.',
+    f06: 'controls:\n  positive_control: string\n  negative_control: string\n  artifact_controls: [string]\n  minimum_replicates: int\n  rationale: string',
+    f07: 'Most rejected mechanism papers are rejected for missing the obvious artifact control. Naming the alternatives explicitly, then designing against them, is how you stop reading the rejection letter and saying "I should have done that".',
+  },
+  blank: { f01:'', f02:'', f03:'', f04:'', f05:'', f06:'', f07:'' },
+};
+
+function loadIntoForm(data) {
+  for (const [name, value] of Object.entries(data)) {
+    const el = form.querySelector('[name="' + name + '"]');
+    if (el) el.value = value || '';
+  }
+  saveCurrent();
+}
+
+function saveCurrent() {
+  const data = {};
+  for (const el of form.querySelectorAll('input, textarea')) {
+    if (el.value) data[el.name] = el.value;
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  updateSaveState();
+}
+
+function updateSaveState() {
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const filled = Object.values(data).filter(v => v && v.trim()).length;
+  if (filled === 0) {
+    saveState.textContent = 'Your answers will save here automatically.';
+  } else {
+    saveState.textContent = filled + ' of 7 fields saved · ' + new Date().toLocaleTimeString();
+  }
+}
+
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  if (Object.keys(saved).length === 0) {
+    loadIntoForm(PRESETS.reviewer);
+    document.querySelector('[data-preset="reviewer"]').classList.add('active');
+  } else {
+    for (const [name, value] of Object.entries(saved)) {
+      const el = form.querySelector('[name="' + name + '"]');
+      if (el) el.value = value;
+    }
+    updateSaveState();
+  }
+} catch (e) { console.warn('Could not load saved skill', e); }
+
+form.addEventListener('input', saveCurrent);
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = PRESETS[btn.dataset.preset];
+    loadIntoForm(p);
+  });
+});
+
+function buildMarkdown() {
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const name = data.f01 || 'unnamed-skill';
+  const logicLines = (data.f05 || '').split('\n').map(l => l.trim()).filter(Boolean);
+  const numberedLogic = logicLines.map((l, i) => (i+1) + '. ' + l).join('\n');
+
+  return [
+    '---',
+    'name: ' + name,
+    'input: ' + (data.f02 || '—'),
+    'output: ' + (data.f03 || '—'),
+    '---',
+    '',
+    '## Purpose',
+    data.f04 || '—',
+    '',
+    '## Logic (the reasoning pattern)',
+    numberedLogic || '—',
+    '',
+    '## Output schema',
+    '```yaml',
+    (data.f06 || '—'),
+    '```',
+    '',
+    '## Why this ingredient matters',
+    data.f07 || '—',
+    '',
+  ].join('\n');
+}
+
+document.getElementById('copy').addEventListener('click', async () => {
+  const md = buildMarkdown();
+  try {
+    await navigator.clipboard.writeText(md);
+    saveState.textContent = '✓ Copied to clipboard · ' + new Date().toLocaleTimeString();
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = md; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    saveState.textContent = '✓ Copied to clipboard';
+  }
+});
+
+document.getElementById('download').addEventListener('click', () => {
+  const md = buildMarkdown();
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  const name = (data.f01 || 'research-skill').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name + '.md';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  saveState.textContent = '✓ Downloaded ' + name + '.md';
+});
+
+document.getElementById('clear').addEventListener('click', () => {
+  if (!confirm('Clear all 7 fields? This cannot be undone.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  for (const el of form.querySelectorAll('input, textarea')) el.value = '';
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  updateSaveState();
+});
+</script>
+
+</body>
+</html>
