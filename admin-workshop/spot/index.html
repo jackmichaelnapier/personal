@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Station 01 · Spot the skill-shape — The Admin Workshop</title>
+<meta name="description" content="Station 1 of the Admin Workshop. Learn to tell a skill-shaped admin task from a coaching question in 10 seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,wght@0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../workshop.css">
+<style>
+  /* Quiz styles (inline) */
+  .quiz-card { background: var(--card); border: 1px solid var(--hairline); border-radius: 22px; padding: 24px 26px; box-shadow: var(--shadow-card); }
+  .quiz-card .quiz-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dashed var(--hairline); flex-wrap: wrap; gap: 10px; }
+  .quiz-card .quiz-head h3 { font-family: 'Fraunces', serif; font-weight: 500; font-size: 19px; margin: 0; letter-spacing: -0.01em; }
+  .quiz-card .quiz-head .score { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-muted); padding: 3px 10px; background: var(--paper-tint); border-radius: 999px; }
+  .quiz-list { display: grid; gap: 10px; }
+  .quiz-item { background: var(--paper-tint); border-radius: 12px; padding: 14px 16px; display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center; transition: background 200ms ease; }
+  .quiz-item.right { background: var(--mint-bg); }
+  .quiz-item.wrong { background: var(--warm-bg); }
+  .quiz-item .qt { font-size: 14.5px; line-height: 1.5; color: var(--ink); }
+  .quiz-item .feedback { display: block; margin-top: 8px; font-size: 13px; color: var(--ink-soft); font-style: italic; opacity: 0; max-height: 0; overflow: hidden; transition: opacity 250ms ease, max-height 250ms ease; }
+  .quiz-item.revealed .feedback { opacity: 1; max-height: 140px; }
+  .quiz-options { display: flex; gap: 6px; }
+  .quiz-btn { background: var(--card); border: 1px solid var(--hairline); border-radius: 8px; padding: 7px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-muted); cursor: pointer; transition: all 150ms ease; }
+  .quiz-btn:hover { background: var(--paper); color: var(--ink); }
+  .quiz-btn.picked-good { background: var(--mint-accent); color: white; border-color: var(--mint-accent); }
+  .quiz-btn.picked-bad { background: #ea580c; color: white; border-color: #ea580c; }
+  .quiz-item.revealed .quiz-btn:not(.picked-good):not(.picked-bad) { opacity: 0.35; }
+  @media (max-width: 540px) { .quiz-item { grid-template-columns: 1fr; } .quiz-options { justify-content: flex-start; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <a class="name" href="../">← The Admin Workshop</a>
+    <span class="meta">Edition 01 · an illustrated field guide</span>
+  </header>
+
+  <nav class="progress" aria-label="Tour progress">
+    <span class="step current">1</span>
+    <span class="sep"></span><span class="step">2</span>
+    <span class="sep"></span><span class="step">3</span>
+    <span class="sep"></span><span class="step">4</span>
+    <span class="sep"></span><span class="step">5</span>
+    <span class="sep"></span><span class="step studio">6</span>
+  </nav>
+
+  <div class="sign">
+    <span class="chip">Station 01 · The Sorting Bench</span>
+    <h1>Spot the <em>skill-shape</em>.</h1>
+    <p class="sub">
+      Some admin tasks are skill-shaped, most aren't. By the end of this station,
+      you'll be able to tell them apart in ten seconds and stop wasting your time
+      on the ones that aren't ready.
+    </p>
+  </div>
+
+  <div class="stream">
+
+    <!-- THE DEFINITION -->
+    <div class="card quote">
+      A skill-shaped task has a clean <em>input</em>, a single <em>verb</em>, and a structured <em>output</em>.
+    </div>
+
+    <!-- THREE THINGS -->
+    <div class="card spotlights">
+      <div class="row">
+        <div class="spot">
+          <div class="ring" style="display:flex;align-items:center;justify-content:center;font-size:36px;">📥</div>
+          <h4>One input</h4>
+          <p>A noun phrase. A supplier invoice. A SKU's sales history. A reviewer comment.</p>
+        </div>
+        <div class="spot">
+          <div class="ring" style="display:flex;align-items:center;justify-content:center;font-size:36px;">⚙️</div>
+          <h4>One verb</h4>
+          <p>A single transformation. Reconcile. Project. Classify. Not three at once.</p>
+        </div>
+        <div class="spot">
+          <div class="ring" style="display:flex;align-items:center;justify-content:center;font-size:36px;">📤</div>
+          <h4>One output shape</h4>
+          <p>Something you could schema. A list, a verdict, a structured object. Not "a paragraph."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTTO THINKS -->
+    <div class="aside-pip">
+      <div class="face">🦆</div>
+      <div>
+        <div class="label">Otto thinks…</div>
+        <p>
+          If you can't write the input as a noun phrase, the verb as a single word, and the
+          output as something you could draw on a piece of paper, the task isn't skill-shaped
+          <em>yet</em>. That's fine — it just means it needs more thought before you wrap it in a skill.
+        </p>
+      </div>
+    </div>
+
+    <!-- WORKED COMPARISON -->
+    <div class="card compare">
+      <h3>Skill-shaped, <em>or not yet</em>.</h3>
+      <div class="legends">
+        <div class="legend left">
+          <span class="label">Skill-shaped</span>
+          <h4>Reconcile this invoice</h4>
+          <p>Given a supplier invoice, the matching PO, and the GRN, reconcile line-by-line and flag discrepancies with a pay/hold/reject recommendation.</p>
+        </div>
+        <div class="legend right">
+          <span class="label">Not yet</span>
+          <h4>Tighten up suppliers</h4>
+          <p>No input. No defined transformation. No checkable output. A coaching conversation, not a skill.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- THE QUIZ -->
+    <div class="sign" style="margin: 16px auto 0;">
+      <span class="chip">Try this</span>
+      <h2>Six candidates. Which are <em>skill-shaped</em>?</h2>
+    </div>
+
+    <div class="quiz-card">
+      <div class="quiz-head">
+        <h3>Click skill-shaped or not yet on each.</h3>
+        <span class="score" id="score">0 / 0 answered</span>
+      </div>
+      <div class="quiz-list" id="quiz"></div>
+    </div>
+
+    <!-- TRY-IT STICKY -->
+    <div class="try">
+      <span class="label">Before you scroll on</span>
+      <h4>What's the most recurring admin task in your week?</h4>
+      <p>
+        Not the dramatic one. The 5-minute thing you do 50 times. The supplier invoice you 3-way-match every Friday.
+        The manufacturing follow-up you draft Monday morning. Hold it in your head. We'll come back to it at every station.
+      </p>
+    </div>
+
+  </div>
+
+  <nav class="station-nav">
+    <a class="nav-card" href="../">
+      <span class="dir">← The Workshop Door</span>
+      <span class="label">Welcome</span>
+    </a>
+    <a class="nav-card next" href="../cut/">
+      <span class="dir">Next →</span>
+      <span class="label">Station 02 · Find the cut lines</span>
+    </a>
+  </nav>
+
+  <footer class="colophon">
+    <span class="left"><strong>The Admin Workshop</strong> · Station 01</span>
+    <span class="right">Walk slow. Sip coffee.</span>
+  </footer>
+
+</div>
+
+<script>
+const ITEMS = [
+  {text:"Given a supplier invoice, the matching PO, and the GRN, reconcile line-by-line and flag discrepancies with EUR impact and a pay/hold/reject recommendation.",answer:true,feedback:"Three-field input, single transformation (reconcile + classify), structured output. Textbook skill shape."},
+  {text:"Tighten up our supplier relationships.",answer:false,feedback:"No input, no defined transformation, no checkable output. A goal, not a skill."},
+  {text:"Given a SKU's 12-month sales history, lead time, MOQ, and safety stock, project the stock-out date and recommend a reorder quantity.",answer:true,feedback:"Five-field structured input, single transformation, structured output. The most leveraged admin skill you can build."},
+  {text:"Help me decide which private-label products to drop next year.",answer:false,feedback:"Strategic question, not a skill. A ranking skill WOULD be skill-shaped — but this framing is a coaching conversation."},
+  {text:"Given a manufacturing job's latest status, original promise date, and open customer commitments, classify on-track / slipping / at-risk / blocked and draft a supplier follow-up matching the urgency.",answer:true,feedback:"Structured input, two-step transformation (classify + draft), structured output. The Pareto admin skill — one of these saves a Tuesday a month."},
+  {text:"Make the warehouse run smoother.",answer:false,feedback:"What does 'smoother' mean? Until you can name an input field and an output field, this is not yet skill-shaped — it's an aspiration."},
+];
+const list = document.getElementById('quiz');
+const score = document.getElementById('score');
+let answered = 0, correct = 0;
+function update() { score.textContent = correct + ' correct · ' + answered + ' / ' + ITEMS.length + ' answered'; }
+ITEMS.forEach(item => {
+  const el = document.createElement('div');
+  el.className = 'quiz-item';
+  el.innerHTML = '<div><div class="qt">' + item.text + '</div><span class="feedback">' + item.feedback + '</span></div><div class="quiz-options"><button class="quiz-btn" data-pick="yes">skill-shaped</button><button class="quiz-btn" data-pick="no">not yet</button></div>';
+  el.querySelectorAll('.quiz-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (el.classList.contains('revealed')) return;
+      const userYes = btn.dataset.pick === 'yes';
+      const isCorrect = userYes === item.answer;
+      btn.classList.add(isCorrect ? 'picked-good' : 'picked-bad');
+      el.classList.add('revealed', isCorrect ? 'right' : 'wrong');
+      answered++; if (isCorrect) correct++;
+      update();
+    });
+  });
+  list.appendChild(el);
+});
+update();
+</script>
+
+</body>
+</html>
