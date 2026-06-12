@@ -1,0 +1,1437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>NAPIER'S QUEST</title>
+<meta name="description" content="An 8-bit autobiography you can play. Twenty years of slow drift, west to east, one world at a time.">
+<meta property="og:title" content="NAPIER'S QUEST">
+<meta property="og:description" content="An 8-bit autobiography you can play.">
+<meta property="og:url" content="https://www.napier.me/arcade/">
+<meta name="theme-color" content="#0a0807">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  :root{ --paper:#fdf6e9; --ink:#0a0807; --terra:#c5491f; --yellow:#ffc72c; --sea:#062536; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#070605;overflow:hidden;}
+  body{font-family:'Press Start 2P',monospace;color:var(--paper);-webkit-font-smoothing:none;}
+  #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
+  #frame{position:relative;}
+  canvas#game{display:block;image-rendering:pixelated;image-rendering:crisp-edges;background:#000;}
+
+  /* CRT */
+  #crt{position:absolute;inset:0;pointer-events:none;border-radius:12px;overflow:hidden;}
+  body.crt #crt::before{
+    content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0 1px, transparent 1px 3px);
+    mix-blend-mode:multiply;
+  }
+  body.crt #crt::after{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.42) 100%);
+  }
+  body.crt #frame{border-radius:12px;box-shadow:0 0 60px rgba(255,199,44,0.08), 0 0 0 6px #161210, 0 0 0 10px #0c0a08;}
+  @keyframes poweron{ 0%{transform:scaleY(0.004);filter:brightness(6)} 55%{transform:scaleY(1.02);filter:brightness(1.6)} 100%{transform:scaleY(1);filter:none} }
+  body.crt.power #frame{animation:poweron 0.55s ease-out;}
+  @media (prefers-reduced-motion: reduce){ body.crt.power #frame{animation:none;} }
+
+  /* HUD */
+  #hud{
+    position:absolute;left:0;right:0;top:0;padding:8px 10px;display:flex;gap:14px;align-items:center;
+    font-size:8px;line-height:1;color:var(--paper);text-shadow:1px 1px 0 #000;pointer-events:none;
+    justify-content:space-between;opacity:0;transition:opacity .4s;
+  }
+  #hud.on{opacity:1;}
+  #hud .grp{display:flex;gap:14px;align-items:center;}
+  #hud span b{color:var(--yellow);}
+  #hud #macs span{display:inline-block;margin-right:3px;filter:drop-shadow(1px 1px 0 #000);}
+  #hud .fade{opacity:0;transition:opacity 2.4s;}
+
+  /* dialog */
+  #dialog{
+    position:absolute;left:50%;bottom:6%;transform:translateX(-50%);
+    width:88%;max-width:560px;background:rgba(8,7,6,0.94);border:3px solid var(--paper);
+    border-radius:3px;padding:13px 14px 11px;font-size:9px;line-height:1.75;display:none;z-index:8;
+    box-shadow:0 6px 0 rgba(0,0,0,0.5);
+  }
+  #dialog.on{display:block;}
+  #dialog .who{color:var(--yellow);font-size:8px;margin-bottom:7px;}
+  #dialog .txt{color:var(--paper);min-height:32px;white-space:pre-wrap;}
+  #dialog .more{position:absolute;right:10px;bottom:6px;color:var(--terra);animation:blink 0.7s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0}}
+
+  /* cards */
+  #card{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:9;
+    background:rgba(5,4,3,0.82);text-align:center;
+  }
+  #card.on{display:flex;}
+  #card .in{max-width:78%;}
+  #card .k{color:var(--terra);font-size:8px;margin-bottom:14px;letter-spacing:2px;}
+  #card .t{color:var(--yellow);font-size:16px;line-height:1.7;margin-bottom:14px;text-shadow:2px 2px 0 #000;}
+  #card .b{color:var(--paper);font-size:9px;line-height:2;}
+  #card .go{margin-top:18px;color:var(--terra);font-size:8px;animation:blink 0.8s steps(1) infinite;}
+
+  /* title */
+  #title{position:absolute;inset:0;display:none;z-index:10;text-align:center;}
+  #title.on{display:block;}
+  #title .logo{margin-top:7%;font-size:21px;color:var(--yellow);line-height:1.6;text-shadow:3px 3px 0 var(--terra), 6px 6px 0 #000;}
+  #title .sub{margin-top:10px;font-size:8px;color:var(--paper);opacity:0.85;}
+  #title .menu{margin-top:5%;font-size:9px;line-height:2.6;}
+  #title .menu div{cursor:pointer;}
+  #title .menu div.sel::before{content:'▶ ';color:var(--terra);}
+  #title .menu div.sel{color:var(--yellow);}
+  #title .scores{position:absolute;right:4%;top:12%;font-size:7px;line-height:2.2;color:var(--paper);opacity:0.8;text-align:left;}
+  #title .scores .h{color:var(--terra);}
+  #title .ins{position:absolute;bottom:5%;left:0;right:0;font-size:7px;color:var(--paper);opacity:0.65;animation:blink 1.2s steps(1) infinite;}
+  #title .keys{position:absolute;left:4%;top:12%;font-size:7px;line-height:2.2;text-align:left;opacity:0.8;}
+  #title .keys b{color:var(--yellow);}
+
+  /* touch */
+  #pad{position:absolute;inset:0;pointer-events:none;display:none;z-index:12;}
+  body.touch #pad{display:block;}
+  #pad button{
+    pointer-events:auto;position:absolute;bottom:18px;width:54px;height:54px;border-radius:10px;
+    background:rgba(253,246,233,0.14);border:2px solid rgba(253,246,233,0.45);color:var(--paper);
+    font-family:inherit;font-size:13px;
+  }
+  #pad #pl{left:16px;} #pad #pr{left:80px;}
+  #pad #pa{right:16px;bottom:54px;} #pad #pb{right:80px;}
+
+  #toast{
+    position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:8px;color:var(--yellow);
+    text-shadow:1px 1px 0 #000;opacity:0;transition:opacity .3s;z-index:7;text-align:center;line-height:1.8;
+  }
+  #toast.on{opacity:1;}
+  a{color:var(--terra);}
+</style>
+</head>
+<body class="crt power">
+<div id="wrap"><div id="frame">
+  <canvas id="game" width="384" height="216"></canvas>
+  <div id="crt"></div>
+
+  <div id="hud">
+    <div class="grp">
+      <span id="hWorld"></span>
+      <span id="hTime"></span>
+    </div>
+    <div class="grp">
+      <span id="hAlm">ALMANAC <b>0/10</b></span>
+      <span id="hScore">SCORE <b>0</b></span>
+      <span id="macs"></span>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <div id="dialog"><div class="who"></div><div class="txt"></div><div class="more">▼</div></div>
+
+  <div id="card"><div class="in">
+    <div class="k"></div><div class="t"></div><div class="b"></div><div class="go">PRESS E</div>
+  </div></div>
+
+  <div id="title">
+    <div class="logo">NAPIER'S<br>QUEST</div>
+    <div class="sub">AN 8-BIT AUTOBIOGRAPHY · COSTA BLANCA · 2026</div>
+    <div class="menu" id="menu"></div>
+    <div class="keys"><b>ARROWS / WASD</b> RUN<br><b>SPACE / Z</b> JUMP<br><b>E</b> TALK<br><b>P</b> PAUSE  <b>M</b> MUTE</div>
+    <div class="scores" id="scores"></div>
+    <div class="ins">INSERT COIN (NO COIN NEEDED) · PRESS ENTER</div>
+  </div>
+
+  <div id="pad">
+    <button id="pl">◀</button><button id="pr">▶</button>
+    <button id="pa">A</button><button id="pb">B</button>
+  </div>
+</div></div>
+
+<script>
+'use strict';
+/* ================================================================
+   NAPIER'S QUEST. An 8-bit autobiography.
+   All biography text comes from the flat page at napier.me.
+   Engine: fixed 60Hz timestep, 384x216 canvas, integer upscale.
+   ================================================================ */
+
+const W = 384, H = 216, TILE = 16, ROWS = 13;
+const MAP_Y0 = H - ROWS * TILE;             /* sky strip above the map */
+const cv = document.getElementById('game');
+const cx = cv.getContext('2d');
+cx.imageSmoothingEnabled = false;
+
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TOUCH = ('ontouchstart' in window) && matchMedia('(pointer:coarse)').matches;
+if (TOUCH) document.body.classList.add('touch');
+
+/* ---------------- save ---------------- */
+const SAVE_KEY = 'napiers-quest';
+let save = { almanac: [], cleared: false, best: 0, mute: false, crt: true, world: 1 };
+try { Object.assign(save, JSON.parse(localStorage.getItem(SAVE_KEY) || '{}')); } catch(e){}
+function persist(){ try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch(e){} }
+if (!save.crt) document.body.classList.remove('crt');
+
+/* ---------------- scaling ---------------- */
+function fit(){
+  const s = Math.max(1, Math.floor(Math.min(innerWidth / W, innerHeight / H)));
+  cv.style.width = (W * s) + 'px'; cv.style.height = (H * s) + 'px';
+}
+addEventListener('resize', fit); fit();
+
+/* ---------------- input ---------------- */
+const keys = {};
+let kPressed = false, navUp = false, navDown = false;
+addEventListener('keydown', ev => {
+  if (ev.repeat) { if (ev.code === 'KeyE') handleE(); return; }
+  keys[ev.code] = true;
+  /* E runs synchronously inside the gesture so window.open and mailto survive popup blockers */
+  if (ev.code === 'KeyE' || ev.code === 'Enter') handleE();
+  if (ev.code === 'KeyK') kPressed = true;
+  if (ev.code === 'ArrowUp' || ev.code === 'KeyW') navUp = true;
+  if (ev.code === 'ArrowDown' || ev.code === 'KeyS') navDown = true;
+  if (ev.code === 'KeyM'){ save.mute = !save.mute; persist(); AU.setMute(save.mute); toast(save.mute ? 'SOUND OFF' : 'SOUND ON'); }
+  if (ev.code === 'KeyP') togglePause();
+  if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(ev.code)) ev.preventDefault();
+});
+addEventListener('keyup', ev => { keys[ev.code] = false; });
+function left(){ return keys.ArrowLeft || keys.KeyA || padL; }
+function right(){ return keys.ArrowRight || keys.KeyD || padR; }
+function jumpHeld(){ return keys.Space || keys.KeyZ || keys.ArrowUp || keys.KeyW || padA; }
+
+/* touch pad */
+let padL = false, padR = false, padA = false;
+function bindPad(id, set){
+  const el = document.getElementById(id);
+  el.addEventListener('touchstart', e => { e.preventDefault(); set(true); }, { passive:false });
+  el.addEventListener('touchend',   e => { e.preventDefault(); set(false); }, { passive:false });
+}
+bindPad('pl', v => padL = v); bindPad('pr', v => padR = v);
+bindPad('pa', v => { const was = padA; padA = v; if (v && !was) jumpQueued = 7; });
+document.getElementById('pb').addEventListener('touchstart', e => { e.preventDefault(); handleE(); }, { passive:false });
+
+/* the one interaction verb, run synchronously from input events */
+function handleE(){
+  AU.start();
+  if (ST.scene === 'title'){ AU.play('title'); if (MENU[menuSel]) MENU[menuSel].fn(); return; }
+  if (Q.active){
+    if (Q.active.kind === 'say'){
+      const full = Q.active.text;
+      if (Q.charI < full.length){
+        Q.charI = full.length;
+        dlg.querySelector('.txt').textContent = full;
+        return;
+      }
+    }
+    const done = Q.active.onDone; Q.active = null;
+    dlg.classList.remove('on'); card.classList.remove('on');
+    if (done) done();
+    if (!Q.items.length && !Q.active) AU.duck(false);
+    pump();
+    return;
+  }
+  if (ST.paused || ST.scene !== 'game') return;
+  if (ST.near) interact(ST.near);
+}
+
+/* ---------------- audio: 3-channel chiptune ---------------- */
+const AU = (() => {
+  let ctx = null, master = null, musicGain = null, seq = null, pattern = null, stepI = 0, nextT = 0;
+  const MOTIF = [0, 4, 7, 12];
+  function start(){
+    if (ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = save.mute ? 0 : 0.5; master.connect(ctx.destination);
+    musicGain = ctx.createGain(); musicGain.gain.value = 0.55; musicGain.connect(master);
+    nextT = ctx.currentTime + 0.1;
+    seq = setInterval(schedule, 90);
+  }
+  const f = m => 440 * Math.pow(2, (m - 69) / 12);
+  function osc(type, midi, t, dur, vol, dest){
+    if (!ctx) return;
+    const o = ctx.createOscillator(); o.type = type; o.frequency.value = f(midi);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(vol, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(dest || master); o.start(t); o.stop(t + dur + 0.02);
+  }
+  function noise(t, dur, vol, freq){
+    if (!ctx) return;
+    const len = Math.max(1, ctx.sampleRate * dur), b = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = b.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2);
+    const s = ctx.createBufferSource(); s.buffer = b;
+    const fl = ctx.createBiquadFilter(); fl.type = 'bandpass'; fl.frequency.value = freq || 6000; fl.Q.value = 1;
+    const g = ctx.createGain(); g.gain.value = vol;
+    s.connect(fl); fl.connect(g); g.connect(master); s.start(t);
+  }
+  /* music patterns: 16 steps of eighth notes; midi or null */
+  const P = {
+    title: { bpm: 112, root: 60, lead: [0,null,4,null,7,null,12,null,7,null,4,null,0,null,-5,null], bass: [-24,null,-17,null,-24,null,-17,null,-24,null,-17,null,-19,null,-12,null] },
+    w1:    { bpm: 152, root: 57, lead: [0,0,null,3,null,7,3,null,0,0,null,3,null,10,7,null],          bass: [-24,null,-24,null,-21,null,-24,null,-24,null,-24,null,-19,null,-17,null] },
+    w2:    { bpm: 116, root: 62, lead: [0,null,null,4,null,7,null,null,9,null,7,null,4,null,2,null],   bass: [-24,null,-17,null,-22,null,-15,null,-24,null,-17,null,-19,null,-12,null] },
+    w3:    { bpm: 132, root: 60, lead: [0,null,4,7,null,4,7,12,null,7,12,16,null,12,7,4],              bass: [-24,-24,null,-24,-19,null,-19,null,-17,-17,null,-17,-12,null,-12,null] },
+    w4:    { bpm: 144, root: 58, lead: [0,3,0,3,7,3,7,10,0,3,0,3,7,5,3,0],                              bass: [-24,null,-24,-24,null,-24,-24,null,-22,null,-22,-22,null,-22,-22,null] },
+    w5:    { bpm: 84,  root: 60, lead: [0,null,null,null,4,null,7,null,12,null,null,null,7,null,null,null], bass: [-24,null,null,null,-17,null,null,null,-19,null,null,null,-12,null,null,null] },
+  };
+  function schedule(){
+    if (!ctx || !pattern) return;
+    const stepDur = 60 / pattern.bpm / 2;
+    while (nextT < ctx.currentTime + 0.35){
+      const i = stepI % 16;
+      const L = pattern.lead[i], B = pattern.bass[i];
+      if (L !== null && L !== undefined) osc('square', pattern.root + L, nextT, stepDur * 0.9, 0.16, musicGain);
+      if (B !== null && B !== undefined) osc('triangle', pattern.root + B, nextT, stepDur * 0.95, 0.3, musicGain);
+      if (i % 4 === 2) noise(nextT, 0.03, 0.06, 8000);
+      stepI++; nextT += stepDur;
+    }
+  }
+  return {
+    start,
+    play(name){ pattern = P[name] || null; stepI = 0; if (ctx) nextT = Math.max(nextT, ctx.currentTime + 0.05); },
+    stop(){ pattern = null; },
+    duck(on){ if (musicGain) musicGain.gain.value = on ? 0.25 : 0.55; },
+    setMute(m){ if (master) master.gain.value = m ? 0 : 0.5; },
+    sfx(kind){
+      if (!ctx) return;
+      const t = ctx.currentTime;
+      if (kind === 'jump'){ osc('square', 70, t, 0.07, 0.12); osc('square', 76, t + 0.05, 0.08, 0.1); }
+      if (kind === 'pickup'){ osc('square', 88, t, 0.06, 0.12); osc('square', 93, t + 0.06, 0.1, 0.12); }
+      if (kind === 'almanac'){ MOTIF.forEach((m, i) => osc('square', 72 + m, t + i * 0.09, 0.12, 0.14)); }
+      if (kind === 'hurt'){ noise(t, 0.18, 0.2, 900); osc('sawtooth', 40, t, 0.22, 0.18); }
+      if (kind === 'blip'){ osc('square', 96, t, 0.025, 0.05); }
+      if (kind === 'door'){ osc('triangle', 52, t, 0.12, 0.2); osc('triangle', 59, t + 0.09, 0.14, 0.2); }
+      if (kind === 'gate'){ osc('triangle', 48, t, 0.3, 0.22); noise(t, 0.25, 0.1, 400); }
+      if (kind === 'heal'){ [0,4,7,12,16].forEach((m,i) => osc('triangle', 64 + m, t + i * 0.07, 0.12, 0.16)); }
+      if (kind === 'clear'){ [0,4,7,12,7,12,16,19].forEach((m,i) => osc('square', 67 + m, t + i * 0.1, 0.14, 0.13)); }
+      if (kind === 'break'){ noise(t, 0.2, 0.25, 1800); }
+      if (kind === 'alarm'){ osc('square', 70, t, 0.12, 0.14); osc('square', 70, t + 0.18, 0.12, 0.14); }
+      if (kind === 'step'){ noise(t, 0.03, 0.04, 2200); }
+    },
+  };
+})();
+
+/* ---------------- pixel sprites ---------------- */
+const SPR = {};
+function defSpr(name, pal, rows){
+  const h = rows.length, w = rows[0].length;
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const g = c.getContext('2d');
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++){
+    const ch = rows[y][x];
+    if (ch === '.' || ch === ' ') continue;
+    g.fillStyle = pal[ch] || '#f0f';
+    g.fillRect(x, y, 1, 1);
+  }
+  SPR[name] = c;
+}
+const JP = { h:'#e9c46a', H:'#caa14d', s:'#e8b890', e:'#1d1d1d', l:'#f6efdc', d:'#d9cdb2', p:'#8c7a5e', b:'#5a3c28' };
+defSpr('jack_idle', JP, [
+'..hhhhhhhh..','.hhhhhhhhhh.','HHHHHHHHHHHH','..ssssssss..','..sessesss..','..ssssssss..','...ssssss...',
+'..llllllll..','.dllllllllld','.dllllllllld','..llllllll..','...pppppp...','...pp..pp...','...pp..pp...','...bb..bb...','..bbb..bbb..']);
+defSpr('jack_run1', JP, [
+'..hhhhhhhh..','.hhhhhhhhhh.','HHHHHHHHHHHH','..ssssssss..','..sessesss..','..ssssssss..','...ssssss...',
+'..llllllll..','.dlllllllll.','..lllllllld.','..llllllll..','...pppppp...','..pp....pp..','.pp......pp.','.bb......bb.','............']);
+defSpr('jack_run2', JP, [
+'..hhhhhhhh..','.hhhhhhhhhh.','HHHHHHHHHHHH','..ssssssss..','..sessesss..','..ssssssss..','...ssssss...',
+'..llllllll..','..lllllllld.','.dlllllllll.','..llllllll..','...pppppp...','....pppp....','....p..p....','....b..b....','...bb..bb...']);
+defSpr('jack_jump', JP, [
+'..hhhhhhhh..','.hhhhhhhhhh.','HHHHHHHHHHHH','..ssssssss..','..sessesss..','..ssssssss..','...ssssss...',
+'.dllllllll d','.dllllllllld','..llllllll..','..llllllll..','...pppppp...','..pp...pp...','..pp...pp...','..bb...bb...','............']);
+function defNpc(name, suit, skin, hair){
+  defSpr(name, { u: suit, s: skin || '#e0b48e', e:'#1d1d1d', r: hair || '#3a2a1a', q:'#ffffff' }, [
+'...rrrrrr...','..rrrrrrrr..','..ssssssss..','..sessesss..','..ssssssss..','...ssssss...',
+'..uuuuuuuu..','.u uuuuuu u.','.u uuuuuu u.','..uuuuuuuu..','..uu....uu..','..uu....uu..','..uu....uu..','..rr....rr..']);
+}
+defNpc('npc_grey', '#8a8f98'); defNpc('npc_blue', '#3c5a78', '#caa183', '#222');
+defNpc('npc_teal', '#2d6e62', '#e8c39a', '#5a3c28'); defNpc('npc_red', '#a8402e');
+defNpc('npc_good', '#6a7e3c', '#e0b48e', '#1d1d1d'); defNpc('npc_dud', '#b59ad1', '#e8c39a', '#caa14d');
+defNpc('npc_well', '#cfd8cf', '#d9a98c', '#e8e0d0');
+defSpr('wife', { r:'#5a3c28', s:'#e2b48e', e:'#1d1d1d', u:'#c5705e', q:'#fff' }, [
+'...rrrrrr...','..rrrrrrrr..','..rsssssrr..','..sessesss..','..ssssssss..','...ssssss...',
+'..uuuuuuuu..','.u uuuuuu u.','.u uuuuuu u.','..uuuuuuuu..','...uuuuuu...','...uuuuuu...','...ss..ss...','...bb..bb...']);
+defSpr('kid', { h:'#caa14d', s:'#ecc09a', e:'#1d1d1d', u:'#d98e3c' }, [
+'..hhhhhh..','.hhhhhhhh.','.sssssss s','.sessess..','..ssssss..','..uuuuuu..','.u uuuu u.','..uuuuuu..','..uu..uu..','..uu..uu..']);
+defSpr('kid2', { h:'#5a3c28', s:'#ecc09a', e:'#1d1d1d', u:'#7e9cc0' }, [
+'..hhhhhh..','.hhhhhhhh.','.sssssss s','.sessess..','..ssssss..','..uuuuuu..','.u uuuu u.','..uuuuuu..','..uu..uu..','..uu..uu..']);
+/* items, 8x8 or so */
+defSpr('orange', { o:'#e8821e', g:'#4f6b2f', d:'#b35f12' }, ['...g....','..oo oo.','.oooooo.','oooooooo','oooooood','.oooood.','..oodd..','........']);
+defSpr('it_clock', { w:'#f6efdc', k:'#1d1d1d', y:'#ffc72c' }, ['.ywwwwy.','wwwwwwww','ww.k.kww','ww.kk.ww','ww...www','wwwwwwww','.ywwwwy.','..w..w..']);
+defSpr('it_shoe',  { w:'#f6efdc', t:'#c5491f', k:'#1d1d1d' }, ['........','...ttt..','..ttttt.','.ttttttk','tttttttk','wkkkkkkk','........','........']);
+defSpr('it_wine',  { g:'#d8cdb6', r:'#7e2433' }, ['.gggggg.','.grrrrg.','.grrrrg.','..grrg..','...gg...','...gg...','..gggg..','........']);
+defSpr('it_train', { w:'#f6efdc', k:'#1d1d1d', t:'#c5491f' }, ['........','wwwwwwww','wtkkktww','wwwwwwww','wwkwwkww','wwwwwwww','........','........']);
+defSpr('it_ship',  { b:'#8a5a33', w:'#f6efdc', k:'#1d1d1d' }, ['...w....','...ww...','...www..','...w....','bbbbbbbb','.bbbbbb.','..bbbb..','........']);
+defSpr('it_surf',  { t:'#2d8e9e', w:'#f6efdc' }, ['...tt...','..tttt..','..twtt..','..tttt..','..ttwt..','..tttt..','..tttt..','...tt...']);
+defSpr('it_fries', { r:'#da291c', y:'#ffc72c' }, ['.y.y.y..','.y.yy.y.','.yyyyyy.','rrrrrrrr','.rrrrrr.','.rrrrrr.','.rrrrrr.','........']);
+defSpr('it_swim',  { t:'#c5491f', w:'#f6efdc' }, ['........','tttttttt','tttwwttt','ttt..ttt','tt....tt','tt....tt','........','........']);
+defSpr('it_mont',  { m:'#5d6e5a', s:'#fdf6e9', c:'#ffffff' }, ['..cc....','.cccc...','...ss...','..smms..','..mmmm..','.mmmmmm.','mmmmmmmm','........']);
+defSpr('bigmac',   { b:'#e9b25c', m:'#8a4a2a', l:'#6a9e3c', c:'#ffd24d' }, ['..bbbb..','.bbbbbb.','llllllll','mmmmmmmm','cccccccc','mmmmmmmm','.bbbbbb.','........']);
+defSpr('page', { w:'#f6efdc', k:'#a8402e' }, ['wwwwww','wkkkkw','wwwwww','wkkwww','wwwwww','wkkkww','wwwwww','wwwwww']);
+defSpr('flag', { p:'#8a7a5e', f:'#c5491f' }, ['p.......','pfffff..','pffff...','pfff....','p.......','p.......','p.......','p.......']);
+defSpr('mailbox', { b:'#3c5a78', k:'#1d1d1d', f:'#c5491f' }, ['.bbbbbb.','bbbbbbbb','bbkkkkbb','bbbbbbbb','...ff...','...ff...','...ff...','...ff...']);
+defSpr('cat', { o:'#d98e3c', k:'#1d1d1d', w:'#f6efdc' }, ['k..k....','okko....','oooo..o.','ooooooo.','oooooooo','.o.o.o.o']);
+const ITEM_SPR = { 1:'it_swim', 2:'it_shoe', 3:'it_surf', 4:'it_wine', 5:'it_mont', 6:'orange', 7:'it_ship', 8:'it_fries', 9:'it_clock', 10:'it_train' };
+const ALMANAC = {
+  1:'The first swim of the day, before email.',
+  2:'A long run along the coastal path.',
+  3:'Surfing. Any board, any break, any decade.',
+  4:'Talking shop until the wine is gone.',
+  5:'The Montgó wrapped in cloud.',
+  6:'The first orange of the year, off the tree.',
+  7:'Friends who ship.',
+  8:"A McDonald's with two kids on a Saturday.",
+  9:'The hour before the rest of the house wakes up.',
+  10:'A train to nowhere in particular.',
+};
+
+/* ---------------- map builder ---------------- */
+function Builder(w){
+  const g = []; for (let y = 0; y < ROWS; y++) g.push(new Array(w).fill(' '));
+  return {
+    w, g,
+    ground(x1, x2, top = 11){ for (let y = top; y < ROWS; y++) for (let x = x1; x <= x2; x++) g[y][x] = '#'; },
+    plat(x1, x2, y){ for (let x = x1; x <= x2; x++) g[y][x] = '='; },
+    belt(x1, x2, y, dir){ for (let x = x1; x <= x2; x++) g[y][x] = dir > 0 ? '>' : '<'; },
+    fill(x1, y1, x2, y2, c){ for (let y = y1; y <= y2; y++) for (let x = x1; x <= x2; x++) g[y][x] = c; },
+    put(x, y, c){ g[y][x] = c; },
+    row(y, x1, x2, c){ for (let x = x1; x <= x2; x++) g[y][x] = c; },
+  };
+}
+const SOLID = ch => ch === '#' || ch === 'b' || ch === '>' || ch === '<' || ch === 'X' || ch === 'g';
+
+/* ---------------- world copy (all from the flat page) ---------------- */
+const LESSONS = {
+  1: { place:'PASADENA, 2006', text:'Everything is a deadline. Including the deadlines you give yourself.' },
+  2: { place:'BURBANK, 2007', text:'Learned to read a room.' },
+  3: { place:'TAMPA, 2009', text:'Learned what a production team is. And what one is not.' },
+  4: { place:'BARCELONA, 2012', text:'Shipped across languages, currencies, and warehouse providers. 1.5 million SKUs.' },
+};
+
+/* ---------------- maps ---------------- */
+const MAPS = {};
+
+MAPS.w1 = () => {
+  const B = Builder(140);
+  B.ground(0, 30);                 /* onboarding run */
+  B.ground(34, 50);                /* one safe gap teaches jump */
+  B.put(38, 10, 'N');
+  B.ground(53, 88);
+  B.put(54, 10, 'C');
+  B.put(58, 4, 'P'); B.put(66, 4, 'P'); B.put(74, 4, 'P'); B.put(82, 4, 'P');
+  B.plat(60, 63, 8); B.plat(70, 73, 8);
+  B.plat(76, 79, 6); B.put(78, 5, '9');                       /* almanac: the hour before */
+  B.ground(92, 110);
+  B.put(96, 4, 'P'); B.put(104, 4, 'P');
+  B.put(108, 10, '2');                                         /* almanac: long run, end of a sprint */
+  B.ground(113, 139);
+  B.put(118, 10, 'N');
+  B.put(124, 10, 'M');
+  B.put(132, 9, 'F'); B.put(132, 10, 'F');
+  for (const x of [8, 12, 16, 20, 24, 28, 42, 46, 95, 99, 103, 107, 116, 121]) B.put(x, 10, 'o');
+  B.put(61, 7, 'o'); B.put(62, 7, 'o'); B.put(71, 7, 'o'); B.put(72, 7, 'o');
+  return { B, theme:'office', music:'w1', name:'WORLD 1', card:{ k:'WORLD 1', t:'PASADENA', b:'2006. First job, digital PR. The pages are falling. Keep moving.' },
+    npcs: [
+      { who:'AGENCY BOSS', lines:['Welcome to the agency, kid.', 'See those calendar pages? They fall where you stand still.', 'Everything here is a deadline. Move.'] },
+      { who:'AGENCY BOSS', lines:['You noticed, then.', 'The ones you give yourself fall just as hard.', 'Door is ahead. You are ready for a bigger room.'] },
+    ],
+    spawn: [2, 9] };
+};
+
+MAPS.w2 = () => {
+  const B = Builder(140);
+  B.ground(0, 139);
+  B.put(2, 10, 'N');
+  /* three gates, each with a mood trio */
+  B.fill(40, 6, 40, 10, 'g');
+  B.put(28, 10, 'h'); B.put(32, 10, 'a'); B.put(36, 10, 'u');
+  B.fill(74, 6, 74, 10, 'g');
+  B.put(62, 10, 'a'); B.put(66, 10, 'u'); B.put(70, 10, 'h');
+  B.fill(108, 6, 108, 10, 'g');
+  B.put(96, 10, 'u'); B.put(100, 10, 'h'); B.put(104, 10, 'a');
+  B.put(76, 10, 'C');
+  B.plat(48, 52, 8); B.put(50, 7, '4');                        /* almanac: talking shop */
+  B.plat(84, 88, 8); B.put(86, 7, '10');                       /* almanac: train ticket (char '0' is id 10, handled below) */
+  B.put(116, 10, 'M');
+  B.put(126, 9, 'F'); B.put(126, 10, 'F');
+  for (const x of [10, 14, 18, 22, 44, 56, 80, 92, 112, 120]) B.put(x, 10, 'o');
+  B.put(49, 7, 'o'); B.put(51, 7, 'o'); B.put(85, 7, 'o'); B.put(87, 7, 'o');
+  return { B, theme:'studio', music:'w2', name:'WORLD 2', card:{ k:'WORLD 2', t:'BURBANK', b:'2007. Recruiting for a software company. Watch the bubbles. Read the room.' },
+    npcs: [ { who:'RECEPTIONIST', lines:['Three people guard every door here.', 'One of them wants to talk to you. Watch the thought bubbles.', 'Pick wrong and you will hear about it.'] } ],
+    spawn: [2, 9] };
+};
+
+MAPS.w3 = () => {
+  const B = Builder(150);
+  B.ground(0, 149);
+  B.put(2, 10, 'N');
+  B.put(26, 10, 'd'); B.put(33, 10, 'G');
+  B.fill(45, 8, 46, 10, 'X');
+  B.plat(52, 56, 8); B.put(54, 7, '7');                        /* almanac: friends who ship */
+  B.fill(72, 6, 72, 10, 'g');                                   /* the doorway a dud blocks */
+  B.put(76, 10, 'C');
+  B.put(88, 10, 'd'); B.put(95, 10, 'G');
+  B.fill(106, 8, 107, 10, 'X');
+  B.put(118, 10, '3');                                          /* almanac: surfing, Florida */
+  B.put(126, 10, 'M');
+  B.put(138, 9, 'F'); B.put(138, 10, 'F');
+  for (const x of [8, 12, 16, 20, 38, 41, 60, 80, 84, 99, 112, 121, 131]) B.put(x, 10, 'o');
+  B.put(53, 7, 'o'); B.put(55, 7, 'o');
+  return { B, theme:'florida', music:'w3', name:'WORLD 3', card:{ k:'WORLD 3', t:'TAMPA', b:'2009. Deputy CEO at Studio98. Build the team. Choose carefully.' },
+    npcs: [ { who:'STUDIO98 PARTNER', lines:['Those crates will not move for one person.', 'Recruit help. Press E next to someone.', 'Fair warning. Some people talk a great game.'] } ],
+    spawn: [2, 9] };
+};
+
+MAPS.w4 = () => {
+  const B = Builder(160);
+  B.ground(0, 18);
+  B.put(2, 10, 'N');
+  B.belt(19, 34, 11, 1); B.fill(19, 12, 34, 12, '#');
+  B.ground(35, 44);
+  B.put(38, 10, 'S');
+  B.belt(45, 58, 11, -1); B.fill(45, 12, 58, 12, '#');
+  B.ground(59, 70);
+  B.plat(63, 67, 8); B.put(65, 7, '8');                        /* almanac: a McDonald's, same everywhere */
+  B.put(60, 10, 'M');
+  B.belt(71, 86, 11, 1); B.fill(71, 12, 86, 12, '#');
+  B.ground(87, 96);
+  B.put(90, 10, 'C'); B.put(93, 10, 'S');
+  B.belt(97, 110, 11, -1); B.fill(97, 12, 110, 12, '#');
+  B.belt(114, 126, 9, 1); B.fill(114, 10, 126, 12, '#');
+  B.ground(127, 136);
+  B.put(130, 10, 'S');
+  /* twist: past x=132 the belts reverse */
+  B.belt(137, 150, 11, 1); B.fill(137, 12, 150, 12, '#');
+  B.ground(151, 159);
+  B.plat(143, 146, 8); B.put(145, 7, '1');                     /* almanac: first swim, the Mediterranean is close */
+  B.put(155, 9, 'F'); B.put(155, 10, 'F');
+  for (const x of [22, 26, 30, 48, 52, 75, 79, 83, 100, 104, 140, 144, 148]) B.put(x, 10, 'o');
+  B.put(64, 7, 'o'); B.put(66, 7, 'o'); B.put(117, 8, 'o'); B.put(121, 8, 'o');
+  return { B, theme:'warehouse', music:'w4', name:'WORLD 4', card:{ k:'WORLD 4', t:'BARCELONA', b:'2012. Director of Technology. 1.5 million SKUs. The floor ships itself.' },
+    npcs: [ { who:'WAREHOUSE LEAD', lines:['Welcome to e-commerce. The floor moves whether you do or not.', 'Mind the signs. They change language faster than you can read.', 'And near the end? The belts have opinions.'] } ],
+    signs: [
+      { label:'ENVÍOS', cycle:['ENVÍOS','SHIPPING','VERSAND','SPEDIZIONI'] },
+      { label:'ALMACÉN', cycle:['ALMACÉN','WAREHOUSE','LAGER','MAGAZZINO'] },
+      { label:'DIVISAS', cycle:['EUR','SEK','GBP','DKK'] },
+    ],
+    reverseAt: 132,
+    spawn: [2, 9] };
+};
+
+MAPS.w5 = () => {
+  const B = Builder(190);
+  B.ground(0, 152);
+  B.put(4, 10, 'S');                                            /* JÁVEA sign */
+  B.put(14, 10, 'D');                                           /* house */
+  B.put(20, 10, 'k'); B.put(23, 10, 'y'); B.put(27, 10, 'w');
+  B.put(34, 10, 'T'); B.put(38, 10, 'T'); B.put(42, 10, 'T');
+  B.plat(37, 39, 7); B.put(38, 6, '6');                         /* almanac: first orange, on the grove */
+  B.put(48, 10, 'D');                                           /* workshop shed */
+  B.put(58, 10, 'D');                                           /* gallery */
+  B.put(70, 10, 'D');                                           /* pricemart */
+  B.put(82, 10, 'D');                                           /* build and bike */
+  B.put(94, 10, 'D');                                           /* wildbreeze */
+  B.put(108, 10, 'D');                                          /* mcdonald's */
+  B.put(118, 10, 'L');                                          /* mailbox */
+  B.put(124, 10, 'S'); B.put(128, 10, 'S'); B.put(132, 10, 'S');/* github linkedin javea */
+  B.plat(140, 144, 8); B.put(142, 7, '5');                      /* almanac: Montgó in cloud, on the hill */
+  B.put(148, 10, 'c');                                          /* the cat naps by the sea */
+  B.row(11, 153, 189, '~'); B.row(12, 153, 189, '~');
+  for (const x of [8, 30, 44, 54, 64, 76, 88, 100, 114, 136, 146]) B.put(x, 10, 'o');
+  return { B, theme:'javea', music:'w5', name:'JÁVEA', card:{ k:'WORLD 5', t:'JÁVEA', b:'2024. Mostly outside. Mostly with two kids underfoot. Mostly happier than at any prior stop.' },
+    doors: ['house', 'workshop', 'gallery', 'pricemart', 'bb', 'wildbreeze', 'mcd'],
+    signs: [
+      { label:'JÁVEA. 2024.', text:'The place I will probably die in, if the orange grove keeps fruiting.' },
+      { label:'GITHUB', link:'https://github.com/jackmichaelnapier' },
+      { label:'LINKEDIN', link:'https://www.linkedin.com/in/jacknapier' },
+      { label:'FIELD GUIDE', text:'A running field guide to our weekends here. Beaches, markets, the lighthouse walk.', link:'/javea/' },
+    ],
+    npcs: [],
+    family: [
+      { who:'TIGER', lines:['(He looks at you the way the painted screen looks at everyone.)', 'Present. Unhurried. A little bit fierce.'] },
+      { who:'HIS SISTER', lines:['(She is negotiating with a stick. The stick is losing.)'] },
+      { who:'WIFE', lines:['He says the anxiety never switches off.', 'It does not care that the kids are asleep, or that the view is nice.', 'So we live somewhere worth ignoring it for.'] },
+    ],
+    spawn: [2, 9] };
+};
+
+/* interiors */
+function interior(w, theme, fn, extra){
+  return () => {
+    const B = Builder(w);
+    B.ground(0, w - 1);
+    B.put(1, 9, 'F'); B.put(1, 10, 'F');
+    fn(B);
+    return Object.assign({ B, theme, music:'w5', name:'', interior:true, spawn:[3, 9] }, extra);
+  };
+}
+MAPS.house = interior(26, 'house', B => { B.put(10, 10, 'k'); B.put(16, 10, 'S'); B.put(21, 10, 'S'); }, {
+  family: [ { who:'TIGER', lines:['(He shows you a drawing of two tigers under a pine.)','He moves through the world the way that screen does.'] } ],
+  signs: [
+    { label:'THE SCREEN', text:"Kamakura, 2018. A four-panel painted screen of two tigers under a pine, seen on the way to a friend's wedding. Never forgotten. When my son was born I called him Tiger." },
+    { label:'POSTCARDS', text:'The brothers, Oregon. Montgó in cloud from the kitchen. Tiger and his sister on a Saturday. The grove, mid-flower. My brothers are the through-line. They keep me honest about what matters when the rest of it goes loud.' },
+  ] });
+MAPS.workshop = interior(24, 'shed', B => { B.put(12, 10, 'S'); }, {
+  signs: [ { label:'THE MANIFESTO', text:'Why I cannot stop building things. There is a particular anxiety that comes with knowing you can build something. It does not switch off. It only cares that something exists in your head and does not exist in the world. The gap is only ever closed by inspired people. Find them. Refuse to waste their time. Make the room around them better than the day before. That is the actual job.' } ] });
+MAPS.gallery = interior(26, 'gallery', B => { B.put(9, 10, 'S'); B.put(17, 10, 'S'); }, {
+  signs: [
+    { label:'THE AGENT WORKSHOP', text:'An illustrated nine-station field guide to AI agents for the people who run small businesses. 94 hand-prompted illustrations.', link:'/agent-workshop/' },
+    { label:'THE RESEARCH WORKSHOP', text:'Spot, cut, schema, compress, joint. The skill-thinking habit, applied to the research production line.', link:'/research-workshop/' },
+  ] });
+MAPS.pricemart = interior(26, 'shop', B => { B.put(10, 10, 'S'); B.put(18, 10, 'S'); }, {
+  signs: [
+    { label:'PRICEMART', text:'A pan-European functional-food platform. Health-driven brands, the right shelves, across the EU. Nothing about it works in only one country. That is the entire point.', link:'https://www.pricemart.eu' },
+    { label:'FIELD GUIDE CABINET', text:'A field guide to the AI agents built to run it.', link:'/pricemart-agents/' },
+  ] });
+MAPS.bb = interior(22, 'shed', B => { B.put(12, 10, 'S'); }, {
+  signs: [ { label:'BUILD & BIKE JÁVEA', text:'A yearly engineering retreat. Friends, founders, and friends-of-founders riding bikes, building things, and arguing about the right thing to ship. A Costa Blanca summer ritual, on purpose.' } ] });
+MAPS.wildbreeze = interior(24, 'server', B => { B.put(12, 10, 'S'); }, {
+  signs: [ { label:'WILDBREEZE', text:'The plumbing nobody sees and everyone benefits from. Custom MCP servers and scheduled agents that keep small operations honest while the team is asleep.', link:'https://www.wildbreeze.io' } ] });
+MAPS.mcd = interior(26, 'mcd', B => { B.put(14, 10, 'q'); }, {});
+
+/* ---------------- game state ---------------- */
+const ST = {
+  scene: 'title', mapId: 'w1', map: null, tiles: null, mapW: 0,
+  cam: 0, t: 0, frame: 0,
+  score: 0, macs: 3, worldTime: 0, worldNum: 1,
+  deaths: 0, checkpoint: null, paused: false,
+  entities: [], particles: [], spawners: [], gates: [], follower: null,
+  reversed: false, hitpause: 0, shake: 0, invuln: 0,
+  returnTo: null, hudShed: false,
+};
+const player = { x: 32, y: 0, vx: 0, vy: 0, w: 9, h: 15, grounded: false, coyote: 0, face: 1, anim: 0, idle: 0, dead: false };
+let jumpQueued = 0, jumpWasHeld = false;
+
+/* ---------------- DOM helpers ---------------- */
+const $ = id => document.getElementById(id);
+const hud = $('hud'), dlg = $('dialog'), card = $('card'), titleEl = $('title'), toastEl = $('toast');
+function toast(msg, ms = 1800){
+  toastEl.textContent = msg; toastEl.classList.add('on');
+  clearTimeout(toastEl._t); toastEl._t = setTimeout(() => toastEl.classList.remove('on'), ms);
+}
+function updateHUD(){
+  $('hWorld').textContent = ST.map ? ST.map.name : '';
+  $('hScore').innerHTML = 'SCORE <b>' + ST.score + '</b>';
+  $('hAlm').innerHTML = 'ALMANAC <b>' + save.almanac.length + '/10</b>';
+  const mm = String(Math.floor(ST.worldTime / 3600)).padStart(2, '0');
+  const ss = String(Math.floor(ST.worldTime / 60) % 60).padStart(2, '0');
+  $('hTime').textContent = mm + ':' + ss;
+  const macs = $('macs'); macs.innerHTML = '';
+  for (let i = 0; i < 3; i++){
+    const img = document.createElement('span');
+    img.appendChild(SPR.bigmac.cloneNode ? imgFrom(SPR.bigmac, i < ST.macs ? 1 : 0.22) : document.createTextNode(''));
+    macs.appendChild(img);
+  }
+}
+function imgFrom(c, alpha){
+  const cc = document.createElement('canvas'); cc.width = 16; cc.height = 16;
+  const g = cc.getContext('2d'); g.imageSmoothingEnabled = false; g.globalAlpha = alpha;
+  g.drawImage(c, 0, 0, 16, 16);
+  const im = new Image(); im.src = cc.toDataURL(); im.width = 16; im.height = 16; im.style.imageRendering = 'pixelated';
+  return im;
+}
+
+/* ---------------- overlay queue (dialogue + cards) ---------------- */
+const Q = { items: [], active: null, charI: 0, typeTick: 0 };
+function say(who, lines, onDone){
+  const arr = Array.isArray(lines) ? lines : [lines];
+  arr.forEach((text, i) => Q.items.push({ kind:'say', who, text, onDone: i === arr.length - 1 ? onDone : null }));
+  pump();
+}
+function showCard(k, t, b, onDone, sticky){
+  Q.items.push({ kind:'card', k, t, b, onDone, sticky });
+  pump();
+}
+function pump(){
+  if (Q.active || !Q.items.length) return;
+  Q.active = Q.items.shift();
+  AU.duck(true);
+  if (Q.active.kind === 'say'){
+    dlg.classList.add('on');
+    dlg.querySelector('.who').textContent = Q.active.who || '';
+    dlg.querySelector('.txt').textContent = '';
+    Q.charI = 0;
+  } else {
+    card.classList.add('on');
+    card.querySelector('.k').textContent = Q.active.k || '';
+    card.querySelector('.t').textContent = Q.active.t || '';
+    card.querySelector('.b').textContent = Q.active.b || '';
+  }
+}
+function overlayStep(){
+  if (!Q.active) return false;
+  if (Q.active.kind === 'say'){
+    const full = Q.active.text;
+    if (Q.charI < full.length){
+      Q.charI = Math.min(full.length, Q.charI + 2);
+      dlg.querySelector('.txt').textContent = full.slice(0, Q.charI);
+      if (ST.frame % 3 === 0) AU.sfx('blip');
+    }
+  }
+  return true;
+}
+
+/* ---------------- map loading ---------------- */
+function loadMap(id, spawnX){
+  const def = MAPS[id]();
+  ST.mapId = id; ST.map = def; ST.mapW = def.B.w;
+  ST.tiles = def.B.g.map(r => r.slice());
+  ST.entities = []; ST.particles = []; ST.spawners = []; ST.gates = [];
+  ST.follower = null; ST.reversed = false;
+  let npcI = 0, signI = 0, doorI = 0, famI = 0;
+  const gateCols = {};
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < ST.mapW; x++){
+    const ch = ST.tiles[y][x];
+    if (ch === ' ' || ch === '#' || ch === '=' || ch === '>' || ch === '<' || ch === '~') continue;
+    const px = x * TILE, py = y * TILE;
+    if (ch === 'o'){ ST.entities.push({ kind:'orange', x:px+4, y:py+4, w:8, h:8 }); ST.tiles[y][x] = ' '; }
+    else if (/^[0-9]+$/.test(ch)){ const aid = ch === '0' ? 10 : +ch;
+      if (!save.almanac.includes(aid)) ST.entities.push({ kind:'almanac', id:aid, x:px+4, y:py+4, w:8, h:8, bob:Math.random()*6 });
+      ST.tiles[y][x] = ' '; }
+    else if (ch === 'C'){ ST.entities.push({ kind:'flag', x:px+4, y:py+8, w:8, h:8, hit:false }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'F'){ if (!ST.entities.find(e => e.kind === 'finish')) ST.entities.push({ kind:'finish', x:px, y:py, w:TILE, h:TILE*2 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'M'){ ST.entities.push({ kind:'mcd', x:px, y:py-8, w:16, h:24 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'P'){ ST.spawners.push({ x:px+8, t:Math.random()*100 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'N'){ const d = (def.npcs||[])[npcI++] || { who:'???', lines:['...'] };
+      ST.entities.push({ kind:'npc', spr:'npc_grey', x:px+2, y:py+2, w:12, h:14, who:d.who, lines:d.lines }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'h' || ch === 'a' || ch === 'u'){
+      ST.entities.push({ kind:'mood', mood:ch, x:px+2, y:py+2, w:12, h:14, spr: ch==='h' ? 'npc_teal' : ch==='a' ? 'npc_red' : 'npc_blue' });
+      ST.tiles[y][x] = ' '; }
+    else if (ch === 'g'){ (gateCols[x] = gateCols[x] || []).push(y); }
+    else if (ch === 'G'){ ST.entities.push({ kind:'recruit', good:true, spr:'npc_good', x:px+2, y:py+2, w:12, h:14 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'd'){ ST.entities.push({ kind:'recruit', good:false, spr:'npc_dud', x:px+2, y:py+2, w:12, h:14 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'X'){ /* stays as solid tile; tracked for clusters */ }
+    else if (ch === 'S'){ const d = (def.signs||[])[signI++] || { label:'SIGN', text:'...' };
+      ST.entities.push({ kind:'sign', x:px, y:py-6, w:16, h:22, def:d, cycleI:0, cycleT:0 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'D'){ const target = (def.doors||[])[doorI++];
+      ST.entities.push({ kind:'door', x:px-8, y:py-16, w:32, h:32, target }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'L'){ ST.entities.push({ kind:'mail', x:px+3, y:py+2, w:10, h:14 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'T'){ ST.entities.push({ kind:'tree', x:px-8, y:py-32, w:32, h:48 }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'k' || ch === 'y' || ch === 'w' || ch === 'q'){ const d = (def.family||[])[famI++] ||
+        (ch === 'q' ? { who:'WELLNESS PERSON', lines:[] } : { who:'FAMILY', lines:['(waves)'] });
+      ST.entities.push({ kind: ch === 'q' ? 'wellness' : 'family', spr: ch==='w' ? 'wife' : ch==='q' ? 'npc_well' : (ch==='y' ? 'kid2' : 'kid'),
+        x:px+3, y:py + (ch==='w'||ch==='q' ? 2 : 6), w:10, h: ch==='w'||ch==='q' ? 14 : 10, who:d.who, lines:d.lines }); ST.tiles[y][x] = ' '; }
+    else if (ch === 'c'){ ST.entities.push({ kind:'cat', x:px+4, y:py+10, w:8, h:6, t:0 }); ST.tiles[y][x] = ' '; }
+  }
+  for (const [x, ys] of Object.entries(gateCols)) ST.gates.push({ x:+x, ys, open:false });
+  /* spawn */
+  const sx = spawnX !== undefined ? spawnX : def.spawn[0] * TILE;
+  player.x = sx; player.y = def.spawn[1] * TILE; player.vx = 0; player.vy = 0; player.dead = false;
+  ST.checkpoint = { x: player.x, y: player.y };
+  ST.cam = Math.max(0, player.x - 100);
+  AU.play(def.music);
+  updateHUD();
+}
+
+/* k2 char: Builder put writes single chars; fix by mapping in w5 */
+/* (we used 'k2' via put which writes 'k'? Guard: put('k2') would write string 'k2' into one cell; normalize) */
+
+/* ---------------- world flow ---------------- */
+const WORLD_ORDER = ['w1', 'w2', 'w3', 'w4', 'w5'];
+function startWorld(n){
+  ST.worldNum = n; ST.worldTime = 0; ST.deaths = 0; ST.macs = 3; ST.hudShed = false;
+  save.world = n; persist();
+  $('hTime').classList.remove('fade'); $('hScore').classList.remove('fade');
+  loadMap(WORLD_ORDER[n - 1]);
+  const c = ST.map.card;
+  showCard(c.k, c.t, c.b, null);
+  if (n === 5){
+    ST.hudShed = true;
+    setTimeout(() => $('hTime').classList.add('fade'), 4000);
+    setTimeout(() => $('hScore').classList.add('fade'), 9000);
+    setTimeout(() => toast('THE HUD GETS QUIETER HERE. SO DOES THE LIFE.', 3200), 9600);
+    if (!save.cleared){ save.cleared = true; persist(); }
+  }
+}
+function finishWorld(){
+  AU.sfx('clear');
+  const L = LESSONS[ST.worldNum];
+  if (L) showCard('WORLD CLEAR · ' + L.place, 'THE LESSON', L.text, () => startWorld(ST.worldNum + 1));
+  else startWorld(ST.worldNum + 1);
+  ST.score += 300; if (ST.score > save.best){ save.best = ST.score; persist(); }
+}
+
+/* ---------------- physics ---------------- */
+function tileAt(px, py){
+  const x = Math.floor(px / TILE), y = Math.floor(py / TILE);
+  if (x < 0 || x >= ST.mapW) return '#';
+  if (y < 0) return ' ';
+  if (y >= ROWS) return ' ';
+  const ch = ST.tiles[y][x];
+  if (ch === 'g'){ const gate = ST.gates.find(g => g.x === x); return gate && gate.open ? ' ' : 'g'; }
+  return ch;
+}
+function solidAt(px, py){ return SOLID(tileAt(px, py)); }
+function moveEntity(e){
+  /* horizontal */
+  e.x += e.vx;
+  if (e.vx > 0){ if (solidAt(e.x + e.w, e.y + 1) || solidAt(e.x + e.w, e.y + e.h - 1)){ e.x = Math.floor((e.x + e.w) / TILE) * TILE - e.w - 0.01; e.vx = 0; } }
+  if (e.vx < 0){ if (solidAt(e.x, e.y + 1) || solidAt(e.x, e.y + e.h - 1)){ e.x = Math.floor(e.x / TILE + 1) * TILE + 0.01; e.vx = 0; } }
+  /* vertical */
+  e.y += e.vy;
+  e.grounded = false;
+  if (e.vy >= 0){
+    const ch1 = tileAt(e.x + 1, e.y + e.h), ch2 = tileAt(e.x + e.w - 1, e.y + e.h);
+    const onSolid = SOLID(ch1) || SOLID(ch2);
+    const onPlat = (ch1 === '=' || ch2 === '=') && (e.y + e.h - e.vy) <= Math.floor((e.y + e.h) / TILE) * TILE + 1;
+    if (onSolid || onPlat){
+      e.y = Math.floor((e.y + e.h) / TILE) * TILE - e.h;
+      e.vy = 0; e.grounded = true;
+      e.onBelt = (ch1 === '>' || ch2 === '>') ? 1 : (ch1 === '<' || ch2 === '<') ? -1 : 0;
+    } else e.onBelt = 0;
+  } else {
+    if (solidAt(e.x + 1, e.y) || solidAt(e.x + e.w - 1, e.y)){
+      e.y = Math.floor(e.y / TILE + 1) * TILE + 0.01; e.vy = 0;
+    }
+  }
+}
+function overlaps(a, b){ return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
+
+/* ---------------- damage / death ---------------- */
+function hurt(){
+  if (ST.invuln > 0 || player.dead) return;
+  ST.macs--; AU.sfx('hurt'); ST.hitpause = 3; if (!REDUCED) ST.shake = 6; ST.invuln = 90;
+  updateHUD();
+  if (ST.macs <= 0) die();
+}
+function die(){
+  player.dead = true; ST.deaths++;
+  AU.sfx('hurt');
+  setTimeout(() => {
+    player.x = ST.checkpoint.x; player.y = ST.checkpoint.y; player.vx = 0; player.vy = 0;
+    ST.macs = 3; player.dead = false; ST.invuln = 60; updateHUD();
+    if (ST.deaths === 2) toast('STUCK? PRESS K TO SKIP AHEAD. NO JUDGMENT.', 3000);
+  }, 700);
+}
+function skipAhead(){
+  if (ST.deaths < 2) return;
+  const next = ST.entities.filter(e => (e.kind === 'flag' || e.kind === 'finish') && e.x > player.x + 20)
+    .sort((a, b) => a.x - b.x)[0];
+  if (next){ player.x = next.x - 8; player.y = next.y - 20; player.vx = 0; player.vy = 0; toast('SKIPPED. THE STORY MATTERS MORE THAN THE JUMP.'); }
+}
+
+/* ---------------- interaction ---------------- */
+function nearestInteractable(){
+  let best = null, bd = 26;
+  for (const e of ST.entities){
+    if (!['npc','mood','recruit','sign','door','mail','mcd','family','wellness','finish','cat'].includes(e.kind)) continue;
+    const d = Math.abs((e.x + e.w/2) - (player.x + player.w/2));
+    const dy = Math.abs((e.y + e.h/2) - (player.y + player.h/2));
+    if (d < bd && dy < 30){ bd = d; best = e; }
+  }
+  return best;
+}
+function interact(e){
+  if (e.kind === 'npc' || e.kind === 'family'){ say(e.who, e.lines); }
+  else if (e.kind === 'cat'){ say('THE CAT', ['(It opens one eye, decides you are acceptable, and closes it.)']); }
+  else if (e.kind === 'mood'){
+    if (e.mood === 'h'){
+      say('THE RIGHT PERSON', ['You looked before you spoke. I like that.', 'Go on through.'], () => {
+        const gate = ST.gates.filter(g => !g.open && g.x * TILE > e.x).sort((a,b) => a.x - b.x)[0];
+        if (gate){ gate.open = true; AU.sfx('gate'); burst(gate.x * TILE + 8, 9 * TILE, '#ffc72c', 10); }
+      });
+      e.mood = 'u';
+    }
+    else if (e.mood === 'a') say('THE WRONG PERSON', ['Not now. Read the room.']);
+    else say('SOMEONE BUSY', ['(They are mid-thought. The bubble says it all.)']);
+  }
+  else if (e.kind === 'recruit'){
+    if (ST.follower === e){
+      ST.follower = null;
+      say(e.good ? 'TEAMMATE' : 'THE TALKER', e.good ? ['Call me when there is something to build.'] : ['Fine. FINE. Your loss. Probably.']);
+    } else if (e.good){
+      ST.follower = e;
+      say('TEAMMATE', ['Heard there are crates. Let us move them.', '(They fall in behind you.)']);
+    } else {
+      ST.follower = e;
+      say('THE TALKER', ['I have HUGE ideas about crates. Visionary stuff.', '(They fall in behind you. Something feels off.)']);
+    }
+  }
+  else if (e.kind === 'sign'){
+    const d = e.def;
+    if (d.cycle){ say(d.label, ['The sign flips faster than you can read it. Languages, currencies, providers.']); }
+    else if (d.text){ say(d.label, [d.text + (d.link ? ' (E to visit)' : '')], d.link ? () => openLink(d.link) : null); }
+    else if (d.link) openLink(d.link);
+  }
+  else if (e.kind === 'door'){
+    AU.sfx('door');
+    ST.returnTo = { map: ST.mapId, x: player.x };
+    loadMap(e.target);
+  }
+  else if (e.kind === 'finish'){
+    if (ST.map.interior){
+      AU.sfx('door');
+      const r = ST.returnTo; ST.returnTo = null;
+      loadMap(r.map, r.x);
+      if (ST.worldNum === 5){ /* re-shed hud quietly */ }
+    } else finishWorld();
+  }
+  else if (e.kind === 'mcd'){
+    ST.macs = 3; AU.sfx('heal'); updateHUD();
+    say("McDONALD'S", ['Same in Sevilla, in Stockholm, in Spokane.', 'Big Macs restored. The menu does not depend on the chef having a good day.']);
+  }
+  else if (e.kind === 'mail'){
+    say('THE MAILBOX', [
+      'Working on something interesting? Riding through the Costa Blanca?',
+      'Want to argue about how to build a better small company?',
+      'I would love to hear from you. (E to write: jack@napier.me)',
+    ], () => { location.href = 'mailto:jack@napier.me'; });
+  }
+  else if (e.kind === 'wellness'){
+    say('WELLNESS PERSON', [
+      'Wait. You run companies in functional food. Sports nutrition. Wellness adjacent.',
+      "Surely you are about to tell me you do not eat McDonald's.",
+    ], () => say('JACK', [
+      'I will not.',
+      'The food safety standards are among the highest in the world. HACCP grew partly out of this supply chain.',
+      'The price is honest. A family of four eats for the cost of one appetizer down the street.',
+      'It is convenient in a deep, unsexy way. Doors open. High chair ready. Toy on hand.',
+      'And it is the same in Sevilla, in Stockholm, in Spokane.',
+      'I love the wellness room AND this room. They are the same instinct.',
+      'Build the thing that works, every time, for every person. Price it so people can keep coming back.',
+    ], () => { ST.macs = 3; AU.sfx('heal'); updateHUD(); toast('FULLY RESTORED. OBVIOUSLY.'); }));
+  }
+}
+function openLink(url){ try { window.open(url, '_blank', 'noopener'); } catch(e){} }
+
+/* ---------------- particles ---------------- */
+function burst(x, y, color, n){
+  for (let i = 0; i < n; i++) ST.particles.push({
+    x, y, vx: (Math.random()-0.5)*2.4, vy: -Math.random()*2.2, t: 22 + Math.random()*10, color });
+}
+
+/* ---------------- update ---------------- */
+function update(){
+  ST.frame++;
+  if (ST.scene === 'title'){ titleStep(); return; }
+  if (overlayStep()) return;          /* dialogue and cards pause the world */
+  if (ST.paused) return;
+  if (ST.hitpause > 0){ ST.hitpause--; return; }
+
+  ST.worldTime++;
+  if (ST.invuln > 0) ST.invuln--;
+  if (ST.shake > 0) ST.shake--;
+
+  /* input → movement */
+  const slowWorld = false;
+  const MAXV = 1.7, ACC = 0.22, FRIC = 0.82;
+  if (left()){ player.vx -= ACC; player.face = -1; }
+  else if (right()){ player.vx += ACC; player.face = 1; }
+  else player.vx *= FRIC;
+  player.vx = Math.max(-MAXV, Math.min(MAXV, player.vx));
+  if (player.onBelt) player.x += player.onBelt * 0.8;
+
+  /* jump: buffer + coyote + variable height */
+  const jh = jumpHeld();
+  if (jh && !jumpWasHeld) jumpQueued = 7;
+  jumpWasHeld = jh;
+  if (player.grounded) player.coyote = 6; else if (player.coyote > 0) player.coyote--;
+  if (jumpQueued > 0){
+    jumpQueued--;
+    if (player.coyote > 0){
+      player.vy = -4.7; player.coyote = 0; jumpQueued = 0; AU.sfx('jump');
+      burst(player.x + 4, player.y + player.h, '#d9cdb2', 4);
+    }
+  }
+  if (!jh && player.vy < -1.6) player.vy = -1.6;       /* release cuts the jump */
+  player.vy = Math.min(5, player.vy + 0.24);
+
+  if (!player.dead) moveEntity(player);
+  player.x = Math.max(0, Math.min(ST.mapW * TILE - player.w, player.x));
+
+  /* idle tracking (world 1 punishes standing still) */
+  if (Math.abs(player.vx) < 0.15 && player.grounded) player.idle++; else player.idle = 0;
+
+  /* fell off the map */
+  if (player.y > ROWS * TILE + 40 && !player.dead){ die(); }
+
+  /* footsteps + anim */
+  if (player.grounded && Math.abs(player.vx) > 0.4){
+    player.anim += Math.abs(player.vx) * 0.16;
+    if ((player.anim | 0) % 2 === 0 && (player.anim % 1) < 0.16) AU.sfx('step');
+  }
+
+  /* camera: deadzone + lookahead */
+  const target = player.x + player.w/2 - W/2 + player.face * 24;
+  ST.cam += (target - ST.cam) * 0.08;
+  ST.cam = Math.max(0, Math.min(ST.mapW * TILE - W, ST.cam));
+
+  /* world 1 deadline spawners */
+  if (ST.mapId === 'w1'){
+    for (const s of ST.spawners){
+      s.t++;
+      const near = Math.abs(s.x - player.x) < 140;
+      if (near && s.t > 130){ s.t = 0; ST.entities.push({ kind:'page', x:s.x - 4, y:MAP_Y0 - 10, w:8, h:10, vy:0 }); }
+    }
+    if (player.idle > 72 && player.x > 30 * TILE){
+      player.idle = 0;
+      ST.entities.push({ kind:'page', x:player.x, y:player.y - 90, w:8, h:10, vy:0 });
+      toast('THE DEADLINE FINDS YOU WHEN YOU STAND STILL.');
+    }
+  }
+  /* world 4 belt reversal */
+  if (ST.mapId === 'w4' && !ST.reversed && player.x > ST.map.reverseAt * TILE){
+    ST.reversed = true; AU.sfx('alarm');
+    for (let y = 0; y < ROWS; y++) for (let x = 0; x < ST.mapW; x++){
+      const c = ST.tiles[y][x];
+      if (c === '>') ST.tiles[y][x] = '<'; else if (c === '<') ST.tiles[y][x] = '>';
+    }
+    toast('THE BELTS REVERSE.');
+    if (!REDUCED) ST.shake = 8;
+  }
+
+  /* entities */
+  for (let i = ST.entities.length - 1; i >= 0; i--){
+    const e = ST.entities[i];
+    if (e.kind === 'page'){
+      e.vy = Math.min(2.6, e.vy + 0.12); e.y += e.vy;
+      const gy = Math.floor((e.y + e.h) / TILE);
+      if (gy < ROWS && SOLID(ST.tiles[gy] && ST.tiles[gy][Math.floor((e.x+4)/TILE)] || ' ')){
+        burst(e.x + 4, e.y + e.h, '#f6efdc', 5); ST.entities.splice(i, 1); continue;
+      }
+      if (e.y > ROWS * TILE){ ST.entities.splice(i, 1); continue; }
+      if (overlaps(e, player)){ hurt(); ST.entities.splice(i, 1); continue; }
+    }
+    else if (e.kind === 'orange'){
+      if (overlaps(e, player)){
+        ST.score += 10; AU.sfx('pickup'); burst(e.x+4, e.y+4, '#e8821e', 6);
+        ST.entities.splice(i, 1); updateHUD(); continue;
+      }
+    }
+    else if (e.kind === 'almanac'){
+      e.bob += 0.07;
+      if (overlaps(e, player)){
+        save.almanac.push(e.id); persist();
+        ST.score += 500; AU.sfx('almanac'); burst(e.x+4, e.y+4, '#ffc72c', 14);
+        ST.entities.splice(i, 1); updateHUD();
+        showCard('THE ALMANAC · ' + save.almanac.length + '/10', 'A THING I KEEP COMING BACK TO', ALMANAC[e.id], () => {
+          if (save.almanac.length >= 10) credits();
+        });
+        continue;
+      }
+    }
+    else if (e.kind === 'flag'){
+      if (!e.hit && Math.abs(e.x - player.x) < 12){
+        e.hit = true; ST.checkpoint = { x: e.x, y: e.y - 8 }; AU.sfx('pickup'); toast('CHECKPOINT');
+      }
+    }
+    else if (e.kind === 'recruit' && ST.follower === e){
+      const tx = player.x - player.face * 16;
+      e.x += (tx - e.x) * 0.12 + (e.good ? 0 : Math.sin(ST.frame * 0.4) * 0.4);
+      /* settle on ground */
+      let gy = e.y;
+      for (let yy = 0; yy < ROWS; yy++){ if (SOLID(tileAt(e.x + 6, yy * TILE + 1))){ gy = yy * TILE - e.h; break; } }
+      e.y += (gy - e.y) * 0.3;
+      if (e.good){
+        /* break crates on contact */
+        const cxt = Math.floor((e.x + (player.face > 0 ? 16 : -4)) / TILE);
+        outer:
+        for (let yy = 0; yy < ROWS; yy++) for (let xx = Math.max(0,cxt-1); xx <= cxt+1 && xx < ST.mapW; xx++){
+          if (ST.tiles[yy][xx] === 'X'){
+            for (let y2 = 0; y2 < ROWS; y2++) for (let x2 = Math.max(0,xx-2); x2 <= xx+2 && x2 < ST.mapW; x2++)
+              if (ST.tiles[y2][x2] === 'X'){ ST.tiles[y2][x2] = ' '; burst(x2*TILE+8, y2*TILE+8, '#8a5a33', 6); }
+            AU.sfx('break');
+            ST.follower = null;
+            say('TEAMMATE', ['Done. I will stay and run this part.', '(A good production team removes what blocks you, then holds the ground.)']);
+            ST.entities.splice(ST.entities.indexOf(e), 1);
+            break outer;
+          }
+        }
+      }
+    }
+    else if (e.kind === 'sign' && e.def.cycle){
+      e.cycleT++;
+      if (e.cycleT > 80){ e.cycleT = 0; e.cycleI = (e.cycleI + 1) % e.def.cycle.length; }
+    }
+    else if (e.kind === 'cat'){ e.t += 0.02; }
+  }
+
+  /* W3 gate refusal when a dud is following */
+  for (const gate of ST.gates){
+    if (ST.mapId !== 'w3' || gate.open) continue;
+    if (Math.abs(gate.x * TILE - player.x) < 22){
+      if (ST.follower && !ST.follower.good){
+        if (!gate.warned || ST.frame - gate.warned > 240){
+          gate.warned = ST.frame;
+          say('THE DOORWAY', ['Your hire talks a great game. He has never shipped anything.', 'This door stays shut until you part ways. (Talk to him.)']);
+        }
+      } else {
+        gate.open = true; AU.sfx('gate'); burst(gate.x * TILE + 8, 9 * TILE, '#6a7e3c', 10);
+        say('THE DOORWAY', ['Clean roster. Through you go.']);
+      }
+    }
+  }
+
+  /* particles */
+  for (let i = ST.particles.length - 1; i >= 0; i--){
+    const p = ST.particles[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.t--;
+    if (p.t <= 0) ST.particles.splice(i, 1);
+  }
+
+  /* interact target (E itself is handled synchronously in the key event) */
+  ST.near = nearestInteractable();
+  if (kPressed){ kPressed = false; skipAhead(); }
+
+  if (ST.frame % 30 === 0) updateHUD();
+}
+function credits(){
+  showCard('THE ALMANAC IS FULL', 'THANK YOU FOR PLAYING', 'napier.me. Written and maintained by hand. Jávea. Costa Blanca. 2026.', () => {
+    toast('THE WHOLE STORY, READABLE: napier.me', 4000);
+  });
+}
+
+/* ---------------- title scene ---------------- */
+const MENU = [];
+let menuSel = 0;
+function buildMenu(){
+  MENU.length = 0;
+  if (save.world > 1 || save.almanac.length) MENU.push({ label:'CONTINUE (WORLD ' + save.world + ')', fn(){ beginGame(save.world); } });
+  MENU.push({ label:'NEW GAME', fn(){ save.world = 1; persist(); beginGame(1, true); } });
+  if (save.cleared){
+    for (let i = 1; i <= 5; i++) MENU.push({ label:'  WORLD ' + i + (i === 5 ? ' · JÁVEA' : ''), fn(){ beginGame(i); } });
+  }
+  MENU.push({ label:'SOUND: ' + (save.mute ? 'OFF' : 'ON'), fn(){ save.mute = !save.mute; persist(); AU.setMute(save.mute); buildMenu(); } });
+  MENU.push({ label:'CRT: ' + (save.crt ? 'ON' : 'OFF'), fn(){ save.crt = !save.crt; persist(); document.body.classList.toggle('crt', save.crt); buildMenu(); } });
+  MENU.push({ label:'PREFER TO READ? THE FLAT PAGE', fn(){ location.href = '/'; } });
+  const m = $('menu'); m.innerHTML = '';
+  MENU.forEach((it, i) => {
+    const d = document.createElement('div');
+    d.textContent = it.label;
+    if (i === menuSel) d.classList.add('sel');
+    d.addEventListener('click', () => { AU.start(); menuSel = i; it.fn(); });
+    m.appendChild(d);
+  });
+  const sc = $('scores');
+  const rows = [['TIGER', 12500], ['JACK', save.best || 9100], ['MONTGO', 8000], ['BIGMAC', 6400], ['ORANGE', 5200]]
+    .sort((a, b) => b[1] - a[1]).slice(0, 5);
+  sc.innerHTML = '<div class="h">HIGH SCORES</div>' + rows.map((r, i) => (i+1) + ' ' + r[0].padEnd(8, ' ') + r[1]).join('<br>');
+}
+function titleStep(){
+  if (navUp){ navUp = false; menuSel = (menuSel + MENU.length - 1) % MENU.length; buildMenu(); AU.sfx('blip'); }
+  if (navDown){ navDown = false; menuSel = (menuSel + 1) % MENU.length; buildMenu(); AU.sfx('blip'); }
+}
+function beginGame(n, intro){
+  titleEl.classList.remove('on');
+  hud.classList.add('on');
+  ST.scene = 'game';
+  AU.start();
+  if (intro){
+    ST.score = 0;
+    showCard('NAPIER.ME PRESENTS', 'JACK NAPIER', "Builder. Father. McDonald's apologist.", () =>
+      showCard('THE TRAIL', 'TWENTY YEARS OF SLOW DRIFT', 'West to east. California to Florida to Barcelona. And now Jávea.', () => startWorld(1)));
+    loadMap('w1');
+  } else startWorld(n);
+}
+function togglePause(){
+  if (ST.scene !== 'game' || Q.active) return;
+  ST.paused = !ST.paused;
+  if (ST.paused) showCard('PAUSED', 'NAPIER\'S QUEST', 'E resumes. M mutes. Or read the flat page at napier.me.', () => { ST.paused = false; });
+}
+
+/* ---------------- rendering ---------------- */
+const THEMES = {
+  office:   { sky:['#9db4c8','#cfd8d8'], far:'#7c8ea0', ground:'#6e7681', groundTop:'#9aa3ad', accent:'#a8402e' },
+  studio:   { sky:['#c8a4b8','#e8d8c0'], far:'#9a7c94', ground:'#7a6e66', groundTop:'#a89a8e', accent:'#3c5a78' },
+  florida:  { sky:['#7ec8d8','#f4e0b8'], far:'#5aa8b8', ground:'#c8b48a', groundTop:'#e0d0a4', accent:'#2d8e9e' },
+  warehouse:{ sky:['#8a8a96','#b8b0a4'], far:'#6a6a78', ground:'#5a5a64', groundTop:'#8a8a96', accent:'#d98e3c' },
+  javea:    { sky:['#8ec8e8','#fdf0d0'], far:'#5d6e5a', ground:'#c89058', groundTop:'#6a7e3c', accent:'#c5491f' },
+  house:    { sky:['#3a3026','#4a4036'], far:'#2a2018', ground:'#8a5a33', groundTop:'#a06a3e', accent:'#c5491f', indoor:true },
+  shed:     { sky:['#3a352a','#4a4538'], far:'#2a2518', ground:'#7a6a4e', groundTop:'#8a7a5e', accent:'#ffc72c', indoor:true },
+  gallery:  { sky:['#40342c','#544840'], far:'#302420', ground:'#6a5a4a', groundTop:'#7a6a5a', accent:'#ffc72c', indoor:true },
+  shop:     { sky:['#2d4036','#3a5044'], far:'#1d3026', ground:'#5a6a5a', groundTop:'#6a7a6a', accent:'#6a9e3c', indoor:true },
+  server:   { sky:['#1a2430','#243040'], far:'#101820', ground:'#3a4450', groundTop:'#4a5460', accent:'#59b8ee', indoor:true },
+  mcd:      { sky:['#7a1812','#a82418'], far:'#5a100c', ground:'#8a6a4a', groundTop:'#a87a52', accent:'#ffc72c', indoor:true },
+};
+function render(){
+  const th = THEMES[ST.map ? ST.map.theme : 'javea'] || THEMES.javea;
+  const shx = ST.shake > 0 ? (Math.random()-0.5) * 4 : 0;
+  const shy = ST.shake > 0 ? (Math.random()-0.5) * 3 : 0;
+
+  /* sky */
+  const grad = cx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, th.sky[0]); grad.addColorStop(1, th.sky[1]);
+  cx.fillStyle = grad; cx.fillRect(0, 0, W, H);
+
+  if (ST.scene === 'title'){ renderTitleBg(); return; }
+  if (!ST.map) return;
+
+  cx.save(); cx.translate(-Math.round(ST.cam) + shx, shy);
+  renderBackdrop(th);
+  renderTiles(th);
+  cx.fillStyle = th.ground; cx.fillRect(ST.cam - 8, ROWS * TILE, W + 16, H - ROWS * TILE + 8);
+  renderEntities();
+  renderPlayer();
+  for (const p of ST.particles){ cx.fillStyle = p.color; cx.fillRect(p.x | 0, p.y | 0, 2, 2); }
+  cx.restore();
+}
+function renderBackdrop(th){
+  const c = ST.cam * 0.4;
+  if (th.indoor){
+    cx.fillStyle = th.far; cx.fillRect(ST.cam, 0, W, 11 * TILE);
+    /* interior decor by theme */
+    if (ST.map.theme === 'house'){
+      /* the Kamakura screen on the wall */
+      for (let i = 0; i < 4; i++){
+        cx.fillStyle = '#e8d8b0'; cx.fillRect(120 + i * 26, 70, 24, 50);
+        cx.fillStyle = '#1d1d1d'; cx.strokeStyle = '#1d1d1d';
+        cx.fillRect(120 + i * 26, 70, 24, 2); cx.fillRect(120 + i * 26, 118, 24, 2);
+        cx.fillStyle = '#d98e3c'; cx.fillRect(126 + i * 26, 88 + (i%2)*8, 12, 8);   /* tiger blobs */
+        cx.fillStyle = '#4f6b2f'; cx.fillRect(124 + i * 26, 76, 4, 30);              /* pine */
+      }
+    }
+    if (ST.map.theme === 'server'){
+      for (let i = 0; i < 5; i++){
+        cx.fillStyle = '#141c26'; cx.fillRect(140 + i * 36, 90, 28, 86);
+        for (let j = 0; j < 6; j++){ cx.fillStyle = (ST.frame + i * 7 + j * 13) % 60 < 30 ? '#59b8ee' : '#1d4258'; cx.fillRect(144 + i * 36, 96 + j * 13, 4, 3); }
+      }
+      /* sine wave screen */
+      cx.fillStyle = '#0a141c'; cx.fillRect(50, 80, 70, 40);
+      cx.fillStyle = '#59b8ee';
+      for (let x = 0; x < 64; x++) cx.fillRect(53 + x, 100 + Math.sin((x + ST.frame) * 0.2) * 12, 1, 2);
+    }
+    if (ST.map.theme === 'mcd'){
+      cx.fillStyle = '#ffc72c';
+      cx.fillRect(150, 60, 8, 50); cx.fillRect(174, 60, 8, 50);
+      cx.fillRect(150, 56, 32, 8);
+      cx.fillStyle = '#a82418'; cx.fillRect(100, 130, 140, 40);   /* counter */
+      cx.fillStyle = '#ffc72c'; cx.fillRect(100, 126, 140, 4);
+    }
+    if (ST.map.theme === 'gallery'){
+      cx.fillStyle = '#caa14d'; cx.fillRect(130, 70, 56, 44); cx.fillRect(250, 70, 56, 44);
+      cx.fillStyle = '#f0e0c8'; cx.fillRect(134, 74, 48, 36); cx.fillStyle = '#9ec8d8'; cx.fillRect(254, 74, 48, 36);
+      cx.fillStyle = '#5a8e9e'; cx.fillRect(150, 84, 16, 16); cx.fillStyle = '#caa14d'; cx.fillRect(270, 84, 16, 16);
+    }
+    if (ST.map.theme === 'shed' || ST.map.theme === 'shop'){
+      cx.fillStyle = 'rgba(0,0,0,0.25)';
+      for (let i = 0; i < 6; i++) cx.fillRect(60 + i * 60, 64, 30, 60);
+    }
+    return;
+  }
+  /* parallax far layer */
+  cx.save(); cx.translate(c - ST.cam, 0);
+  if (ST.map.theme === 'office'){
+    for (let i = -1; i < 14; i++){
+      const bx = ((i * 90) - (c * 0.5) % 90 + 1260) % 1260 - 90 + ST.cam * 0.0;
+      cx.fillStyle = '#8a9cb0'; cx.fillRect(i * 90 + 10, 40, 56, 130);
+      cx.fillStyle = '#c8d4e0';
+      for (let wy = 0; wy < 6; wy++) for (let wx = 0; wx < 3; wx++) cx.fillRect(i * 90 + 16 + wx * 17, 48 + wy * 20, 10, 12);
+    }
+  } else if (ST.map.theme === 'studio'){
+    for (let i = -1; i < 14; i++){
+      cx.fillStyle = '#b08a9c'; cx.fillRect(i * 110 + 20, 70, 70, 100);
+      cx.fillStyle = '#7c5a6e'; cx.fillRect(i * 110 + 20, 60, 70, 14);
+    }
+  } else if (ST.map.theme === 'florida'){
+    cx.fillStyle = '#f4d890'; cx.beginPath(); cx.arc(120 + (ST.cam*0.1), 50, 22, 0, 7); cx.fill();
+    for (let i = -1; i < 16; i++){
+      const px = i * 100 + 40;
+      cx.fillStyle = '#6a8a5a'; cx.fillRect(px, 96, 6, 70);
+      cx.fillStyle = '#4f6b2f';
+      cx.fillRect(px - 14, 88, 34, 8); cx.fillRect(px - 8, 80, 22, 8);
+    }
+  } else if (ST.map.theme === 'warehouse'){
+    for (let i = -1; i < 18; i++){
+      cx.fillStyle = ['#9a6a4a','#5a7a8a','#7a8a5a'][i % 3 < 0 ? 0 : i % 3];
+      cx.fillRect(i * 70 + 6, 110 - (i % 4) * 18, 60, 70 + (i % 4) * 18);
+    }
+  } else if (ST.map.theme === 'javea'){
+    /* Montgó with its cloud */
+    cx.fillStyle = '#7a8a72';
+    cx.beginPath(); cx.moveTo(180, 170); cx.lineTo(320, 80); cx.lineTo(430, 170); cx.closePath(); cx.fill();
+    cx.fillStyle = '#fff';
+    cx.fillRect(290, 70, 70, 10); cx.fillRect(304, 62, 44, 10);
+    /* sea on the horizon */
+    cx.fillStyle = '#2d6e8e'; cx.fillRect(ST.cam - c, 160, 4000, 16);
+  }
+  cx.restore();
+}
+function renderTiles(th){
+  const x0 = Math.floor(ST.cam / TILE) - 1, x1 = x0 + Math.ceil(W / TILE) + 2;
+  for (let y = 0; y < ROWS; y++) for (let x = Math.max(0, x0); x < Math.min(ST.mapW, x1); x++){
+    const ch = ST.tiles[y][x];
+    if (ch === ' ') continue;
+    const px = x * TILE, py = MAP_Y0 + y * TILE - (MAP_Y0 ? MAP_Y0 : 0) + 0; /* map occupies bottom rows */
+    const sy = y * TILE;
+    if (ch === '#'){
+      cx.fillStyle = th.ground; cx.fillRect(px, sy, TILE, TILE);
+      if (y === 0 || ST.tiles[y-1][x] === ' ' || '=o'.includes(ST.tiles[y-1][x])){
+        cx.fillStyle = th.groundTop; cx.fillRect(px, sy, TILE, 4);
+      }
+      cx.fillStyle = 'rgba(0,0,0,0.12)'; cx.fillRect(px + TILE - 2, sy, 2, TILE);
+    }
+    else if (ch === '='){
+      cx.fillStyle = '#8a6a44'; cx.fillRect(px, sy, TILE, 5);
+      cx.fillStyle = '#b08a58'; cx.fillRect(px, sy, TILE, 2);
+    }
+    else if (ch === '>' || ch === '<'){
+      cx.fillStyle = '#3a3a42'; cx.fillRect(px, sy, TILE, TILE);
+      cx.fillStyle = '#caa14d';
+      const ph = (ST.frame * (ch === '>' ? 1 : -1)) & 15;
+      for (let a = 0; a < 2; a++){
+        const ax = px + ((ph + a * 8) & 15);
+        cx.fillRect(ax, sy + 5, 4, 2); cx.fillRect(ax + (ch === '>' ? 2 : -2) + 2, sy + 3, 2, 6);
+      }
+      cx.fillStyle = '#5a5a64'; cx.fillRect(px, sy, TILE, 2);
+    }
+    else if (ch === 'g'){
+      const gate = ST.gates.find(g => g.x === x);
+      if (gate && gate.open) continue;
+      cx.fillStyle = '#5a4a3a'; cx.fillRect(px + 4, sy, 8, TILE);
+      cx.fillStyle = '#8a7a5e'; cx.fillRect(px + 4, sy, 8, 2);
+    }
+    else if (ch === 'X'){
+      cx.fillStyle = '#8a5a33'; cx.fillRect(px, sy, TILE, TILE);
+      cx.strokeStyle = '#5a3c28'; cx.lineWidth = 2;
+      cx.strokeRect(px + 1, sy + 1, TILE - 2, TILE - 2);
+      cx.beginPath(); cx.moveTo(px, sy); cx.lineTo(px + TILE, sy + TILE); cx.stroke();
+    }
+    else if (ch === '~'){
+      cx.fillStyle = '#2d6e8e'; cx.fillRect(px, sy, TILE, TILE);
+      cx.fillStyle = '#5a9ec0';
+      cx.fillRect(px + ((ST.frame >> 3) + x) % 12, sy + 2, 5, 2);
+    }
+  }
+}
+function renderEntities(){
+  for (const e of ST.entities){
+    const sx = e.x | 0, sy = e.y | 0;
+    if (sx + 40 < ST.cam || sx - 40 > ST.cam + W) continue;
+    if (e.kind === 'orange') cx.drawImage(SPR.orange, sx, sy);
+    else if (e.kind === 'almanac'){
+      const bob = Math.sin(e.bob) * 2;
+      cx.fillStyle = 'rgba(255,199,44,0.25)';
+      cx.fillRect(sx - 3, sy - 3 + bob, 14, 14);
+      cx.drawImage(SPR[ITEM_SPR[e.id]], sx, sy + bob);
+    }
+    else if (e.kind === 'page') cx.drawImage(SPR.page, sx, sy);
+    else if (e.kind === 'flag'){
+      cx.drawImage(SPR.flag, sx, sy);
+      if (e.hit){ cx.fillStyle = '#6a9e3c'; cx.fillRect(sx + 1, sy + 1, 5, 3); }
+    }
+    else if (e.kind === 'finish'){
+      cx.fillStyle = '#1d1d1d'; cx.fillRect(sx, sy, 16, 32);
+      cx.fillStyle = '#ffc72c'; cx.fillRect(sx + 2, sy + 2, 12, 28);
+      cx.fillStyle = '#1d1d1d'; cx.fillRect(sx + 10, sy + 16, 3, 3);
+      if (ST.map.interior){ cx.fillStyle = '#f6efdc'; cx.font = '5px monospace'; }
+    }
+    else if (e.kind === 'mcd'){
+      cx.fillStyle = '#a82418'; cx.fillRect(sx, sy + 8, 16, 16);
+      cx.fillStyle = '#ffc72c';
+      cx.fillRect(sx + 2, sy, 4, 10); cx.fillRect(sx + 10, sy, 4, 10); cx.fillRect(sx + 2, sy - 2, 12, 3);
+    }
+    else if (e.kind === 'door'){
+      cx.fillStyle = '#5a3c28'; cx.fillRect(sx + 8, sy + 8, 16, 24);
+      cx.fillStyle = '#8a5a33'; cx.fillRect(sx + 10, sy + 10, 12, 22);
+      cx.fillStyle = '#ffc72c'; cx.fillRect(sx + 19, sy + 20, 2, 2);
+      cx.fillStyle = '#d9cdb2'; cx.fillRect(sx + 4, sy, 24, 6);
+    }
+    else if (e.kind === 'tree'){
+      cx.fillStyle = '#5d4326'; cx.fillRect(sx + 14, sy + 28, 5, 20);
+      cx.fillStyle = '#4f6b2f';
+      cx.fillRect(sx + 4, sy + 10, 24, 18); cx.fillRect(sx + 8, sy + 4, 16, 10);
+      cx.fillStyle = '#e8821e';
+      cx.fillRect(sx + 8, sy + 14, 3, 3); cx.fillRect(sx + 18, sy + 9, 3, 3); cx.fillRect(sx + 22, sy + 18, 3, 3);
+    }
+    else if (e.kind === 'mail') cx.drawImage(SPR.mailbox, sx, sy);
+    else if (e.kind === 'cat'){ cx.drawImage(SPR.cat, sx, sy + Math.sin(e.t) * 0.5); }
+    else if (e.kind === 'sign'){
+      cx.fillStyle = '#8a7a5e'; cx.fillRect(sx + 7, sy + 10, 3, 12);
+      cx.fillStyle = '#5a4a3a'; cx.fillRect(sx - 2, sy, 20, 11);
+      cx.fillStyle = '#f6efdc'; cx.fillRect(sx - 1, sy + 1, 18, 9);
+      cx.fillStyle = '#1d1d1d'; cx.font = '4px monospace'; cx.textAlign = 'center';
+      const label = e.def.cycle ? e.def.cycle[e.cycleI] : (e.def.label || '').slice(0, 8);
+      cx.fillText(label, sx + 8, sy + 7);
+    }
+    else { /* people */
+      const spr = SPR[e.spr] || SPR.npc_grey;
+      cx.drawImage(spr, sx, sy);
+      if (e.kind === 'mood'){
+        const bx = sx + 1, by = sy - 12;
+        cx.fillStyle = '#f6efdc'; cx.fillRect(bx, by, 12, 10); cx.fillRect(bx + 4, by + 10, 3, 2);
+        cx.fillStyle = '#1d1d1d';
+        if (e.mood === 'h'){ cx.fillRect(bx + 2, by + 3, 2, 2); cx.fillRect(bx + 8, by + 3, 2, 2); cx.fillRect(bx + 3, by + 6, 6, 2); }
+        else if (e.mood === 'a'){ cx.fillStyle = '#a8402e'; cx.fillRect(bx + 2, by + 2, 2, 6); cx.fillRect(bx + 5, by + 2, 2, 6); cx.fillRect(bx + 8, by + 2, 2, 6); }
+        else { cx.fillRect(bx + 2, by + 4, 2, 2); cx.fillRect(bx + 5, by + 4, 2, 2); cx.fillRect(bx + 8, by + 4, 2, 2); }
+      }
+      if (e.kind === 'recruit' && ST.follower !== e){
+        cx.fillStyle = e.good ? '#6a9e3c' : '#b59ad1';
+        cx.fillRect(sx + 4, sy - 6, 4, 4);
+      }
+    }
+  }
+  /* interact prompt */
+  if (ST.near && !Q.active){
+    const e = ST.near;
+    cx.fillStyle = '#ffc72c';
+    cx.font = '6px monospace'; cx.textAlign = 'center';
+    const py = (e.y | 0) - (e.kind === 'mood' ? 18 : 6);
+    cx.fillText('E', (e.x + e.w / 2) | 0, py);
+  }
+}
+function renderPlayer(){
+  if (player.dead && ST.frame % 4 < 2) return;
+  if (ST.invuln > 0 && ST.frame % 6 < 2) return;
+  let spr = SPR.jack_idle;
+  if (!player.grounded) spr = SPR.jack_jump;
+  else if (Math.abs(player.vx) > 0.3) spr = (player.anim | 0) % 2 ? SPR.jack_run1 : SPR.jack_run2;
+  const squash = player.grounded && Math.abs(player.vy) < 0.01 && ST.frame - (player.landF || 0) < 5;
+  cx.save();
+  cx.translate((player.x - 1.5) | 0, player.y | 0);
+  if (player.face < 0){ cx.translate(12, 0); cx.scale(-1, 1); }
+  cx.drawImage(spr, 0, squash ? 1 : 0);
+  cx.restore();
+}
+function renderTitleBg(){
+  /* attract strip: Jack auto-runs along the bottom, jumps a gap, meets an NPC */
+  cx.fillStyle = '#2d4a3a'; cx.fillRect(0, 176, W, 40);
+  cx.fillStyle = '#6a7e3c'; cx.fillRect(0, 176, W, 4);
+  const t = (ST.frame % 480) / 480;
+  const ax = t * (W + 60) - 30;
+  cx.fillStyle = '#070605'; cx.fillRect(150, 176, 28, 40);          /* the gap */
+  let ay = 160;
+  if (ax > 120 && ax < 190) ay = 160 - Math.sin((ax - 120) / 70 * Math.PI) * 26;
+  const spr = (ax > 120 && ax < 190) ? SPR.jack_jump : ((ST.frame >> 3) % 2 ? SPR.jack_run1 : SPR.jack_run2);
+  cx.drawImage(spr, ax | 0, ay | 0);
+  cx.drawImage(SPR.npc_teal, 300, 162);
+  cx.fillStyle = '#ffc72c'; cx.font = '6px monospace'; cx.textAlign = 'center';
+  if (ax > 230 && ax < 300) cx.fillText('E', 307, 154);
+  cx.fillStyle = 'rgba(246,239,220,0.5)'; cx.font = '5px monospace';
+  cx.fillText('RUN', 60, 206); cx.fillText('JUMP', 164, 206); cx.fillText('TALK', 307, 206);
+}
+
+/* ---------------- main loop: fixed 60Hz ---------------- */
+let last = performance.now(), acc = 0;
+function frame(now){
+  requestAnimationFrame(frame);
+  acc += Math.min(100, now - last); last = now;
+  while (acc >= 1000 / 60){ update(); acc -= 1000 / 60; }
+  render();
+}
+
+/* ---------------- boot ---------------- */
+function boot(){
+  titleEl.classList.add('on');
+  buildMenu();
+  ST.scene = 'title';
+  requestAnimationFrame(frame);
+  /* unlock audio on first interaction */
+  const unlock = () => { AU.start(); AU.play('title'); removeEventListener('pointerdown', unlock); removeEventListener('keydown', unlock); };
+  addEventListener('pointerdown', unlock); addEventListener('keydown', unlock);
+}
+document.fonts.ready.then(boot);
+
+/* track landing for squash */
+setInterval(() => { if (player.grounded && player.vyWas > 1) player.landF = ST.frame; player.vyWas = player.vy; }, 16);
+
+/* debug hook for automated tests */
+window.__game = {
+  ST, player, save,
+  warp(n){ AU.start(); titleEl.classList.remove('on'); hud.classList.add('on'); ST.scene = 'game'; startWorld(n); Q.items.length = 0; if (Q.active){ Q.active = null; card.classList.remove('on'); dlg.classList.remove('on'); } },
+  open(id){ ST.returnTo = { map: ST.mapId, x: player.x }; loadMap(id); },
+  press(code){ keys[code] = true; setTimeout(() => keys[code] = false, 120); },
+  e(){ handleE(); },
+};
+</script>
+</body>
+</html>
